@@ -1,0 +1,225 @@
+" Plugins add using vim-Plug
+
+call plug#begin()
+
+Plug 'preservim/nerdtree'
+Plug 'itchyny/lightline.vim'
+Plug 'nordtheme/vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'vim-scripts/vim-gitgutter'
+Plug 'ryanoasis/vim-devicons'
+Plug 'mhinz/vim-startify'
+Plug 'voldikss/vim-floaterm'
+Plug 'mengelbrecht/lightline-bufferline'
+Plug 'drzel/vim-line-no-indicator'
+
+call plug#end()
+
+
+
+" =============================================================================
+" LIGHTLINE AND LIGHTLINE-BUFFERLINE
+" =============================================================================
+let g:lightline#bufferline#show_number=1
+let g:lightline#bufferline#enable_devicons=1
+" mostrar siempre la barra de buffers, incluso con un solo buffer
+let g:lightline#bufferline#show_single_buffer=1
+
+let g:lightline = {
+    \ 'colorscheme' : 'nord',
+    \ 'active' : {
+    \   'left' : [ [ 'mode', 'paste'],
+    \ 		       [ 'gitbranch','readonly', 'filename']],
+    \   'right' :  [ ['lineinfo'],
+    \              [ 'linenoindicator' ],
+    \              [ 'fileformat' ],
+    \              [ 'fileencoding' ],
+    \              [ 'filetype' ]]
+    \ },
+    \ 'component_function' : {
+    \   'filetype': 'MyFiletype',
+    \   'fileformat': 'MyFileformat',
+    \   'filename': 'LightlineFilename',
+    \   'readonly': 'LightLineReadonly',
+    \   'linenoindicator'  : 'LineNoIndicator',
+    \   'mode'  : 'LightlineMode',
+    \ },
+    \ 'component_expand': {
+    \   'buffers': 'lightline#bufferline#buffers',
+    \ },
+    \ 'component_type': {
+    \   'buffers': 'tabsel',
+	 \ },
+    \ 'tabline': {
+	 \   'left': [ ['buffers'] ],
+    \   'right': [['currentfunction']]
+	 \ }
+    \ }
+
+
+" Function
+function! LightlineMode()
+  return lightline#mode()
+endfunction
+
+function! MyFiletype()
+  return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' . WebDevIconsGetFileTypeSymbol() : 'no ft') : ''
+endfunction
+
+function! MyFileformat()
+  return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
+endfunction
+
+function! LightlineFilename()
+  let modified = &modified ? '+' : ''
+  let root = fnamemodify(get(b:, 'git_dir'), ':h')
+  let path = expand('%:p')
+  if path[:len(root)-1] ==# root
+    return path[len(root)+1:] . modified
+  endif
+  return expand('%') . modified
+endfunction
+
+function! LightLineReadonly()
+  if &filetype == "help"
+    return ""
+  elseif &readonly
+    return ""
+  else
+    return ""
+  endif
+endfunction
+
+
+"aa	
+
+
+autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update() 	 
+
+"=============Custom Keybinds==============
+map <silent>  <F6> :NERDTreeToggle<CR>
+nmap <C-r> :NERDTreeRefreshRoot<CR>
+map <C-t> :belowright terminal<CR>
+nnoremap   <silent>        <F5>    :FloatermToggle<CR>
+tnoremap   <silent>        <F5>    <C-\><C-n>:FloatermToggle<CR>
+
+
+"==============Startify====================
+"let g:startify_change_to_dir = 1 " when opening a file or bookmark, change to its directory
+
+let g:webdevicons_enable_startify = 1					"Support dev icons in startify
+let g:startify_padding_left = 3							" Padding left
+let g:startify_session_delete_buffers = 1				" Clean buffers
+let g:startify_relative_path = 1
+let g:startify_files_number = 6
+
+
+
+
+let g:startify_bookmarks = [
+      \ {'b': '~/.bashrc'},
+      \ {'v': '~/.vim/vimrc'},
+      \ ]
+
+
+let g:startify_lists = [
+      \ { 'type': 'bookmarks', 'header': ["  Bookmarks"]      },
+      \ { 'type': 'files',     'header': ["  MRU Files"]            },
+      \ { 'type': 'dir',       'header': ["  MRU Files in " . getcwd()] },
+      \ { 'type': 'commands',  'header': ["  Commands"]       },
+      \ ]
+
+"----Show wevDevIcons-----"
+function! StartifyEntryFormat()
+  return 'WebDevIconsGetFileTypeSymbol(absolute_path) ." ". entry_path'
+endfunction
+
+"=========================
+
+colorscheme nord
+
+"=========================================
+"|        Configs                       |
+"=========================================
+set undodir=~/.vim/undodir	"Define el PATH para Permitir crear persistencia de `uu` aun si cerramos la sesion
+set undofile					"Esto habilita lo de arriba
+set nobackup					"Deshabilita los backups
+set autoindent
+set number						"Muesta los numeros en linea
+set noswapfile					"Deshabilita los swamp files de vim
+set encoding=UTF-8			"Definir el tipo de encoding             
+set autoread					"Pemite autoleer los cambios en vim si fueron hechos de manera externa
+set laststatus=2				
+set noshowmode					"Elimina el texto del modo actual que se encuentra debajo del Ligthline
+set fileformat=unix			"Define que el formato de archivo sera de UNIX
+set tabstop=3					"Numero de espacios al hacer <TAB>			
+set relativenumber			"Muestra el numero relativo en la barra de la linea actual
+set hidden						"Permite mantener un buffer abierto en segundo plano, a pesar de cambiar a otro
+set showmatch					"Resalta los [], {}, () que son pares
+set hlsearch					"Resalta los resultados de la busqueda hecha con :/busqueda
+set smartcase					"Permite que solo sea case sensitive si en la busqueda especificamos una mayuscula :/BusQuedA 	
+set title						"Muestra el path y el nombre del buffer actual en la barra superios de la consola
+set showtabline=2				"Habilita esta opcion para mostrar el ligthline y ligthline-buffer
+set cursorcolumn				"Habilita el resaltado de columna(similar al cursorline)
+set cursorline					"Muestra una linea en el cursor
+"{
+	color nord
+	hi CursorLine term=bold cterm=bold guibg=Grey40
+"}
+
+"Move to file directory when vim is launched
+autocmd BufEnter * if &buftype == '' | silent! lcd %:p:h | endif
+
+
+"-------------------
+
+" Configurar updatetime para CursorHold events
+set updatetime=1000
+
+" Autocomandos para checktime
+augroup AutoRead
+  autocmd!
+  autocmd CursorHold,CursorHoldI * checktime
+  autocmd FocusGained,BufEnter * checktime
+augroup END
+
+"========================================
+"		New Settings		
+"========================================
+
+
+" ============================================================================
+" FLOATERM
+" =============================================================================
+let g:floaterm_autoclose = 2
+let g:floaterm_title = ' -> $1..$2'
+"let g:floaterm_giteditor = 0
+
+
+"=========================ANSI ART=================================
+function! AnsiEscapeCodes()
+  return [
+        \ "\e[49m                                \e[m",
+        \ "\e[49m                                \e[m",
+        \ "\e[49m           \e[38;2;235;238;244;48;2;242;242;255m▄\e[38;2;236;239;244;48;2;244;244;244m▄\e[38;2;219;225;235;48;2;219;231;243m▄\e[49m    \e[38;2;235;239;244;48;2;243;243;243m▄\e[38;2;236;239;244;48;2;244;244;244m▄\e[38;2;220;225;235;48;2;219;219;231m▄\e[49m           \e[m",
+        \ "\e[49m         \e[38;2;237;237;246;48;2;235;235;245m▄\e[38;2;235;239;243;48;2;236;240;245m▄\e[38;2;185;152;180;48;2;234;235;241m▄\e[38;2;180;142;173;48;2;233;234;240m▄\e[38;2;226;223;232;48;2;232;235;241m▄\e[38;2;215;222;232;48;2;216;222;232m▄\e[38;2;218;225;232;48;2;220;220;237m▄\e[38;2;236;246;246;48;2;244;244;244m▄\e[38;2;236;238;244;48;2;237;239;245m▄\e[38;2;184;149;178;48;2;233;235;241m▄\e[38;2;180;142;173;48;2;233;234;240m▄\e[38;2;227;224;233;48;2;232;235;241m▄\e[38;2;215;222;232;48;2;216;222;233m▄\e[38;2;219;226;233;48;2;221;221;230m▄\e[49m         \e[m",
+        \ "\e[49m         \e[38;2;235;235;245;48;2;237;237;246m▄\e[38;2;235;239;244;48;2;235;239;243m▄\e[38;2;234;235;241;48;2;185;152;180m▄\e[38;2;233;234;240;48;2;180;142;173m▄\e[38;2;235;238;243;48;2;226;223;232m▄\e[38;2;235;238;243;48;2;215;222;232m▄\e[38;2;235;238;244;48;2;218;225;232m▄\e[38;2;235;238;244;48;2;236;246;246m▄\e[38;2;236;239;244;48;2;236;238;244m▄\e[38;2;233;234;240;48;2;184;149;178m▄\e[38;2;233;234;240;48;2;180;142;173m▄\e[38;2;232;235;241;48;2;227;224;233m▄\e[38;2;216;222;233;48;2;215;222;232m▄\e[38;2;214;222;230;48;2;219;226;233m▄\e[49m         \e[m",
+        \ "\e[49m          \e[49;38;2;227;241;241m▀\e[38;2;233;236;240;48;2;235;238;244m▄\e[38;2;215;218;224;48;2;236;239;244m▄\e[38;2;233;236;241;48;2;236;239;244m▄\e[48;2;236;239;244m  \e[38;2;233;236;241;48;2;236;239;244m▄\e[38;2;217;220;226;48;2;236;239;244m▄\e[38;2;234;237;242;48;2;236;239;244m▄\e[48;2;236;239;244m \e[38;2;219;224;234;48;2;220;225;235m▄\e[49;38;2;215;215;228m▀\e[49m          \e[m",
+        \ "\e[49m         \e[38;2;235;235;245;49m▄\e[38;2;236;240;244;49m▄\e[38;2;216;218;225;48;2;211;216;221m▄\e[38;2;58;64;76;48;2;46;52;64m▄\e[38;2;199;203;209;48;2;209;213;219m▄\e[38;2;223;226;231;48;2;236;239;244m▄\e[38;2;234;237;242;48;2;236;239;244m▄\e[38;2;216;219;225;48;2;215;218;224m▄\e[38;2;77;83;93;48;2;65;71;82m▄\e[38;2;222;225;230;48;2;221;224;229m▄\e[48;2;236;239;244m \e[38;2;232;236;242;48;2;219;224;234m▄\e[38;2;215;221;233;49m▄\e[38;2;221;221;238;49m▄\e[49m         \e[m",
+        \ "\e[49m         \e[48;2;237;237;246m \e[48;2;235;239;243m \e[48;2;236;239;244m  \e[38;2;213;216;222;48;2;83;88;99m▄\e[38;2;211;215;221;48;2;71;77;88m▄\e[38;2;232;235;240;48;2;211;215;221m▄\e[48;2;236;239;244m    \e[48;2;234;237;242m \e[48;2;215;222;232m \e[48;2;219;226;233m \e[49m         \e[m",
+        \ "\e[49m         \e[49;38;2;235;235;245m▀\e[38;2;234;244;244;48;2;235;239;244m▄\e[48;2;236;239;244m  \e[38;2;235;238;243;48;2;234;237;243m▄\e[38;2;233;237;242;48;2;218;223;234m▄▄\e[38;2;233;237;242;48;2;219;225;234m▄\e[38;2;235;238;243;48;2;233;237;242m▄\e[48;2;236;239;244m  \e[38;2;220;225;235;48;2;233;236;242m▄\e[38;2;214;224;235;48;2;215;221;233m▄\e[49;38;2;222;222;230m▀\e[49m         \e[m",
+        \ "\e[49m           \e[38;2;129;160;192;48;2;147;173;200m▄\e[38;2;133;164;195;48;2;223;229;238m▄▄▄▄▄▄\e[38;2;102;135;176;48;2;217;224;234m▄\e[38;2;99;132;174;48;2;203;212;226m▄\e[38;2;94;128;171;48;2;116;146;182m▄\e[49m           \e[m",
+        \ "\e[49m           \e[38;2;95;130;172;48;2;125;157;190m▄\e[38;2;95;130;172;48;2;125;158;191m▄\e[38;2;95;129;172;48;2;125;157;190m▄\e[49;38;2;128;160;192m▀▀\e[49;38;2;125;157;190m▀\e[49;38;2;100;136;176m▀\e[49;38;2;94;128;171m▀▀\e[49;38;2;91;130;168m▀\e[49m           \e[m",
+        \ "\e[49m           \e[38;2;123;153;183;48;2;123;155;189m▄\e[38;2;123;153;184;48;2;123;156;190m▄\e[38;2;123;153;184;48;2;123;156;189m▄\e[49m                  \e[m",
+        \ "\e[49m           \e[38;2;73;83;102;48;2;82;94;116m▄\e[38;2;66;75;93;48;2;82;95;116m▄\e[38;2;66;76;93;48;2;82;95;116m▄\e[49m                  \e[m",
+        \ "\e[49m           \e[38;2;64;64;89;48;2;67;76;93m▄\e[49;38;2;67;67;94m▀\e[38;2;64;77;89;48;2;66;75;94m▄\e[49m                  \e[m",
+        \ "\e[49m                                \e[m",
+        \ "\e[49m                                \e[m"
+        \ ]
+endfunction
+
+let g:startify_custom_header = AnsiEscapeCodes()
+
