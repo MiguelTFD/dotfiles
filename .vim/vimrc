@@ -121,6 +121,16 @@ let g:startify_files_number = 6
 
 
 
+let g:startify_custom_header=[
+								\'       																					           					 ',
+								\'      ██████╗░░█████╗░██╗░░░░░░█████╗░██████╗░  ██╗░░░██╗██╗███╗░░░███╗ ░░░░░ ░░░  ░░░░░░░░   ',
+								\'      ██╔══██╗██╔══██╗██║░░░░░██╔══██╗██╔══██╗  ██║░░░██║██║████╗░████║ ░░░░▄░░░░░░░▄▄▀█▀▄▄░	 ',
+								\'      ██████╔╝██║░░██║██║░░░░░███████║██████╔╝  ╚██╗░██╔╝██║██╔████╔██║ ░▀▄▀█▀▄▀░░░▄▀▄▀█▀▄▀▄  ',
+								\'      ██╔═══╝░██║░░██║██║░░░░░██╔══██║██╔══██╗  ░╚████╔╝░██║██║╚██╔╝██║ ▄█▄█▀█▄█▄░░█▀█▀▄▀█▀█  ',
+								\'      ██║░░░░░╚█████╔╝███████╗██║░░██║██║░░██║  ░░╚██╔╝░░██║██║░╚═╝░██║ ░▀▄▀█▀▄▀░░░░█▄▀█▀▄█░  ',
+								\'      ╚═╝░░░░░░╚════╝░╚══════╝╚═╝░░╚═╝╚═╝░░╚═╝  ░░░╚═╝░░░╚═╝╚═╝░░░░░╚═╝ ░▀░▀█▀░▀░░░░░░▀▀▀░░░  ',
+								\]
+
 
 let g:startify_bookmarks = [
       \ {'b': '~/.bashrc'},
@@ -129,15 +139,15 @@ let g:startify_bookmarks = [
 
 
 let g:startify_lists = [
-      \ { 'type': 'bookmarks', 'header': ["  Bookmarks"]      },
-      \ { 'type': 'files',     'header': ["  MRU Files"]            },
-      \ { 'type': 'dir',       'header': ["  MRU Files in " . getcwd()] },
-      \ { 'type': 'commands',  'header': ["  Commands"]       },
+      \ { 'type': 'bookmarks', 'header': ["  bookmarks"]      },
+      \ { 'type': 'files',     'header': ["  mru files"]            },
+      \ { 'type': 'dir',       'header': ["  mru files in " . getcwd()] },
+      \ { 'type': 'commands',  'header': ["  commands"]       },
       \ ]
 
-"----Show wevDevIcons-----"
-function! StartifyEntryFormat()
-  return 'WebDevIconsGetFileTypeSymbol(absolute_path) ." ". entry_path'
+"----show wevdevicons-----"
+function! Startifyentryformat()
+  return 'webdeviconsgetfiletypesymbol(absolute_path) ." ". entry_path'
 endfunction
 
 "=========================
@@ -145,57 +155,58 @@ endfunction
 colorscheme nord
 
 "=========================================
-"|        Configs                       |
+"|        configs                       |
 "=========================================
-set undodir=~/.vim/undodir	"Define el PATH para Permitir crear persistencia de `uu` aun si cerramos la sesion
-set undofile					"Esto habilita lo de arriba
-set nobackup					"Deshabilita los backups
+set undodir=~/.vim/undodir	"define el path para permitir crear persistencia de `uu` aun si cerramos la sesion
+set undofile					"esto habilita lo de arriba
+set nobackup					"deshabilita los backups
 set autoindent
-set number						"Muesta los numeros en linea
-set noswapfile					"Deshabilita los swamp files de vim
-set encoding=UTF-8			"Definir el tipo de encoding             
-set autoread					"Pemite autoleer los cambios en vim si fueron hechos de manera externa
+set number						"muesta los numeros en linea
+set noswapfile					"deshabilita los swamp files de vim
+set encoding=utf-8			"definir el tipo de encoding             
+set autoread					"pemite autoleer los cambios en vim si fueron hechos de manera externa
 set laststatus=2				
-set noshowmode					"Elimina el texto del modo actual que se encuentra debajo del Ligthline
-set fileformat=unix			"Define que el formato de archivo sera de UNIX
-set tabstop=3					"Numero de espacios al hacer <TAB>			
-set relativenumber			"Muestra el numero relativo en la barra de la linea actual
-set hidden						"Permite mantener un buffer abierto en segundo plano, a pesar de cambiar a otro
-set showmatch					"Resalta los [], {}, () que son pares
-set hlsearch					"Resalta los resultados de la busqueda hecha con :/busqueda
-set smartcase					"Permite que solo sea case sensitive si en la busqueda especificamos una mayuscula :/BusQuedA 	
-set title						"Muestra el path y el nombre del buffer actual en la barra superios de la consola
-set showtabline=2				"Habilita esta opcion para mostrar el ligthline y ligthline-buffer
-set cursorcolumn				"Habilita el resaltado de columna(similar al cursorline)
-set cursorline					"Muestra una linea en el cursor
+set noshowmode					"elimina el texto del modo actual que se encuentra debajo del ligthline
+set fileformat=unix			"define que el formato de archivo sera de unix
+set tabstop=3					"numero de espacios al hacer <tab>			
+set relativenumber			"muestra el numero relativo en la barra de la linea actual
+set noesckeys					"Deshabilita la latencia al momento de presionar esc
+set hidden						"permite mantener un buffer abierto en segundo plano, a pesar de cambiar a otro
+set showmatch					"resalta los [], {}, () que son pares
+set hlsearch					"resalta los resultados de la busqueda hecha con :/busqueda
+set smartcase					"permite que solo sea case sensitive si en la busqueda especificamos una mayuscula :/busqueda 	
+set title						"muestra el path y el nombre del buffer actual en la barra superios de la consola
+set showtabline=2				"habilita esta opcion para mostrar el ligthline y ligthline-buffer
+set cursorcolumn				"habilita el resaltado de columna(similar al cursorline)
+set cursorline					"muestra una linea en el cursor
 "{
 	color nord
-	hi CursorLine term=bold cterm=bold guibg=Grey40
+	hi cursorline term=bold cterm=bold guibg=grey40
 "}
 
-"Move to file directory when vim is launched
-autocmd BufEnter * if &buftype == '' | silent! lcd %:p:h | endif
+"move to file directory when vim is launched
+autocmd bufenter * if &buftype == '' | silent! lcd %:p:h | endif
 
 
 "-------------------
 
-" Configurar updatetime para CursorHold events
+" configurar updatetime para cursorhold events
 set updatetime=1000
 
-" Autocomandos para checktime
-augroup AutoRead
+" autocomandos para checktime
+augroup autoread
   autocmd!
-  autocmd CursorHold,CursorHoldI * checktime
-  autocmd FocusGained,BufEnter * checktime
-augroup END
+  autocmd cursorhold,cursorholdi * checktime
+  autocmd focusgained,bufenter * checktime
+augroup end
 
 "========================================
-"		New Settings		
+"		new settings		
 "========================================
 
 
 " ============================================================================
-" FLOATERM
+" floaterm
 " =============================================================================
 let g:floaterm_autoclose = 2
 let g:floaterm_title = ' -> $1..$2'
