@@ -1,0 +1,32 @@
+#Exclude everything
+/*
+
+#Except this files:
+
+#Basic files
+!/.bashrc
+!/.gitignore
+!/.gitconfig
+
+#Folders
+!/.config
+/.config/*
+!/.config/i3
+!/.config/neofetch
+!/.config/polybar
+!/.config/rofi
+!/.config/README.md
+
+!/.fonts
+
+!/.local
+/.local/*
+!/.local/bin
+!/.local/README.md
+
+!/.vim
+/.vim/*
+!/.vim/undodir
+!/.vim/vimrc
+!/.vim/README.md
+
