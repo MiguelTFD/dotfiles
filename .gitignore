@@ -15,7 +15,7 @@
 !/.config/neofetch
 !/.config/polybar
 !/.config/rofi
-!/.config/kitty
+!/.config/alacritty
 !/.config/README.md
 
 !/.fonts
@@ -28,6 +28,8 @@
 !/.vim
 /.vim/*
 !/.vim/undodir
+/.vim/undodir/*
+!/.vim/undodir/.gitkeep
 !/.vim/vimrc
 !/.vim/README.md
 
