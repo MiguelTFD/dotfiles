@@ -5,6 +5,6 @@ chosen=$(printf "  Power Off\n  Restart\n  Lock" | rofi -dmenu -i -them
 case "$chosen" in
 	"  Power Off") sudo poweroff ;;
 	"  Restart") sudo reboot ;;
-	"  Lock") slock ;;
+	"  Lock") i3lock ;;
 	*) exit 1 ;;
 esac

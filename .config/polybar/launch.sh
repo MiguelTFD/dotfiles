@@ -1,13 +1,13 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
-# Terminate already running bar instances
-# If all your bars have ipc enabled, you can use 
-polybar-msg cmd quit
-# Otherwise you can use the nuclear option:
-#killall -q polybar
+killall -q polybar 
 
-# Launch bar
-echo "---" | tee -a /tmp/polybar1.log
-polybar bar 2>&1 | tee -a /tmp/polybar1.log & disown
+while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 
-echo "Bar launched..."
+export PATH=$HOME/.local/bin:$PATH
+
+config location ~/.config/polybar/config
+polybar -l info bar >> /tmp/polybar.log 2>&1 &
+
+
+echo "Polybar launched with env PATH=$PATH" >> /tmp/polybar_launch.log 
