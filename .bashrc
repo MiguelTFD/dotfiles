@@ -144,7 +144,6 @@ alias jc11='source jc 11'
 alias jc8='source jc 8'
 alias jc17='source jc 17'
 alias x='exit'
-alias i3lock='i3lock -i ~/.config/feh/lockpaper.png'
 
 #-------------------------
 set -o vi
