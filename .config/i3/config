@@ -198,6 +198,12 @@ client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 
 client.background       #ffffff
 
+#============Custom Settings===============
+#Desactivar el title bar de i3
+#------Si quieres Ocultarlo pero aun asi mostrar los bordes a los lados(Para ver el focus, debes cambiar el border pixel a 1 o mas, dependiendo el grosor que desees
+for_window [class="^.*"] border pixel 0
+
+
 #Gaps
 gaps inner 9px
 
