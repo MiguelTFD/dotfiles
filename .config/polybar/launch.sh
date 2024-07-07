@@ -4,6 +4,7 @@ killall -q polybar
 
 while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 
+#Agrege esta linea, para asi hacer referencia los scripts de bin
 export PATH=$HOME/.local/bin:$PATH
 
 config location ~/.config/polybar/config
