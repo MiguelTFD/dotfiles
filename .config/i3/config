@@ -201,7 +201,7 @@ client.background       #ffffff
 #============Custom Settings===============
 #Desactivar el title bar de i3
 #------Si quieres Ocultarlo pero aun asi mostrar los bordes a los lados(Para ver el focus, debes cambiar el border pixel a 1 o mas, dependiendo el grosor que desees
-for_window [class="^.*"] border pixel 0
+for_window [class="^.*"] border pixel 1
 
 
 #Gaps
