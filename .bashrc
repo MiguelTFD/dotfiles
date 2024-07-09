@@ -149,6 +149,8 @@ alias x='exit'
 set -o vi
 
 export PATH="$HOME/.local/bin:$PATH"
+export XDG_DATA_DIRS="/usr/local/share:/usr/share:$HOME/.themes:$XDG_DATA_DIRS"
+
 
 PROMPT_COMMAND='compile_prompt'
 source /usr/share/bash-completion/bash_completion

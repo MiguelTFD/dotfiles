@@ -8,7 +8,6 @@
 # i3 config file (v4)
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
-
 set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
@@ -202,6 +201,9 @@ client.background       #ffffff
 #Desactivar el title bar de i3
 #------Si quieres Ocultarlo pero aun asi mostrar los bordes a los lados(Para ver el focus, debes cambiar el border pixel a 1 o mas, dependiendo el grosor que desees
 for_window [class="^.*"] border pixel 1
+
+
+for_window [class="feh"] floating enable
 
 
 #Gaps

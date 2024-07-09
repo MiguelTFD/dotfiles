@@ -127,7 +127,7 @@ configuration {
     display-drun:   "";
     display-window: "";
     display-combi:  "";
-/*    show-icons:     true; */
+    show-icons:    true; 
 }
 
 listview {
@@ -136,5 +136,5 @@ listview {
 }
 
 window {
-	width: 30%;
+	width: 15%;
 }
