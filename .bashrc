@@ -151,8 +151,6 @@ set -o vi
 #-------Environment Var---------------
 
 export PATH="$HOME/.local/bin:$PATH"
-export XDG_DATA_DIRS="/usr/local/share:/usr/share:$HOME/.themes:$XDG_DATA_DIRS"
-export EDITOR="vim"
 
 
 
