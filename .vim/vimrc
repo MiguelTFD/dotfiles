@@ -182,7 +182,7 @@ set noshowmode					"elimina el texto del modo actual que se encuentra debajo del
 set fileformat=unix			"define que el formato de archivo sera de unix
 set tabstop=3					"numero de espacios al hacer <tab>			
 set relativenumber			"muestra el numero relativo en la barra de la linea actual
-set noesckeys					"Deshabilita la latencia al momento de presionar esc
+"set noesckeys					"Deshabilita la latencia al momento de presionar esc
 set hidden						"permite mantener un buffer abierto en segundo plano, a pesar de cambiar a otro
 set showmatch					"resalta los [], {}, () que son pares
 set hlsearch					"resalta los resultados de la busqueda hecha con :/busqueda
