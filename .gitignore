@@ -33,6 +33,9 @@
 /.local/*
 !/.local/bin
 !/.local/README.md
+!/.local/share
+/.local/share/*
+!/.local/share/wallpapers
 
 !/.vim
 /.vim/*
