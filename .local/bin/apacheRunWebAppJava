@@ -1,0 +1,105 @@
+#!/bin/bash
+
+# Function to find the root directory of the Maven project
+find_project_root() {
+  local dir="$PWD"
+  while [ "$dir" != "/" ]; do
+    if [ -f "$dir/pom.xml" ]; then
+      echo "$dir"
+      return
+    fi
+    dir=$(dirname "$dir")
+  done
+  echo "No se encontró el archivo pom.xml en los directorios superiores. Asegúrate de estar en un proyecto Maven."
+  exit 1
+}
+
+# Function to display Tomcat versions and select one
+select_tomcat_version() {
+  local tomcat_base_dir="$HOME/Documents/Development/Resources/Servers/apache-tomcat"
+  local tomcat_versions=()
+  local version_choice
+
+  # List all Tomcat versions in the directory
+  echo "Listando versiones de Tomcat encontradas en $tomcat_base_dir..."
+  PS3="Selecciona una versión de Tomcat o elige 'Cancelar': "
+  select dir in "$tomcat_base_dir"/*/ "Cancelar"; do
+    if [ "$dir" == "Cancelar" ]; then
+      echo "Operación cancelada. No se seleccionó ninguna versión de Tomcat."
+      exit 0
+    elif [ -n "$dir" ] && [ -d "$dir" ]; then
+      # Extract version number from the directory name
+      local version=$(basename "$dir")
+      echo "Has seleccionado Tomcat versión $version."
+      
+      # Confirm selection
+      read -p "¿Estás seguro de usar la versión $version? (Y/n): " CONFIRM
+      if [[ "$CONFIRM" == [Yy] ]]; then
+        TOMCAT_DIR="$dir"
+        echo "Has confirmado la selección de Tomcat versión $version."
+        return
+      else
+        echo "Selección cancelada. Vuelve a elegir una versión."
+        continue
+      fi
+    else
+      echo "Selección inválida. Por favor, elige una opción válida."
+    fi
+  done
+}
+
+# Find the root directory of the Maven project
+PROJECT_ROOT=$(find_project_root)
+
+# Select Tomcat version
+select_tomcat_version
+
+# Find the WAR file in the project's target directory
+WAR_FILE=$(find "$PROJECT_ROOT/target" -name "*.war" -print -quit)
+if [ -z "$WAR_FILE" ]; then
+  echo "No se encontró ningún archivo WAR en el directorio target. Asegúrate de haber construido el proyecto."
+  exit 1
+fi
+
+# Get the project name from the WAR file name without the extension
+PROJECT_NAME=$(basename "$WAR_FILE" .war)
+
+# Confirm deletion of existing files
+read -p "Se eliminarán los archivos existentes en Tomcat. ¿Estás seguro? (Y/n): " CONFIRM
+if [ "$CONFIRM" != "y" ]; then
+  echo "Operación cancelada."
+  exit 0
+fi
+
+# Stop Tomcat if it is running
+if pgrep -f "org.apache.catalina.startup.Bootstrap" > /dev/null; then
+  echo "Deteniendo Tomcat..."
+  "$TOMCAT_DIR/bin/shutdown.sh"
+  # Esperar a que Tomcat se apague completamente
+  sleep 5
+  echo "Tomcat detenido."
+else
+  echo "Tomcat no está en ejecución."
+fi
+
+# Eliminar cualquier archivo WAR existente en la carpeta webapps de Tomcat
+echo "Eliminando archivos anteriores en Tomcat..."
+rm -f "$TOMCAT_DIR/webapps/$PROJECT_NAME.war"
+rm -rf "$TOMCAT_DIR/webapps/$PROJECT_NAME"
+
+# Copy the WAR file to the Tomcat webapps folder
+echo "Copiando el archivo WAR a la carpeta webapps de Tomcat..."
+cp "$WAR_FILE" "$TOMCAT_DIR/webapps/"
+
+# Start Tomcat
+echo "Iniciando Tomcat..."
+"$TOMCAT_DIR/bin/startup.sh"
+
+# Wait a moment for Tomcat to deploy the application
+sleep 5
+
+# Open Firefox with the application URL
+xdg-open "http://localhost:8080/$PROJECT_NAME"
+
+echo "Aplicación desplegada y abierta en Firefox."
+
