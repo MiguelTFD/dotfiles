@@ -195,6 +195,7 @@ set cursorline					"muestra una linea en el cursor
 	color nord
 	hi cursorline term=bold cterm=bold guibg=grey40
 "}
+set fillchars+=vert:│  		" Define el simbolo de bordeado de los separadores verticales
 
 "move to file directory when vim is launched
 autocmd bufenter * if &buftype == '' | silent! lcd %:p:h | endif
