@@ -1,9 +1,9 @@
 #! /bin/sh
 
-chosen=$(printf "  Window\n󰩭  Select" | rofi -dmenu -i -theme-str '@import "power.rasi"')
+chosen=$(printf "󰍹  Window\n󰆞  Select" | rofi -dmenu -i -theme-str '@import "power.rasi"')
 
 case "$chosen" in 
-	"  Window") scrot  ~/Pictures/Screenshots/%Y-%m-%d-%T-screenshot.png ;;
-	"󰩭  Select") scrot -s ~/Pictures/Screenshots/%Y-%m-%d-%T-screenshot.png ;;
+	"󰍹  Window") scrot  ~/Pictures/Screenshots/%Y-%m-%d-%T-screenshot.png ;;
+	"󰆞  Select") scrot -s ~/Pictures/Screenshots/%Y-%m-%d-%T-screenshot.png ;;
 	*) exit 1 ;;
 esac
