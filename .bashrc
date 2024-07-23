@@ -157,7 +157,7 @@ set -o vi
 
 #-------Environment Var---------------
 
-
+export PATH="$HOME/.local/bin:$PATH"
 
 
 
@@ -171,4 +171,4 @@ set -o vi
 PROMPT_COMMAND='compile_prompt'
 source /usr/share/bash-completion/bash_completion
 
- neofetch
+neofetch
