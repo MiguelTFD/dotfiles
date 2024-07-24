@@ -147,7 +147,7 @@ alias x='exit'
 
 alias ss='screenshot select'
 alias sw='screenshot window'
-
+alias mntsda='sudo mount -o ntfs /dev/sda3 /mnt/sda'
 
 
 
