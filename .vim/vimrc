@@ -17,7 +17,7 @@ call plug#begin()
 
 Plug 'preservim/nerdtree'
 Plug 'itchyny/lightline.vim'
-Plug 'nordtheme/vim'
+Plug 'morhetz/gruvbox'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 Plug 'prabirshrestha/asyncomplete.vim'
@@ -44,7 +44,7 @@ let g:lightline#bufferline#enable_devicons=1
 let g:lightline#bufferline#show_single_buffer=1
 
 let g:lightline = {
-    \ 'colorscheme' : 'nord',
+    \ 'colorscheme' : 'gruvbox',
     \ 'active' : {
     \   'left' : [ [ 'mode', 'paste'],
     \ 		       [ 'gitbranch','readonly', 'filename']],
@@ -132,18 +132,6 @@ let g:startify_relative_path = 1
 let g:startify_files_number = 6
 
 
-
-let g:startify_custom_header=[
-								\'       																					           					 ',
-								\'      ██████╗░░█████╗░██╗░░░░░░█████╗░██████╗░  ██╗░░░██╗██╗███╗░░░███╗ ░░░░░ ░░░  ░░░░░░░░   ',
-								\'      ██╔══██╗██╔══██╗██║░░░░░██╔══██╗██╔══██╗  ██║░░░██║██║████╗░████║ ░░░░▄░░░░░░░▄▄▀█▀▄▄░	 ',
-								\'      ██████╔╝██║░░██║██║░░░░░███████║██████╔╝  ╚██╗░██╔╝██║██╔████╔██║ ░▀▄▀█▀▄▀░░░▄▀▄▀█▀▄▀▄  ',
-								\'      ██╔═══╝░██║░░██║██║░░░░░██╔══██║██╔══██╗  ░╚████╔╝░██║██║╚██╔╝██║ ▄█▄█▀█▄█▄░░█▀█▀▄▀█▀█  ',
-								\'      ██║░░░░░╚█████╔╝███████╗██║░░██║██║░░██║  ░░╚██╔╝░░██║██║░╚═╝░██║ ░▀▄▀█▀▄▀░░░░█▄▀█▀▄█░  ',
-								\'      ╚═╝░░░░░░╚════╝░╚══════╝╚═╝░░╚═╝╚═╝░░╚═╝  ░░░╚═╝░░░╚═╝╚═╝░░░░░╚═╝ ░▀░▀█▀░▀░░░░░░▀▀▀░░░  ',
-								\]
-
-
 let g:startify_bookmarks = [
       \ {'b': '~/.bashrc'},
       \ {'v': '~/.vim/vimrc'},
@@ -164,8 +152,13 @@ endfunction
 
 "=========================
 
-colorscheme nord
-
+colorscheme gruvbox
+set background=dark
+ if exists('+termguicolors')
+      let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+      let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+      set termguicolors
+    endif
 "=========================================
 "|        configs                       |
 "=========================================
@@ -191,10 +184,6 @@ set title						"muestra el path y el nombre del buffer actual en la barra superi
 set showtabline=2				"habilita esta opcion para mostrar el ligthline y ligthline-buffer
 set cursorcolumn				"habilita el resaltado de columna(similar al cursorline)
 set cursorline					"muestra una linea en el cursor
-"{
-	color nord
-	hi cursorline term=bold cterm=bold guibg=grey40
-"}
 set fillchars+=vert:│  		" Define el simbolo de bordeado de los separadores verticales
 
 "move to file directory when vim is launched
