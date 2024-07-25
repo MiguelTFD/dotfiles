@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Obtener el directorio home del usuario actual
+if [ -n "$SUDO_USER" ]; then
+    home_dir=$(eval echo ~${SUDO_USER})
+else
+    home_dir="$HOME"
+fi
+
+# Leer el modo actual del archivo theme_mode
+MODE=$(cat ~/.config/theme_mode)
+
+# Alternar entre modo oscuro y claro
+if [ "$MODE" == "dark" ]; then
+    echo "light" > ~/.config/theme_mode
+else
+    echo "dark" > ~/.config/theme_mode
+fi
+
+# Recargar el perfil para actualizar la variable de entorno
+source ~/.profile
+
+# Actualizar el tema GTK según el nuevo modo
+if [ "$THEME_MODE" == "dark" ]; then
+    sudo cp -f "$home_dir/.config/alacritty/alacritty_dark_mode.txt" "$home_dir/.config/alacritty/colors.yml"
+    sudo cp -f "$home_dir/.config/i3/i3_dark_mode.txt" "$home_dir/.config/i3/colors.conf"
+    sudo cp -f "$home_dir/.config/gtk-3.0/gtk_3.0_dark_mode.txt" "$home_dir/.config/gtk-3.0/settings.ini"
+else
+    sudo cp -f "$home_dir/.config/alacritty/alacritty_light_mode.txt" "$home_dir/.config/alacritty/colors.yml"
+	 sudo cp -f "$home_dir/.config/gtk-3.0/gtk_3.0_light_mode.txt" "$home_dir/.config/gtk-3.0/settings.ini"
+    sudo cp -f "$home_dir/.config/i3/i3_light_mode.txt" "$home_dir/.config/i3/colors.conf"
+fi
+
+# Reiniciar i3
+i3-msg restart
+
