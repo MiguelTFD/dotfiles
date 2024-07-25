@@ -201,7 +201,6 @@ augroup autoread
   autocmd cursorhold,cursorholdi * checktime
   autocmd focusgained,bufenter * checktime
 augroup end
-
 "========================================
 "		new settings		
 "========================================
