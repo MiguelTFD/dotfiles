@@ -189,11 +189,13 @@ bindsym $mod+r mode "resize"
 
 # Colors
 # class                 border  backgr. text    indicator child_border
-client.focused          #D8DEE9 #D8DEE9 #2E3440 #D8DEE9   #D8DEE9 
-client.focused_inactive #434C5E #434C5E #D8DEE9 #434C5E   #434C5E
-client.unfocused        #3B4252 #3B4252 #D8DEE9 #3B4252   #3B4252
-client.urgent           #2f343a #900000 #ffffff #900000   #900000
-client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+
+client.focused          #D79921 #D79921 #EBDBB2 #D79921 #D79921 
+
+client.focused_inactive #282828 #282828 #EBDBB2 #434C5E   #434C5E
+client.unfocused        #282828 #282828 #EBDBB2 #282828   #282828
+client.urgent           #cc241d #CC241D #EBDBB2 #CC241D   #CC241D
+client.placeholder      #000000 #0c0c0c #EBDBB2 #000000   #0c0c0c
 
 client.background       #ffffff
 
@@ -219,5 +221,6 @@ gaps inner 9px
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
-exec_always --no-startup-id feh --bg-fill ~/.local/share/wallpapers/NordTheme/wallpaper.png
+# add light variant later
+exec_always --no-startup-id feh --bg-fill ~/.local/share/wallpapers/Gruvbox/dark/world_map_dark.png  
 exec_always --no-startup-id dunst -config ~/.config/dunst/dunstrc
