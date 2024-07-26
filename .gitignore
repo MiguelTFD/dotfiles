@@ -4,8 +4,7 @@
 #Except this files:
 
 #Basic files
-!/.zshrc
-!/.zshenv
+!/.bashrc
 !/.gitignore
 !/.gitconfig
 
