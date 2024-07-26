@@ -1,175 +1,144 @@
-#!/usr/bin/env bash
+# Enable the subsequent settings only in interactive sessions
+case $- in
+  *i*) ;;
+    *) return;;
+esac
 
-# Copyright (C) 2016-present Arctic Ice Studio <development@arcticicestudio.com>
-# Copyright (C) 2016-present Sven Greb <development@svengreb.de>
+# Path to your oh-my-bash installation.
+export OSH='/home/migueltfd/.oh-my-bash'
 
-# Project:    igloo
-# Repository: https://github.com/arcticicestudio/igloo
-# License:    MIT
-# References:
-#   http://stackoverflow.com/questions/19092488/custom-bash-prompt-is-overwriting-itself/19501525#19501528
-#   http://mywiki.wooledge.org/BashFAQ/053
+# Set name of the theme to load. Optionally, if you set this to "random"
+# it'll load a random theme each time that oh-my-bash is loaded.
+OSH_THEME="robbyrussell"
 
-# +-----------------+
-# + Git Integration +
-# +-----------------+
-# +--- Dirty State ---+
-# Show unstaged (*) and staged (+) changes.
-# Also configurable per repository via "bash.showDirtyState".
-GIT_PS1_SHOWDIRTYSTATE=true
+# If you set OSH_THEME to "random", you can ignore themes you don't like.
+# OMB_THEME_RANDOM_IGNORED=("powerbash10k" "wanelo")
 
-# +--- Stash State ---+
-# Show currently stashed ($) changes.
-GIT_PS1_SHOWSTASHSTATE=false
+# Uncomment the following line to use case-sensitive completion.
+# OMB_CASE_SENSITIVE="true"
 
-# +--- Untracked Files ---+
-# Show untracked (%) changes.
-# Also configurable per repository via "bash.showUntrackedFiles".
-GIT_PS1_SHOWUNTRACKEDFILES=true
+# Uncomment the following line to use hyphen-insensitive completion. Case
+# sensitive completion must be off. _ and - will be interchangeable.
+# OMB_HYPHEN_SENSITIVE="false"
 
-# +--- Upstream Difference ---+
-# Show indicator for difference between HEAD and its upstream.
+# Uncomment the following line to disable bi-weekly auto-update checks.
+# DISABLE_AUTO_UPDATE="true"
+
+# Uncomment the following line to change how often to auto-update (in days).
+# export UPDATE_OSH_DAYS=13
+
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line to enable command auto-correction.
+# ENABLE_CORRECTION="true"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+# COMPLETION_WAITING_DOTS="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Uncomment the following line if you don't want the repository to be considered dirty
+# if there are untracked files.
+# SCM_GIT_DISABLE_UNTRACKED_DIRTY="true"
+
+# Uncomment the following line if you want to completely ignore the presence
+# of untracked files in the repository.
+# SCM_GIT_IGNORE_UNTRACKED="true"
+
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.  One of the following values can
+# be used to specify the timestamp format.
+# * 'mm/dd/yyyy'     # mm/dd/yyyy + time
+# * 'dd.mm.yyyy'     # dd.mm.yyyy + time
+# * 'yyyy-mm-dd'     # yyyy-mm-dd + time
+# * '[mm/dd/yyyy]'   # [mm/dd/yyyy] + [time] with colors
+# * '[dd.mm.yyyy]'   # [dd.mm.yyyy] + [time] with colors
+# * '[yyyy-mm-dd]'   # [yyyy-mm-dd] + [time] with colors
+# If not set, the default value is 'yyyy-mm-dd'.
+# HIST_STAMPS='yyyy-mm-dd'
+
+# Uncomment the following line if you do not want OMB to overwrite the existing
+# aliases by the default OMB aliases defined in lib/*.sh
+# OMB_DEFAULT_ALIASES="check"
+
+# Would you like to use another custom folder than $OSH/custom?
+# OSH_CUSTOM=/path/to/new-custom-folder
+
+# To disable the uses of "sudo" by oh-my-bash, please set "false" to
+# this variable.  The default behavior for the empty value is "true".
+OMB_USE_SUDO=true
+
+# To enable/disable display of Python virtualenv and condaenv
+# OMB_PROMPT_SHOW_PYTHON_VENV=true  # enable
+# OMB_PROMPT_SHOW_PYTHON_VENV=false # disable
+
+# Which completions would you like to load? (completions can be found in ~/.oh-my-bash/completions/*)
+# Custom completions may be added to ~/.oh-my-bash/custom/completions/
+# Example format: completions=(ssh git bundler gem pip pip3)
+# Add wisely, as too many completions slow down shell startup.
+completions=(
+  git
+  composer
+  ssh
+)
+
+# Which aliases would you like to load? (aliases can be found in ~/.oh-my-bash/aliases/*)
+# Custom aliases may be added to ~/.oh-my-bash/custom/aliases/
+# Example format: aliases=(vagrant composer git-avh)
+# Add wisely, as too many aliases slow down shell startup.
+aliases=(
+  general
+)
+
+# Which plugins would you like to load? (plugins can be found in ~/.oh-my-bash/plugins/*)
+# Custom plugins may be added to ~/.oh-my-bash/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(
+  git
+  bashmarks
+)
+
+# Which plugins would you like to conditionally load? (plugins can be found in ~/.oh-my-bash/plugins/*)
+# Custom plugins may be added to ~/.oh-my-bash/custom/plugins/
+# Example format:
+#  if [ "$DISPLAY" ] || [ "$SSH" ]; then
+#      plugins+=(tmux-autoattach)
+#  fi
+
+source "$OSH"/oh-my-bash.sh
+
+# User configuration
+# export MANPATH="/usr/local/man:$MANPATH"
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# ssh
+# export SSH_KEY_PATH="~/.ssh/rsa_id"
+
+# Set personal aliases, overriding those provided by oh-my-bash libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-bash
+# users are encouraged to define aliases within the OSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
 #
-# <  Behind upstream
-# >  Ahead upstream
-# <> Diverged upstream
-# =  Equal upstream
-#
-# Control behaviour by setting to a space-separated list of values:
-#   auto     Automatically show indicators
-#   verbose  Show number of commits ahead/behind (+/-) upstream
-#   name     If verbose, then also show the upstream abbrev name
-#   legacy   Do not use the '--count' option available in recent versions of git-rev-list
-#   git      Always compare HEAD to @{upstream}
-#   svn      Always compare HEAD to your SVN upstream
-#
-# By default, __git_ps1 will compare HEAD to SVN upstream ('@{upstream}' if not available).
-# Also configurable per repository via "bash.showUpstream".
-GIT_PS1_SHOWUPSTREAM="auto verbose name"
-
-# +--- Describe Style ---+
-# Show more information about the identity of commits checked out as a detached HEAD.
-#
-# Control behaviour by setting to one of these values:
-#   contains  Relative to newer annotated tag (v1.6.3.2~35)
-#   branch    Relative to newer tag or branch (master~4)
-#   describe  Relative to older annotated tag (v1.6.3.1-13-gdd42c2f)
-#   default   Exactly matching tag
-GIT_PS1_DESCRIBE_STYLE="contains"
-
-# +--- Colored Hints ---+
-# Show colored hints about the current dirty state. The colors are based on the colored output of "git status -sb".
-# NOTE: Only available when using __git_ps1 for PROMPT_COMMAND!
-GIT_PS1_SHOWCOLORHINTS=true
-
-# +--- pwd Ignore ---+
-# Disable __git_ps1 output when the current directory is set up to be ignored by git.
-# Also configurable per repository via "bash.hideIfPwdIgnored".
-GIT_PS1_HIDE_IF_PWD_IGNORED=false
-
-compile_prompt () {
-  local EXIT=$?
-  local CONNECTBAR_DOWN=$'\u250C\u2500\u257C'
-  local CONNECTBAR_UP=$'\u2514\u2500\u257C'
-  local GITSPLITBAR=$'\u2570\u257C'
-  local SPLITBAR=$'\u257E\u2500\u257C'
-  local ARROW=$'\u25B6'
-  local c_gray='\e[0;37m'  # Gris
-  local c_blue='\e[0;33m'  # Verde lima (aproximado a amarillo)
-  local c_cyan='\e[0;31m'  # Naranja (aproximado a rojo)
-  local c_reset='\e[0m'
-  local c_red='\e[0;31m'  # Nuevo color rojo para errores
-  
-   # Cambio de color solo si el código de salida está entre 127 y 255
-  if (( EXIT >= 127 && EXIT <= 255 )); then
-    EXIT="${c_red}${EXIT}${c_gray}"  # Aplicar color rojo
-  else
-    EXIT="${c_blue}${EXIT}${c_gray}"  # Mantener color azul para otros números
-  fi
-  
-  # > Connectbar Down
-  # Format:
-  #   (newline)(bright colors)(connectbar down)
-  PS1="\n${c_gray}"
-  PS1+="$CONNECTBAR_DOWN"
-
-  # > Username
-  # Format:
-  #   (bracket open)(username)(bracket close)(splitbar)
-  PS1+="[${c_blue}\u${c_gray}]"
-  PS1+="$SPLITBAR"
-
-  # > Jobs
-  # Format:
-  #   (bracket open)(jobs)(bracket close)(splitbar)
-  PS1+="[${c_blue}\j${c_gray}]"
-
-  # > Exit Status
-  # Format:
-  #   (bracket open)(last exit status)(bracket close)(splitbar)
-  PS1+="[${c_blue}${EXIT}${c_gray}]"
-  PS1+="$SPLITBAR"
-
-  # > Time
-  # Format:
-  #   (bracket open)(time)(bracket close)(newline)(connectbar up)
-  PS1+="[${c_blue}\D{%H:%M:%S}${c_gray}]\n"
-  PS1+="$CONNECTBAR_UP"
-
-  # > Working Directory
-  # Format:
-  #   (bracket open)(working directory)(bracket close)(newline)
-  PS1+="[${c_blue}\w${c_gray}]\n"
-
-  # > Git
-  # Format:
-  #   (gitsplitbar)(bracket open)(git branch)(bracket close)(splitbar)
-  #   (bracket open)(HEAD-SHA)(bracket close)
-  PS1+="$(__git_ps1 " \\u2570\\u257C[${c_cyan}%s${c_gray}]\\u257E\\u2500\\u257C[${c_cyan}$(git rev-parse --short HEAD 2> /dev/null)${c_gray}]")"
-  # Append additional newline if in git repository
-  if [[ ! -z $(__git_ps1) ]]; then
-    PS1+='\n'
-  fi
-
-  # > Arrow
-  # NOTE: Color must be escaped with '\[\]' to fix the text overflow bug!
-  # Format:
-  #   (arrow)(color reset)
-  PS1+="$ARROW \[\e[0m\]"
-}
-
-#=========Aliases=========
-alias ct='clear'
-alias jc11='source jc 11'
-alias jc8='source jc 8'
-alias jc17='source jc 17'
-alias x='exit'
-
-alias ss='screenshot select'
-alias sw='screenshot window'
-alias mntsda='sudo mount -o ntfs /dev/sda3 /mnt/sda'
-
-
-
-alias ls='ls -hN --color=auto --group-directories-first'
-#-------------------------
-set -o vi
-
-#-------Environment Var---------------
-
-export PATH="$HOME/.local/bin:$PATH"
-
-export THEME_MODE=$(cat ~/.config/theme_mode)
-
-
-
-
-
-#-------------------------------------
-
-
-
-PROMPT_COMMAND='compile_prompt'
-source /usr/share/bash-completion/bash_completion
-
-neofetch
+# Example aliases
+# alias bashconfig="mate ~/.bashrc"
+# alias ohmybash="mate ~/.oh-my-bash"
