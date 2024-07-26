@@ -4,7 +4,8 @@
 #Except this files:
 
 #Basic files
-!/.bashrc
+!/.zshrc
+!/.zshenv
 !/.gitignore
 !/.gitconfig
 
@@ -15,6 +16,7 @@
 !/.config/neofetch
 !/.config/polybar
 !/.config/rofi
+!/.config/theme_mode
 !/.config/alacritty
 !/.config/README.md
 !/.config/feh
