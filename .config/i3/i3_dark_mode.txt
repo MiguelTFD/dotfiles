@@ -1,1 +1,1 @@
-exec_always --no-startup-id feh --bg-fill ~/.local/share/wallpapers/Gruvbox/dark/world_map_dark.png
+exec_always --no-startup-id feh --bg-fill ~/.local/share/wallpapers/Gruvbox/dark/wallpaper_dark.png
