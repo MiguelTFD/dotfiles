@@ -74,9 +74,9 @@ compile_prompt () {
   local GITSPLITBAR=$'\u2570\u257C'
   local SPLITBAR=$'\u257E\u2500\u257C'
   local ARROW=$'\u25B6'
-  local c_gray='\e[01;30m'
-  local c_blue='\e[0;34m'
-  local c_cyan='\e[0;36m'
+  local c_gray='\e[0;37m'  # Gris
+  local c_blue='\e[0;33m'  # Verde lima (aproximado a amarillo)
+  local c_cyan='\e[0;31m'  # Naranja (aproximado a rojo)
   local c_reset='\e[0m'
   local c_red='\e[0;31m'  # Nuevo color rojo para errores
   
