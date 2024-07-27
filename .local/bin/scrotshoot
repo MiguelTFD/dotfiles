@@ -1,6 +1,6 @@
 #! /bin/sh
 
-chosen=$(printf "󰍹  Window\n󰆞  Select" | rofi -dmenu -i -theme-str '@import "power.rasi"')
+chosen=$(printf "󰍹  Window\n󰆞  Select" | rofi -dmenu -i )
 
 case "$chosen" in 
 	"󰍹  Window") scrot  ~/Pictures/Screenshots/%Y-%m-%d-%T-screenshot.png ;;
