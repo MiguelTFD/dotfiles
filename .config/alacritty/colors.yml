@@ -1,58 +1,59 @@
 items:
   - colors:
-      name: 3024 (dark)
+      name: Gruvbox Light
       author: Chris Kempson
       primary:
-        background: "#090300"
-        foreground: "#a5a2a2"
+        background: "#f9f5d7"
+        foreground: "#3c3836"
       cursor:
-        text: "#090300"
-        cursor: "#a5a2a2"
+        text: "#f9f5d7"
+        cursor: "#3c3836"
       normal:
-        black: "#090300"
-        red: "#db2d20"
-        green: "#01a252"
-        yellow: "#fded02"
-        blue: "#01a0e4"
-        magenta: "#a16a94"
-        cyan: "#b5e4f4"
-        white: "#a5a2a2"
+        black: "#fbf1c7"
+        red: "#cc241d"
+        green: "#98971a"
+        yellow: "#d79921"
+        blue: "#458588"
+        magenta: "#b16286"
+        cyan: "#689d6a"
+        white: "#3c3836"
       bright:
-        black: "#5c5855"
-        red: "#db2d20"
-        green: "#01a252"
-        yellow: "#fded02"
-        blue: "#01a0e4"
-        magenta: "#a16a94"
-        cyan: "#b5e4f4"
-        white: "#f7f7f7"
-  - theme: 3024.dark
+        black: "#7c6f64"
+        red: "#fb4934"
+        green: "#b8bb26"
+        yellow: "#fabd2f"
+        blue: "#83a598"
+        magenta: "#d3869b"
+        cyan: "#8ec07c"
+        white: "#f9f5d7"
+  - theme: gruvbox.light
 colors:
   # Default colors
   primary:
-    # hard contrast: background = '#1d2021'
-    background: '#282828'
-    # soft contrast: background = '#32302f'
-    foreground: '#ebdbb2'
+    # hard contrast: background = '#f9f5d7'
+    background: '#fbf1c7'
+    # soft contrast: background = '#fbf1c7'
+    foreground: '#3c3836'
 
   # Normal colors
   normal:
-    black: '#282828'
+    black: '#f9f5d7'
     red: '#cc241d'
     green: '#98971a'
     yellow: '#d79921'
     blue: '#458588'
     magenta: '#b16286'
     cyan: '#689d6a'
-    white: '#a89984'
+    white: '#3c3836'
 
   # Bright colors
   bright:
-    black: '#928374'
+    black: '#7c6f64'
     red: '#fb4934'
     green: '#b8bb26'
     yellow: '#fabd2f'
     blue: '#83a598'
     magenta: '#d3869b'
     cyan: '#8ec07c'
-    white: '#ebdbb2'
+    white: '#f9f5d7'
+
