@@ -8,7 +8,6 @@
 !/.gitignore
 !/.gitconfig
 !/.profile
-!/.README.md
 
 #Folders
 !/.config
@@ -26,6 +25,7 @@
 !/.config/dunst
 !/.config/ranger
 !/.config/miscellaneous
+!/.config/README.md
 
 !/.themes
 !/.fonts
