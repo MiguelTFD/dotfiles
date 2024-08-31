@@ -120,7 +120,8 @@ nmap <C-r> :NERDTreeRefreshRoot<CR>
 map <C-t> :belowright terminal<CR>
 nnoremap   <silent>        <F5>    :FloatermToggle<CR>
 tnoremap   <silent>        <F5>    <C-\><C-n>:FloatermToggle<CR>
-
+map <silent> <C-n> :bnext<CR>
+map <silent> <C-b> :bprevious<CR>
 
 "==============Startify====================
 "let g:startify_change_to_dir = 1 " when opening a file or bookmark, change to its directory
