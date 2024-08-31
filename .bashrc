@@ -126,6 +126,10 @@ alias sw='screenshot window'
 alias mntsda='sudo mount -o ntfs /dev/sda3 /mnt/sda'
 alias ls='ls -hN --color=auto --group-directories-first'
 
+alias start-apache2='sudo systemctl start apache2'
+alias stop-apache2='sudo systemctl stop apache2'
+alias restart-apache2='sudo systemctl restart apache2'
+
 #-------------------------
 set -o vi
 
