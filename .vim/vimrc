@@ -15,6 +15,7 @@ endif
 
 call plug#begin()
 
+Plug 'tpope/vim-sensible'
 Plug 'jiangmiao/auto-pairs'
 Plug 'yggdroot/indentline'
 Plug 'tpope/vim-unimpaired'
@@ -116,10 +117,6 @@ function! LightLineReadonly()
   endif
 endfunction
 
-
-"aa	
-
-
 autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update() 	 
 
 "=============Custom Keybinds==============
@@ -157,18 +154,18 @@ function! Startifyentryformat()
 endfunction
 
 "=========================
-
 colorscheme gruvbox
 " Obtener el valor de la variable de entorno
 let theme_mode = getenv('THEME_MODE')
 
 " Usar la variable en la configuración
 if theme_mode ==# 'dark'
+	highlight ColorColumn ctermbg=235 guibg=#3c3836
 	set background=dark
 else
+	highlight ColorColumn ctermbg=235 guibg=#ebdbb2
 	set background=light
 endif
-
 
  if exists('+termguicolors')
       let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
@@ -176,12 +173,8 @@ endif
       set termguicolors
     endif
 
-
 "move to file directory when vim is launched
 autocmd bufenter * if &buftype == '' | silent! lcd %:p:h | endif
-
-
-"-------------------
 
 " configurar updatetime para cursorhold events
 set updatetime=1000
@@ -192,9 +185,6 @@ augroup autoread
   autocmd cursorhold,cursorholdi * checktime
   autocmd focusgained,bufenter * checktime
 augroup end
-"========================================
-"		new settings		
-"========================================
 
 
 " ============================================================================
@@ -204,7 +194,9 @@ let g:floaterm_autoclose = 2
 let g:floaterm_title = ' -> $1..$2'
 "let g:floaterm_giteditor = 0
 
-highlight ColorColumn ctermbg=235 guibg=#2c2d27
+"===============================================================================
+"| Coloreado Luego de los 80 caracteres					       |
+"===============================================================================
 let &colorcolumn=join(range(81,999),",")
 
 "=========================================
@@ -220,7 +212,10 @@ set encoding=utf-8			"definir el tipo de encoding
 set autoread					"pemite autoleer los cambios en vim si fueron hechos de manera externa
 set laststatus=2				
 set fileformat=unix			"define que el formato de archivo sera de unix
-set tabstop=3					"numero de espacios al hacer <tab>			
+set tabstop=3        		" Número de espacios que representa una tabulación
+set shiftwidth=3     		" Número de espacios para cada nivel de sangría
+set expandtab        		" Usa espacios en lugar de caracteres de tabulación
+set smarttab         		" Ajusta la tabulación de manera inteligente
 set relativenumber			"muestra el numero relativo en la barra de la linea actual
 set hidden						"permite mantener un buffer abierto en segundo plano, a pesar de cambiar a otro
 set showmatch					"resalta los [], {}, () que son pares
@@ -228,11 +223,11 @@ set hlsearch					"resalta los resultados de la busqueda hecha con :/busqueda
 set smartcase					"permite que solo sea case sensitive si en la busqueda especificamos una mayuscula :/busqueda 	
 set title						"muestra el path y el nombre del buffer actual en la barra superios de la consola
 set showtabline=2				"habilita esta opcion para mostrar el ligthline y ligthline-buffer
-"set cursorcolumn				"habilita el resaltado de columna(similar al cursorline)
-"set cursorline					"muestra una linea en el cursor
+set cursorcolumn				"habilita el resaltado de columna(similar al cursorline)
+set cursorline					"muestra una linea en el cursor
 set fillchars+=vert:│  		" Define el simbolo de bordeado de los separadores verticales
-set foldmethod=syntax      " Folding de codigo
-set foldenable					" Habilita el folding
+"set foldmethod=syntax      " Folding de codigo
+"set foldenable					" Habilita el folding
 set wildmenu					"Habilita autocompletado de comandos al presionar TAB
 set nocompatible				"Desactiva el modo compatibilidad con vi y activa nuevas features
 set scrolloff=1				"Agrega un espaciado arriba o abajo del cursor, para no perderlo de vista
@@ -242,4 +237,3 @@ filetype plugin indent on	"Habilita el autoreconocimiento de extension
 syntax enable					"Habilita el linter
 set textwidth=80
 set noshowmode					"elimina el texto del modo actual que se encuentra debajo del ligthline
-"======
