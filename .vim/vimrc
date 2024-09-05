@@ -15,6 +15,9 @@ endif
 
 call plug#begin()
 
+Plug 'jiangmiao/auto-pairs'
+Plug 'yggdroot/indentline'
+Plug 'tpope/vim-unimpaired'
 Plug 'preservim/nerdtree'
 Plug 'itchyny/lightline.vim'
 Plug 'morhetz/gruvbox'
@@ -42,6 +45,11 @@ let g:lightline#bufferline#show_number=1
 let g:lightline#bufferline#enable_devicons=1
 " mostrar siempre la barra de buffers, incluso con un solo buffer
 let g:lightline#bufferline#show_single_buffer=1
+
+" one char wide solid vertical bar
+let g:line_no_indicator_chars = [
+  \  ' ', '▁', '▂', '▃', '▄', '▅', '▆', '▇', '█'
+  \  ]
 
 let g:lightline = {
     \ 'colorscheme' : 'gruvbox',
@@ -117,11 +125,8 @@ autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update()
 "=============Custom Keybinds==============
 map <silent>  <F6> :NERDTreeToggle<CR>
 nmap <C-r> :NERDTreeRefreshRoot<CR>
-map <C-t> :belowright terminal<CR>
 nnoremap   <silent>        <F5>    :FloatermToggle<CR>
 tnoremap   <silent>        <F5>    <C-\><C-n>:FloatermToggle<CR>
-map <silent> <C-n> :bnext<CR>
-map <silent> <C-b> :bprevious<CR>
 
 "==============Startify====================
 "let g:startify_change_to_dir = 1 " when opening a file or bookmark, change to its directory
@@ -170,32 +175,7 @@ endif
       let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
       set termguicolors
     endif
-"=========================================
-"|        configs                       |
-"=========================================
-set undodir=~/.vim/undodir	"define el path para permitir crear persistencia de `uu` aun si cerramos la sesion
-set undofile					"esto habilita lo de arriba
-set nobackup					"deshabilita los backups
-set autoindent
-set number						"muesta los numeros en linea
-set noswapfile					"deshabilita los swamp files de vim
-set encoding=utf-8			"definir el tipo de encoding             
-set autoread					"pemite autoleer los cambios en vim si fueron hechos de manera externa
-set laststatus=2				
-set noshowmode					"elimina el texto del modo actual que se encuentra debajo del ligthline
-set fileformat=unix			"define que el formato de archivo sera de unix
-set tabstop=3					"numero de espacios al hacer <tab>			
-set relativenumber			"muestra el numero relativo en la barra de la linea actual
-"set noesckeys					"Deshabilita la latencia al momento de presionar esc
-set hidden						"permite mantener un buffer abierto en segundo plano, a pesar de cambiar a otro
-set showmatch					"resalta los [], {}, () que son pares
-set hlsearch					"resalta los resultados de la busqueda hecha con :/busqueda
-set smartcase					"permite que solo sea case sensitive si en la busqueda especificamos una mayuscula :/busqueda 	
-set title						"muestra el path y el nombre del buffer actual en la barra superios de la consola
-set showtabline=2				"habilita esta opcion para mostrar el ligthline y ligthline-buffer
-set cursorcolumn				"habilita el resaltado de columna(similar al cursorline)
-set cursorline					"muestra una linea en el cursor
-set fillchars+=vert:│  		" Define el simbolo de bordeado de los separadores verticales
+
 
 "move to file directory when vim is launched
 autocmd bufenter * if &buftype == '' | silent! lcd %:p:h | endif
@@ -224,4 +204,42 @@ let g:floaterm_autoclose = 2
 let g:floaterm_title = ' -> $1..$2'
 "let g:floaterm_giteditor = 0
 
+highlight ColorColumn ctermbg=235 guibg=#2c2d27
+let &colorcolumn=join(range(81,999),",")
 
+"=========================================
+"|        configs                       |
+"=========================================
+set undodir=~/.vim/undodir	"define el path para permitir crear persistencia de `uu` aun si cerramos la sesion
+set undofile					"esto habilita lo de arriba
+set nobackup					"deshabilita los backups
+set autoindent					"Habilita el autoidentado
+set number						"muesta los numeros en linea
+set noswapfile					"deshabilita los swamp files de vim
+set encoding=utf-8			"definir el tipo de encoding             
+set autoread					"pemite autoleer los cambios en vim si fueron hechos de manera externa
+set laststatus=2				
+set fileformat=unix			"define que el formato de archivo sera de unix
+set tabstop=3					"numero de espacios al hacer <tab>			
+set relativenumber			"muestra el numero relativo en la barra de la linea actual
+set hidden						"permite mantener un buffer abierto en segundo plano, a pesar de cambiar a otro
+set showmatch					"resalta los [], {}, () que son pares
+set hlsearch					"resalta los resultados de la busqueda hecha con :/busqueda
+set smartcase					"permite que solo sea case sensitive si en la busqueda especificamos una mayuscula :/busqueda 	
+set title						"muestra el path y el nombre del buffer actual en la barra superios de la consola
+set showtabline=2				"habilita esta opcion para mostrar el ligthline y ligthline-buffer
+"set cursorcolumn				"habilita el resaltado de columna(similar al cursorline)
+"set cursorline					"muestra una linea en el cursor
+set fillchars+=vert:│  		" Define el simbolo de bordeado de los separadores verticales
+set foldmethod=syntax      " Folding de codigo
+set foldenable					" Habilita el folding
+set wildmenu					"Habilita autocompletado de comandos al presionar TAB
+set nocompatible				"Desactiva el modo compatibilidad con vi y activa nuevas features
+set scrolloff=1				"Agrega un espaciado arriba o abajo del cursor, para no perderlo de vista
+set display+=lastline		"Asegura que la ultima linea sea visible
+set nolangremap				"Vim mantiene los shortcuts a pesar de tener diferente idioma de keyboard
+filetype plugin indent on	"Habilita el autoreconocimiento de extension
+syntax enable					"Habilita el linter
+set textwidth=80
+set noshowmode					"elimina el texto del modo actual que se encuentra debajo del ligthline
+"======
