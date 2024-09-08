@@ -194,11 +194,6 @@ let g:floaterm_autoclose = 2
 let g:floaterm_title = ' -> $1..$2'
 "let g:floaterm_giteditor = 0
 
-"===============================================================================
-"| Coloreado Luego de los 80 caracteres					       |
-"===============================================================================
-let &colorcolumn=join(range(81,999),",")
-
 "=========================================
 "|        configs                       |
 "=========================================
@@ -235,5 +230,4 @@ set display+=lastline		"Asegura que la ultima linea sea visible
 set nolangremap				"Vim mantiene los shortcuts a pesar de tener diferente idioma de keyboard
 filetype plugin indent on	"Habilita el autoreconocimiento de extension
 syntax enable					"Habilita el linter
-set textwidth=80
 set noshowmode					"elimina el texto del modo actual que se encuentra debajo del ligthline
