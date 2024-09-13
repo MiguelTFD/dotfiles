@@ -200,7 +200,7 @@ let g:floaterm_title = ' -> $1..$2'
 "=============================================================================
 
 highlight ColorColumn ctermbg=244 guibg=#928374
-let &colorcolumn=join(range(81,999),",")
+let &colorcolumn=join(range(91,999),",")
 
 
 "=========================================
@@ -216,8 +216,8 @@ set encoding=utf-8			"definir el tipo de encoding
 set autoread					"pemite autoleer los cambios en vim si fueron hechos de manera externa
 set laststatus=2				
 set fileformat=unix			"define que el formato de archivo sera de unix
-set tabstop=4        		" Número de espacios que representa una tabulación
-set shiftwidth=4     		" Número de espacios para cada nivel de sangría
+set tabstop=3        		" Número de espacios que representa una tabulación
+set shiftwidth=3     		" Número de espacios para cada nivel de sangría
 set expandtab        		" Usa espacios en lugar de caracteres de tabulación
 set smarttab         		" Ajusta la tabulación de manera inteligente
 set relativenumber			"muestra el numero relativo en la barra de la linea actual
