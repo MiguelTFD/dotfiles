@@ -15,6 +15,7 @@ endif
 
 call plug#begin()
 
+Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-sensible'
 Plug 'jiangmiao/auto-pairs'
 Plug 'yggdroot/indentline'
@@ -194,6 +195,10 @@ let g:floaterm_autoclose = 2
 let g:floaterm_title = ' -> $1..$2'
 "let g:floaterm_giteditor = 0
 
+
+"===============================IdentLine
+
+let g:indentLine_char_list = ['│']
 
 "=============================================================================
 "               Color Column                                                   
