@@ -128,7 +128,6 @@ tnoremap   <silent>        <F5>    <C-\><C-n>:FloatermToggle<CR>
 
 "==============Startify====================
 "let g:startify_change_to_dir = 1 " when opening a file or bookmark, change to its directory
-
 let g:webdevicons_enable_startify = 1					"Support dev icons in startify
 let g:startify_padding_left = 3							" Padding left
 let g:startify_session_delete_buffers = 1				" Clean buffers
@@ -205,7 +204,7 @@ let g:indentLine_char_list = ['│']
 "=============================================================================
 
 highlight ColorColumn ctermbg=244 guibg=#928374
-let &colorcolumn=join(range(91,999),",")
+let &colorcolumn="81"
 
 
 "=========================================
@@ -221,8 +220,8 @@ set encoding=utf-8			"definir el tipo de encoding
 set autoread					"pemite autoleer los cambios en vim si fueron hechos de manera externa
 set laststatus=2				
 set fileformat=unix			"define que el formato de archivo sera de unix
-set tabstop=3        		" Número de espacios que representa una tabulación
-set shiftwidth=3     		" Número de espacios para cada nivel de sangría
+set tabstop=4        		" Número de espacios que representa una tabulación
+set shiftwidth=4     		" Número de espacios para cada nivel de sangría
 set expandtab        		" Usa espacios en lugar de caracteres de tabulación
 set smarttab         		" Ajusta la tabulación de manera inteligente
 set relativenumber			"muestra el numero relativo en la barra de la linea actual
