@@ -126,6 +126,13 @@ nmap <C-r> :NERDTreeRefreshRoot<CR>
 nnoremap   <silent>        <F5>    :FloatermToggle<CR>
 tnoremap   <silent>        <F5>    <C-\><C-n>:FloatermToggle<CR>
 
+" Mapeo en modo normal
+nnoremap <leader>y :w !xclip -selection clipboard<CR><CR>
+
+" Mapeo en modo visual
+vnoremap <leader>y :w !xclip -selection clipboard<CR><CR>
+
+
 "==============Startify====================
 "let g:startify_change_to_dir = 1 " when opening a file or bookmark, change to its directory
 let g:webdevicons_enable_startify = 1					"Support dev icons in startify
