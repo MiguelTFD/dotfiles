@@ -198,7 +198,7 @@ augroup end
 " floaterm
 " =============================================================================
 let g:floaterm_autoclose = 2
-let g:floaterm_title = ' -> $1..$2'
+let g:floaterm_title = ' -> $1..$2'
 "let g:floaterm_giteditor = 0
 
 
