@@ -22,7 +22,7 @@ Plug 'yggdroot/indentline'
 Plug 'tpope/vim-unimpaired'
 Plug 'preservim/nerdtree'
 Plug 'itchyny/lightline.vim'
-Plug 'morhetz/gruvbox'
+Plug 'nordtheme/vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 Plug 'prabirshrestha/asyncomplete.vim'
@@ -54,7 +54,7 @@ let g:line_no_indicator_chars = [
   \  ]
 
 let g:lightline = {
-    \ 'colorscheme' : 'gruvbox',
+    \ 'colorscheme' : 'nord',
     \ 'active' : {
     \   'left' : [ [ 'mode', 'paste'],
     \ 		       [ 'gitbranch','readonly', 'filename']],
@@ -161,16 +161,16 @@ function! Startifyentryformat()
 endfunction
 
 "=========================
-colorscheme gruvbox
+colorscheme nord
 " Obtener el valor de la variable de entorno
 let theme_mode = getenv('THEME_MODE')
 
 " Usar la variable en la configuración
 if theme_mode ==# 'dark'
-	highlight ColorColumn ctermbg=235 guibg=#3c3836
+	highlight ColorColumn ctermbg=235 guibg=#3b4252
 	set background=dark
 else
-	highlight ColorColumn ctermbg=235 guibg=#ebdbb2
+	highlight ColorColumn ctermbg=235 guibg=#e5e9f0
 	set background=light
 endif
 
