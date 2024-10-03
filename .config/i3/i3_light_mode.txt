@@ -9,4 +9,4 @@ client.urgent           #cc241d #CC241D #EBDBB2 #CC241D   #CC241D
 client.placeholder      #000000 #0c0c0c #EBDBB2 #000000   #0c0c0c
 client.background       #ffffff
 
-exec_always --no-startup-id feh --bg-fill ~/.local/share/wallpapers/Gruvbox/light/wallpaper_light.png
+exec_always --no-startup-id feh --bg-fill ~/.local/share/wallpapers/nord/light/wallpaper_light.png
