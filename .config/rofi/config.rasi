@@ -1,13 +1,12 @@
 @theme "/dev/null"
 
 * {
-	 
-    bg0:     #282828;
-    bg1:     #282828;
-    fg0:     #D3C6AA;
+    bg0:     #2e3440;
+    bg1:     #2e3440;
+    fg0:     #d8dee9;
 
     accent-color:     @fg0;
-    urgent-color:     #DBBC7F;
+    urgent-color:     #bf616a;
 
     background-color:   transparent;
     text-color:         @fg0;
