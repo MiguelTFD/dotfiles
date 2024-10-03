@@ -19,7 +19,7 @@ colors:
     matches:
       foreground: CellBackground
       background: "#88c0d0"
-    bar:
+    footer_bar:
       background: "#e5e9f0"
       foreground: "#2e3440"
   normal:
