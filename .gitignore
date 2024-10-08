@@ -26,6 +26,7 @@
 !/.config/ranger
 !/.config/miscellaneous
 !/.config/README.md
+!/.config/starship.toml
 
 !/.themes
 !/.fonts
