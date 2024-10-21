@@ -129,6 +129,7 @@ alias ls='ls -hN --color=auto --group-directories-first'
 alias start-apache2='sudo systemctl start apache2'
 alias stop-apache2='sudo systemctl stop apache2'
 alias restart-apache2='sudo systemctl restart apache2'
+alias screenfilm='ffmpeg -video_size 1920x1080 -framerate 30 -f x11grab -i :0.0 ~/Videos/screenrecordings/$(date +"%Y-%m-%d_%H-%M-%S").mp4'
 
 #-------------------------
 set -o vi

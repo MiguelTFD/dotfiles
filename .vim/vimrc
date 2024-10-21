@@ -122,7 +122,7 @@ autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update()
 
 "=============Custom Keybinds==============
 map <silent>  <F6> :NERDTreeToggle<CR>
-nmap <C-r> :NERDTreeRefreshRoot<CR>
+"nmap <C-r> :NERDTreeRefreshRoot<CR>
 nnoremap   <silent>        <F5>    :FloatermToggle<CR>
 tnoremap   <silent>        <F5>    <C-\><C-n>:FloatermToggle<CR>
 
