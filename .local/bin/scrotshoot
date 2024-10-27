@@ -4,6 +4,6 @@ chosen=$(printf "󰍹  Window\n󰆞  Select" | rofi -dmenu -i )
 
 case "$chosen" in 
 	"󰍹  Window") scrot  ~/Pictures/Screenshots/%Y-%m-%d-%T-screenshot.png ;;
-	"󰆞  Select") scrot -s ~/Pictures/Screenshots/%Y-%m-%d-%T-screenshot.png ;;
+	"󰆞  Select") scrot --select --freeze ~/Pictures/Screenshots/%Y-%m-%d-%T-screenshot.png ;;
 	*) exit 1 ;;
 esac
