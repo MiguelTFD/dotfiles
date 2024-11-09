@@ -198,13 +198,14 @@ augroup end
 " floaterm
 " =============================================================================
 let g:floaterm_autoclose = 2
-let g:floaterm_title = ' -> $1..$2'
+let g:floaterm_title = ' -> $1..$2'
 "let g:floaterm_giteditor = 0
 
 
 "===============================IdentLine
 
 let g:indentLine_char_list = ['│']
+let g:indentLine_color_gui = '#4c566a'
 
 "=============================================================================
 "               Color Column                                                   
