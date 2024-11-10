@@ -35,6 +35,8 @@ Plug 'mengelbrecht/lightline-bufferline'
 Plug 'drzel/vim-line-no-indicator'
 Plug 'hrsh7th/vim-vsnip'							
 Plug 'hrsh7th/vim-vsnip-integ'						
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
 call plug#end()
 
@@ -125,6 +127,7 @@ map <silent>  <F6> :NERDTreeToggle<CR>
 "nmap <C-r> :NERDTreeRefreshRoot<CR>
 nnoremap   <silent>        <F5>    :FloatermToggle<CR>
 tnoremap   <silent>        <F5>    <C-\><C-n>:FloatermToggle<CR>
+nnoremap <silent> <C-p> :Files<CR>
 
 " Mapeo en modo normal
 nnoremap <leader>y :w !xclip -selection clipboard<CR><CR>
