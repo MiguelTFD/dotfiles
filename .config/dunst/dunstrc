@@ -26,20 +26,20 @@
     # https://github.com/knopwob/dunst/issues/26#issuecomment-36159395
     #icon_position = left
     frame_width = 1
-    frame_color = "#282828"
+    frame_color = "#eceff4"
     
 
 [urgency_low]
-    background = "#ebdbb2"
-    foreground = "#282828"
+    background = "#4c566a"
+    foreground = "#eceff4"
     timeout = 5
 
 [urgency_normal]
-    background = "#ebdbb2"
-    foreground = "#282828"
+    background = "#4c566a"
+    foreground = "#eceff4"
     timeout = 10
 
 [urgency_critical]
-    background = "#ebdbb2"
-    foreground = "#282828"
+    background = "#4c566a"
+    foreground = "#eceff4"
     timeout = 20
