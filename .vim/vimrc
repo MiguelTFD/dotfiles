@@ -212,6 +212,7 @@ let g:floaterm_title = ' -> $1..$2'
 
 let g:indentLine_char_list = ['│']
 let g:indentLine_color_gui = '#4c566a'
+let g:lsp_highlight_references_enabled = 1
 
 "=============================================================================
 "               Color Column                                                   
