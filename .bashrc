@@ -114,6 +114,11 @@ if ! shopt -oq posix; then
 fi
 
 
+if [ -f ~/.hiddenv ]; then
+   source ~/.hiddenv
+fi
+
+
 #=========Aliases=========
 alias ct='clear'
 alias jc11='source jc 11'
