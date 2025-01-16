@@ -27,6 +27,7 @@
 !/.config/miscellaneous
 !/.config/README.md
 !/.config/starship.toml
+!/.config/picom
 
 !/.themes
 !/.fonts
