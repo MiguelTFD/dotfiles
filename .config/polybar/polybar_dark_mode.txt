@@ -1,5 +1,6 @@
 [colors]
-background = #282828
+background = #3c3836
+background-1 = #282828
 foreground = #ebdbb2
 red        = #fb4934
 green      = #b8bb26
