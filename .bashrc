@@ -142,10 +142,8 @@ set -o vi
 #-------Environment Var---------------
 export PATH="$HOME/.local/bin:$PATH"
 export THEME_MODE=$(cat ~/.config/theme_mode)
-
-
-
-
+export JAVA_HOME=/home/migueltfd/.local/sdk/java/jdk-21.0.6
+export PATH=$JAVA_HOME/bin:$PATH
 
 #-------------------------------------
 source /usr/share/bash-completion/bash_completion
