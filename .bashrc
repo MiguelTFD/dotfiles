@@ -129,7 +129,9 @@ alias x='exit'
 alias ss='screenshot select'
 alias sw='screenshot window'
 alias mntsda='sudo mount -o ntfs /dev/sda3 /mnt/sda'
+alias mntusb='sudo mount -t vfat /dev/sdb1 /mnt/usb'
 alias ls='ls -hN --color=auto --group-directories-first'
+
 
 alias start-apache2='sudo systemctl start apache2'
 alias stop-apache2='sudo systemctl stop apache2'
