@@ -224,9 +224,9 @@ let &colorcolumn="81"
 "                               Lsp Settings                                                  
 "=============================================================================
 
-"let g:lsp_diagnostics_enabled = 0         " disable diagnostics support
-"let g:lsp_document_highlight_enabled = 0  ""disble highlight
-"let g:asyncomplete_auto_popup = 0    " disable autocomplete popup
+let g:lsp_diagnostics_enabled = 0         " disable diagnostics support
+let g:lsp_document_highlight_enabled = 0  ""disble highlight
+let g:asyncomplete_auto_popup = 0    " disable autocomplete popup
 
 "===============================================================================
 "                               FZF PopUp 
