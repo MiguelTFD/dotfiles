@@ -2,8 +2,18 @@
 
 chosen=$(printf "󰍹  Window\n󰆞  Select" | rofi -dmenu -i )
 
-case "$chosen" in 
-	"󰍹  Window") scrot  ~/Pictures/Screenshots/%Y-%m-%d-%T-screenshot.png ;;
-	"󰆞  Select") scrot --select --freeze ~/Pictures/Screenshots/%Y-%m-%d-%T-screenshot.png ;;
-	*) exit 1 ;;
+targetDir=~/Pictures/Screenshots/%Y-%m-%d-%T-screenshot.png
+
+case "$chosen" in
+  "󰍹  Window") 
+    sleep 1.5
+    scrot $targetDir
+    ;;
+  "󰆞  Select") 
+    sleep 1.5
+    scrot --select --freeze $targetDir
+    ;;
+  *) 
+    exit 1 
+    ;;
 esac
