@@ -3,13 +3,16 @@
 format = """
 [](color_orange)\
 $os\
-$username\
 [](bg:color_yellow fg:color_orange)\
 $directory\
 [](fg:color_yellow bg:color_aqua)\
 $git_branch\
 $git_status\
-[](fg:color_aqua bg:color_blue)\
+[](fg:color_aqua bg:color_purple)\
+${custom.git_email}\
+[](fg:color_purple bg:color_green)\
+${custom.git_name}\
+[](fg:color_green bg:color_blue)\
 $c\
 $rust\
 $golang\
@@ -23,7 +26,6 @@ $python\
 $docker_context\
 $conda\
 [](fg:color_bg3 bg:color_bg1)\
-$time\
 [ ](fg:color_bg1)\
 $line_break$character"""
 
@@ -63,7 +65,7 @@ Arch = "󰣇"
 Artix = "󰣇"
 EndeavourOS = ""
 CentOS = ""
-Debian = "󰣚"
+Debian = "󰣚 "
 Redhat = "󱄛"
 RedHatEnterprise = "󱄛"
 
@@ -94,6 +96,19 @@ format = '[[ $symbol $branch ](fg:color_fg0 bg:color_aqua)]($style)'
 [git_status]
 style = "bg:color_aqua"
 format = '[[($all_status$ahead_behind )](fg:color_fg0 bg:color_aqua)]($style)'
+
+[custom.git_email]
+command = "git config user.email || echo undefined"
+when = "git rev-parse --git-dir 2> /dev/null"
+format = "[ 󰇮 $output ]($style)"
+style = "bg:color_purple fg:color_fg0"
+#style = "bright-yellow bold"
+
+[custom.git_name]
+command = "git config user.name || echo undefined"
+when = "git rev-parse --git-dir 2> /dev/null"
+format = "[  $output ]($style)"
+style = "bg:color_green fg:color_fg0"
 
 [nodejs]
 symbol = ""
