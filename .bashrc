@@ -113,11 +113,9 @@ if ! shopt -oq posix; then
   fi
 fi
 
-
 if [ -f ~/.hiddenv ]; then
    source ~/.hiddenv
 fi
-
 
 #=========Aliases=========
 alias ct='clear'
@@ -138,16 +136,14 @@ alias stop-apache2='sudo systemctl stop apache2'
 alias restart-apache2='sudo systemctl restart apache2'
 alias screenfilm='ffmpeg -video_size 1920x1080 -framerate 30 -f x11grab -i :0.0 ~/Videos/screenrecordings/$(date +"%Y-%m-%d_%H-%M-%S").mp4'
 
-#-------------------------
 set -o vi
 
 #-------Environment Var---------------
 export PATH="$HOME/.local/bin:$PATH"
 export THEME_MODE=$(cat ~/.config/theme_mode)
-export JAVA_HOME=/home/migueltfd/.local/sdk/java/jdk-21.0.6
-export PATH=$JAVA_HOME/bin:$PATH
+export JAVA_HOME="$HOME/.local/share/sdk/jdk/jdk-17.0.15+6"
+export PATH="$HOME/.local/bin:$JAVA_HOME/bin:$PATH"
 
-#-------------------------------------
 source /usr/share/bash-completion/bash_completion
 eval "$(starship init bash)"
 
