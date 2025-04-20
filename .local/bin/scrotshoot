@@ -2,7 +2,7 @@
 
 chosen=$(printf "󰍹  Window\n󰆞  Select" | rofi -dmenu -i )
 
-targetDir=~/Pictures/Screenshots/%Y-%m-%d-%T-screenshot.png
+targetDir=~/Pictures/screenshots/%Y-%m-%d-%T-screenshot.png
 
 case "$chosen" in
   "󰍹  Window") 
