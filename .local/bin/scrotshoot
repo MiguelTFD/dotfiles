@@ -6,12 +6,10 @@ targetDir=~/Pictures/Screenshots/%Y-%m-%d-%T-screenshot.png
 
 case "$chosen" in
   "󰍹  Window") 
-    sleep 1.5
     scrot "$targetDir"
     notify-send -e "  Screenshot saved"
     ;;
   "󰆞  Select") 
-    sleep 1.5
     scrot --select --freeze "$targetDir"
     notify-send -e "  Screenshot saved"
     ;;
