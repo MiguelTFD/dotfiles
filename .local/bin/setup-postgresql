@@ -1,0 +1,18 @@
+#!/bin/sh
+
+sudo apt update
+sudo apt upgrade -y
+
+echo "Instalando PostgreSQL y herramientas adicionales..."
+sudo apt install -y postgresql postgresql-contrib
+
+echo "Iniciando el servicio de PostgreSQL"
+sudo systemctl start postgresql
+
+echo "Haciendo que PostgreSQL inicie automáticamente con el sistema..."
+sudo systemctl enable postgresql
+
+
+echo "Iniciando sesion, Ingresa psql, luego \password postgres, finalmente agrega un password para tu usuario postgre"
+sudo -i -u postgres
+
