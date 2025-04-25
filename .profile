@@ -29,9 +29,3 @@ fi
 export PATH="$HOME/.local/bin:$PATH"
 export THEME_MODE=$(cat ~/.config/theme_mode)
 export EDITOR=vim
-
-
-
-# Added by Toolbox App
-export PATH="$PATH:/home/migueltfd/.local/share/JetBrains/Toolbox/scripts"
-

@@ -143,12 +143,13 @@ set -o vi
 #-------Environment Var---------------
 export PATH="$HOME/.local/bin:$PATH"
 export THEME_MODE=$(cat ~/.config/theme_mode)
-export JAVA_HOME="$HOME/.local/share/sdks/jdks/jdk-17"
-export PATH="$HOME/.local/bin:$JAVA_HOME/bin:$PATH"
 
-source /usr/share/bash-completion/bash_completion
 eval "$(starship init bash)"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Sources
+source /usr/share/bash-completion/bash_completion
+source "$HOME/.sdkman/bin/sdkman-init.sh"
