@@ -144,10 +144,9 @@ set -o vi
 export PATH="$HOME/.local/bin:$PATH"
 export THEME_MODE=$(cat ~/.config/theme_mode)
 eval "$(starship init bash)"
-
-# Sources
 source /usr/share/bash-completion/bash_completion
-source "$HOME/.sdkman/bin/sdkman-init.sh"
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
