@@ -30,7 +30,6 @@
 /.config/ranger/plugins/*
 /.config/ranger/plugins/.gitkeep
 !/.config/miscellaneous
-!/.config/README.md
 !/.config/starship.toml
 !/.config/picom
 
