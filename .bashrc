@@ -38,6 +38,8 @@ if ! shopt -oq posix; then
 fi
 
 # Alias base
+bind 'set show-all-if-ambiguous on'
+bind 'TAB:menu-complete'
 alias ct='clear'
 alias x='exit'
 alias ss='screenshot select'
