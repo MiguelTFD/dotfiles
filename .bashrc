@@ -17,7 +17,7 @@ fi
 
 # Environment
 export PATH="$HOME/.local/bin:$PATH"
-[ -f ~/.config/theme_mode ] && export THEME_MODE=$(<~/.config/theme_mode)
+export THEME_MODE=$(cat ~/.config/theme_mode)
 
 # Starship prompt
 eval "$(starship init bash)"
@@ -38,8 +38,6 @@ if ! shopt -oq posix; then
 fi
 
 # Alias base
-bind 'set show-all-if-ambiguous on'
-bind 'TAB:menu-complete'
 alias ct='clear'
 alias x='exit'
 alias ss='screenshot select'
