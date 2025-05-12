@@ -16,6 +16,7 @@
 !/.config/neofetch
 !/.config/polybar
 !/.config/rofi
+!/.config/dunst_toggle_state
 !/.config/theme_mode
 !/.config/alacritty
 !/.config/README.md

@@ -27,7 +27,7 @@
     #icon_position = left
     frame_width = 1
     frame_color = "#282828"
-    
+    history_length = 20    
 
 [urgency_low]
     background = "#ebdbb2"
