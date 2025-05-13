@@ -1,0 +1,26 @@
+#!/bin/bash
+hour=$(date +%H)
+
+if [ "$hour" -ge 6 ] && [ "$hour" -lt 7 ]; then
+    echo ""
+elif [ "$hour" -ge 7 ] && [ "$hour" -lt 11 ]; then
+    echo ""
+elif [ "$hour" -ge 11 ] && [ "$hour" -lt 13 ]; then
+    echo ""
+elif [ "$hour" -ge 13 ] && [ "$hour" -lt 17 ]; then
+    echo ""
+elif [ "$hour" -ge 17 ] && [ "$hour" -lt 18 ]; then
+    echo ""
+elif [ "$hour" -ge 18 ] && [ "$hour" -lt 19 ]; then
+    echo ""
+elif [ "$hour" -ge 19 ] && [ "$hour" -lt 23 ]; then
+    echo ""
+elif [ "$hour" -ge 23 ] && [ "$hour" -lt 1 ]; then
+    echo "󰽢"
+elif ["$hour" -ge 1 ] && ["$hour" -lt 5 ]; then
+    echo ""
+elif ["$hour" -ge 5] &&  ["$hour" -lt 6 ]; then
+    echo ""
+else
+    echo ""
+fi
