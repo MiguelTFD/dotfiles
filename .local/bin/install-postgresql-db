@@ -12,7 +12,5 @@ sudo systemctl start postgresql
 echo "Haciendo que PostgreSQL inicie automáticamente con el sistema..."
 sudo systemctl enable postgresql
 
-
 echo "Iniciando sesion, Ingresa psql, luego \password postgres, finalmente agrega un password para tu usuario postgre"
 sudo -i -u postgres
-

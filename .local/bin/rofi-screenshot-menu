@@ -1,9 +1,8 @@
 #!/bin/sh
 
-chosen=$(printf "󰍹  Window\n󰆞  Select" | rofi -dmenu -i )
-
 targetDir=~/Pictures/screenshots/%Y-%m-%d-%T-screenshot.png
 
+chosen=$(printf "󰍹  Window\n󰆞  Select" | rofi -dmenu -i )
 case "$chosen" in
   "󰍹  Window") 
     scrot "$targetDir"

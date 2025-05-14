@@ -1,0 +1,20 @@
+#!/bin/bash
+
+current_dir=$(pwd)
+dir_name=$(basename "$current_dir")
+destination_dir="/var/www/html/$dir_name"
+
+read -p "Vas a montar un proyecto PHP en la carpeta $destination_dir. ¿Estás seguro que te encuentras en el Directorio de tu Proyecto? (Y/n): " response
+response=${response,,}
+
+if [[ "$response" == "y" || "$response" == "yes" || -z "$response" ]]; then
+    if [ ! -d "$destination_dir" ]; then
+            sudo mkdir -p "$destination_dir"
+            echo "La carpeta $destination_dir no existía y ha sido creada."
+    fi
+    sudo mount --bind "$current_dir" "$destination_dir"
+    echo "El directorio se ha montado exitosamente en $destination_dir."
+else
+    echo "Operación Abortada."
+    exit 1
+fi
