@@ -1,16 +1,13 @@
 #!/bin/bash
 
-# Obtener el directorio home del usuario actual
 if [ -n "$SUDO_USER" ]; then
     home_dir=$(eval echo ~${SUDO_USER})
 else
     home_dir="$HOME"
 fi
 
-# Leer el modo actual del archivo theme_mode
 MODE=$(cat ~/.config/theme_mode)
 
-# Alternar entre modo oscuro y claro
 if [ "$MODE" == "dark" ]; then
     echo "light" > ~/.config/theme_mode
 else
