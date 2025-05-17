@@ -1,59 +1,71 @@
-# ~/.bashrc
+# ~/.bashrc: executed by bash(1) for non-login shells.
+
+# ── exit on non-interactively session ───────────────────────────────────────── 
 case $- in
-  *i*) ;;
-     *) return;;
+    *i*) ;;
+      *) return;;
 esac
 
-# Historial y opciones
+
+# ── history Settings ──────────────────────────────────────────────────────────
 HISTCONTROL=ignoreboth
-shopt -s histappend checkwinsize
+
+shopt -s histappend
+
 HISTSIZE=1000
 HISTFILESIZE=2000
 
-# chroot detection
-if [ -r /etc/debian_chroot ]; then
-  debian_chroot=$(< /etc/debian_chroot)
+shopt -s checkwinsize
+
+
+# ── general settings ───────────────────────────────────────────────────────────────
+set -o vi
+
+
+# ── environment ───────────────────────────────────────────────────────────────
+if [ -f ~/.openv ]; then
+    . ~/.openv
 fi
 
-# Environment
-export PATH="$HOME/.local/bin:$PATH"
-export THEME_MODE=$(cat ~/.config/theme_mode)
+if [ -f ~/.hiddenv ]; then
+    . ~/.hiddenv
+fi
 
-# Starship prompt
-eval "$(starship init bash)"
 
-# SDKMAN
+# ── tool settings ─────────────────────────────────────────────────────────────
 export SDKMAN_DIR="$HOME/.sdkman"
 [ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
 
-# NVM
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"
 
-# Bash completion
-if ! shopt -oq posix; then
-  [ -f /usr/share/bash-completion/bash_completion ] && source /usr/share/bash-completion/bash_completion \
-    || [ -f /etc/bash_completion ] && source /etc/bash_completion
+
+# ── path settings  ────────────────────────────────────────────────────────────
+if [ -d "$HOME/bin" ] ; then
+    PATH="$HOME/bin:$PATH"
 fi
 
-# Alias base
-alias ct='clear'
-alias x='exit'
-alias ss='screenshot select'
-alias sw='screenshot window'
-alias mntusb='sudo mount -t vfat /dev/sdb1 /mnt/usb'
-alias untargz='tar -xvzf'
-alias untarxz='tar -xvJf'
-alias start-apache2='sudo systemctl start apache2'
-alias stop-apache2='sudo systemctl stop apache2'
-alias restart-apache2='sudo systemctl restart apache2'
-alias screenfilm='ffmpeg -video_size 1920x1080 -framerate 30 -f x11grab -i :0.0 ~/Videos/screenrecordings/$(date +"%Y-%m-%d_%H-%M-%S").mp4'
-alias ls='ls -hN --color=auto --group-directories-first'
+if [ -d "$HOME/.local/bin" ] ; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
 
-# User overrides
-[ -f ~/.bash_aliases ] && source ~/.bash_aliases
-[ -f ~/.hiddenv ]        && source ~/.hiddenv
 
-# Vi mode
-set -o vi
+# ── alias definitions ─────────────────────────────────────────────────────────
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+
+# ── bash completion ───────────────────────────────────────────────────────────
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
+
+
+# ── starship init ─────────────────────────────────────────────────────────────
+eval "$(starship init bash)"
