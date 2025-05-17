@@ -5,6 +5,8 @@
 
 #Basic files
 !/.bashrc
+!/.bash_aliases
+!/.openv
 !/.gitignore
 !/.gitconfig
 !/.profile

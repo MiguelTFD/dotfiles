@@ -1,22 +1,21 @@
 #!/bin/bash
 
 if [ -n "$SUDO_USER" ]; then
-    home_dir=$(eval echo ~${SUDO_USER})
+  home_dir=$(eval echo ~${SUDO_USER})
 else
-    home_dir="$HOME"
+  home_dir="$HOME"
 fi
 
-MODE=$(cat ~/.config/theme_mode)
-
-if [ "$MODE" == "dark" ]; then
-    echo "light" > ~/.config/theme_mode
+theme_file="$home_dir/.config/theme_mode"
+MODE=$(cat "$theme_file")
+if [ "$MODE" = "dark" ]; then
+  NEW="light"
 else
-    echo "dark" > ~/.config/theme_mode
+  NEW="dark"
 fi
+echo "$NEW" > "$theme_file"
 
-source ~/.profile
-
-if [ "$THEME_MODE" == "dark" ]; then
+if [ "$NEW" == "dark" ]; then
     sudo cp -f "$home_dir/.config/alacritty/alacritty_dark_mode.txt" "$home_dir/.config/alacritty/colors.yml"
     sudo cp -f "$home_dir/.config/gtk-3.0/gtk_3.0_dark_mode.txt" "$home_dir/.config/gtk-3.0/settings.ini"
     sudo cp -f "$home_dir/.config/i3/i3_dark_mode.txt" "$home_dir/.config/i3/colors.conf"
