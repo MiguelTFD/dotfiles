@@ -43,7 +43,6 @@
 !/.local
 /.local/*
 !/.local/bin
-!/.local/README.md
 !/.local/share
 /.local/share/*
 !/.local/share/wallpapers
@@ -54,5 +53,3 @@
 /.vim/undodir/*
 !/.vim/undodir/.gitkeep
 !/.vim/vimrc
-!/.vim/README.md
-
