@@ -224,11 +224,20 @@ let &colorcolumn="81"
 "                               Lsp Settings                                                  
 "=============================================================================
 
-let g:lsp_diagnostics_enabled = 0         
-let g:lsp_document_highlight_enabled = 0 
-let g:asyncomplete_auto_popup = 0    
+function! ToggleLspSettings()
+  let g:lsp_diagnostics_enabled = g:lsp_diagnostics_enabled ? 0 : 1
+  let g:lsp_document_highlight_enabled = g:lsp_document_highlight_enabled ? 0 : 1
+  let g:asyncomplete_auto_popup = g:asyncomplete_auto_popup ? 0 : 1
 
-"  let g:lsp_diagnostics_enabled = 1
+  echo "LSP settings toggled:"
+  echo "  Diagnostics: " . g:lsp_diagnostics_enabled
+  echo "  Highlight:   " . g:lsp_document_highlight_enabled
+  echo "  Autopopup:   " . g:asyncomplete_auto_popup
+endfunction
+
+command! LspSwitch call ToggleLspSettings()
+
+" let g:lsp_diagnostics_enabled = 1
 "	let g:lsp_diagnostics_echo_cursor = 1
 "	let g:lsp_diagnostics_float_cursor = 1
 "	
