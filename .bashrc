@@ -7,7 +7,7 @@ case $- in
 esac
 
 
-# ── history Settings ──────────────────────────────────────────────────────────
+# ── history settings ──────────────────────────────────────────────────────────
 HISTCONTROL=ignoreboth
 
 shopt -s histappend
@@ -18,7 +18,7 @@ HISTFILESIZE=2000
 shopt -s checkwinsize
 
 
-# ── general settings ───────────────────────────────────────────────────────────────
+# ── general settings ──────────────────────────────────────────────────────────
 set -o vi
 
 

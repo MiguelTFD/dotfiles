@@ -12,23 +12,26 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
 " ── plugin's list ─────────────────────────────────────────────────────────────
 call plug#begin()
 
-Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
 Plug 'jiangmiao/auto-pairs'
 Plug 'yggdroot/indentline'
-Plug 'tpope/vim-unimpaired'
 Plug 'preservim/nerdtree'
 Plug 'itchyny/lightline.vim'
+Plug 'mengelbrecht/lightline-bufferline'
 Plug 'morhetz/gruvbox'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'sheerun/vim-polyglot'
 Plug 'airblade/vim-gitgutter'
 Plug 'ryanoasis/vim-devicons'
 Plug 'mhinz/vim-startify'
 Plug 'voldikss/vim-floaterm'
-Plug 'mengelbrecht/lightline-bufferline'
 Plug 'drzel/vim-line-no-indicator'
 Plug 'hrsh7th/vim-vsnip'							
 Plug 'hrsh7th/vim-vsnip-integ'						
@@ -65,6 +68,7 @@ let g:lightline = {
     \   'filename': 'LightlineFilename',
     \   'readonly': 'LightLineReadonly',
     \   'linenoindicator'  : 'LineNoIndicator',
+    \   'gitbranch': 'FugitiveHead',
     \   'mode'  : 'LightlineMode',
     \ },
     \ 'component_expand': {
@@ -72,11 +76,11 @@ let g:lightline = {
     \ },
     \ 'component_type': {
     \   'buffers': 'tabsel',
-	 \ },
+	  \ },
     \ 'tabline': {
-	 \   'left': [ ['buffers'] ],
+	  \   'left': [ ['buffers'] ],
     \   'right': [['currentfunction']]
-	 \ }
+	  \ }
     \ }
 
 function! LightlineMode()
@@ -176,7 +180,7 @@ autocmd bufenter * if &buftype == '' | silent! lcd %:p:h | endif
 
 
 " ── update y autoread settings ────────────────────────────────────────────────
-set updatetime=1000
+"set updatetime=1000
 
 augroup autoread
   autocmd!
@@ -192,6 +196,7 @@ let g:floaterm_title = ' -> $1..$2'
 
 " ── identline settings ────────────────────────────────────────────────────────
 let g:indentLine_char_list = ['│']
+let g:indentLine_fileTypeExclude = [ 'startify' ]
 
 
 " ── lsp settings ─────────────────────────────────────────────────────────
@@ -261,3 +266,4 @@ filetype plugin indent on
 syntax enable
 set textwidth=80
 set noshowmode
+set wildoptions=pum
