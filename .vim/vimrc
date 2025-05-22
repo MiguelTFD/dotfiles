@@ -180,7 +180,7 @@ autocmd bufenter * if &buftype == '' | silent! lcd %:p:h | endif
 
 
 " ── update y autoread settings ────────────────────────────────────────────────
-set updatetime=0
+set updatetime=300
 
 augroup autoread
   autocmd!
@@ -208,7 +208,6 @@ let g:lsp_diagnostics_float_cursor = 1
 let g:lsp_diagnostics_virtual_text_enabled=0
 let g:lsp_diagnostics_signs_insert_mode_enabled=0
 let g:lsp_completion_documentation_enabled = 1
-let g:lsp_completion_documentation_delay = 1000
 let g:lsp_document_code_action_signs_enabled = 1
 let g:lsp_document_code_action_signs_hint = {'text': '→'}
 let g:lsp_diagnostics_signs_error = {'text': '✘'}
