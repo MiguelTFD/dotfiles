@@ -157,12 +157,12 @@ endfunction
 colorscheme gruvbox
 let theme_mode = getenv('THEME_MODE')
 
-if theme_mode ==# 'dark'
-	highlight ColorColumn ctermbg=235 guibg=#3c3836
-	set background=dark
-else
+if theme_mode ==# 'light'
 	highlight ColorColumn ctermbg=235 guibg=#ebdbb2
 	set background=light
+else
+	highlight ColorColumn ctermbg=235 guibg=#3c3836
+	set background=dark
 endif
 
  if exists('+termguicolors')

@@ -167,16 +167,16 @@ mode "resize" {
         # Pressing up will shrink the window’s height.
         # Pressing left will shrink the window’s width.
         
-        bindsym h resize shrink width 10 px or 10 ppt
-        bindsym j resize grow height 10 px or 10 ppt
-        bindsym k resize shrink height 10 px or 10 ppt
-        bindsym l resize grow width 10 px or 10 ppt
+        bindsym h resize shrink width 5 px or 5 ppt
+        bindsym j resize grow height 5 px or 5 ppt
+        bindsym k resize shrink height 5 px or 5 ppt
+        bindsym l resize grow width 5 px or 5 ppt
         
         # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize grow height 10 px or 10 ppt
-        bindsym Up resize shrink height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
+        bindsym Left resize shrink width 5 px or 5 ppt
+        bindsym Down resize grow height 5 px or 5 ppt
+        bindsym Up resize shrink height 5 px or 5 ppt
+        bindsym Right resize grow width 5 px or 5 ppt
         
         # back to normal: Enter or Escape or $mod+r
         bindsym Return mode "default"
@@ -216,5 +216,15 @@ gaps inner 9px
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 exec_always --no-startup-id dunst -config ~/.config/dunst/dunstrc
 exec_always --no-startup-id picom --config ~/.config/picom/picom.conf
+
+exec --no-startup-id alacritty -o font.size=5 --title pipes_ws1 -e bash -c 'pipes; exec bash'
+exec --no-startup-id alacritty -o font.size=5 --title cacaclock_ws1 -e bash -c 'cacaclock; exec bash'
+exec --no-startup-id alacritty -o font.size=5 --title cava_ws1 -e bash -c 'cava; exec bash'
+exec --no-startup-id alacritty -o font.size=12 --title neofetch_ws1 -e bash -c 'neofetch; exec bash'
+exec --no-startup-id alacritty -o font.size=7 --title btop_ws1 -e bash -c 'btop; exec bash' 
+exec --no-startup-id alacritty -o font.size=12 --title vim_ws1 -e bash -c 'vim; exec bash'
+
+exec --no-startup-id "i3-msg 'workspace 1; append_layout /home/migueltfd/.config/i3/workspace-1.json'"
+
 
 include ~/.config/i3/colors.conf
