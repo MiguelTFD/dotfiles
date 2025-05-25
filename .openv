@@ -1,2 +1,4 @@
 export EDITOR=vim
+export TERM=alacritty
+export BROWSER=firefox
 export THEME_MODE=$(cat ~/.config/theme_mode)
