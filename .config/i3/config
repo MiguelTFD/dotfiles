@@ -199,7 +199,7 @@ for_window [class="feh"] floating enable, resize set 1280 720, move position cen
 
 # Tamanio custom
 # Define una regla para Alacritty con una instancia específica
-for_window [instance="custom_size"]floating enable, resize set 800 600,move position center
+for_window [instance="custom_size"]floating enable, resize set 300 300,move position center
 
 # Asigna un atajo de teclado para abrir Alacritty con esta configuración
 bindsym $mod+Shift+' exec alacritty --class "custom_size"
