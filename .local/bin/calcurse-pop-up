@@ -1,2 +1,0 @@
-#! /bin/sh
-alacritty --class custom_size -e calcurse

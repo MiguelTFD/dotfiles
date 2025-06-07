@@ -22,15 +22,9 @@
 /.config/gtk-3.0/bookmarks
 !/.config/i3
 !/.config/miscellaneous
-!/.config/neofetch
+!/.config/fastfetch
 !/.config/picom
 !/.config/polybar
-!/.config/ranger
-/.config/ranger/*
-!/.config/ranger/rc.conf
-!/.config/ranger/plugins
-/.config/ranger/plugins/*
-/.config/ranger/plugins/.gitkeep
 !/.config/rofi
 !/.config/starship.toml
 !/.config/theme_mode

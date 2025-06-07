@@ -1,4 +1,5 @@
 alias ct='clear'
+alias ff='fastfetch'
 alias x='exit'
 alias ss='screenshot select'
 alias sw='screenshot window'

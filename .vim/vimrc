@@ -39,6 +39,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'chaoren/vim-wordmotion'
 Plug 'airblade/vim-rooter'
+Plug 'itchyny/calendar.vim'
 
 call plug#end()
 
@@ -154,6 +155,22 @@ function! Startifyentryformat()
 endfunction
 
 
+" ── calendar settings ──────────────────────────────────────────────────────
+function! ConfigureCalendar()
+    setlocal laststatus=0
+    setlocal showtabline=0
+    setlocal noshowmode
+    setlocal noruler
+    setlocal noshowcmd
+    setlocal report=999
+    setlocal shortmess+=c
+    call lightline#disable()
+    nnoremap <buffer> <silent> q :qa!<CR>
+endfunction
+
+autocmd FileType calendar call ConfigureCalendar()
+
+
 " ── colorscheme settings ──────────────────────────────────────────────────────
 colorscheme gruvbox
 let theme_mode = getenv('THEME_MODE')
@@ -197,7 +214,7 @@ let g:floaterm_title = ' -> $1..$2'
 
 " ── identline settings ────────────────────────────────────────────────────────
 let g:indentLine_char_list = ['│']
-let g:indentLine_fileTypeExclude = [ 'startify' ]
+let g:indentLine_fileTypeExclude = [ 'startify', 'calendar' ]
 
 
 " ── lsp settings ─────────────────────────────────────────────────────────
