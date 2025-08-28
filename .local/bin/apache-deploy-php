@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# You need to have the "apache2" package installed
 current_dir=$(pwd)
 dir_name=$(basename "$current_dir")
 destination_dir="/var/www/html/$dir_name"
