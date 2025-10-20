@@ -198,7 +198,6 @@ autocmd bufenter * if &buftype == '' | silent! lcd %:p:h | endif
 
 
 " ── update y autoread settings ────────────────────────────────────────────────
-set updatetime=300
 
 augroup autoread
   autocmd!
@@ -221,6 +220,7 @@ let g:indentLine_fileTypeExclude = [ 'startify', 'calendar' ]
 let vim_lsp = getenv('VIM_LSP')
 
 if vim_lsp ==# 'hard'
+  set updatetime=300
   let g:lsp_diagnostics_enabled = 1
   let g:lsp_document_highlight_enabled = 1
   let g:asyncomplete_auto_popup = 1
@@ -262,6 +262,11 @@ if vim_lsp ==# 'hard'
   inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
   inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
   inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+elseif vim_lsp ==# 'normal'
+  let g:lsp_diagnostics_enabled = 1
+  let g:lsp_document_highlight_enabled = 1
+  let g:asyncomplete_auto_popup = 1
+  let g:lsp_semantic_enabled = 1
 else
   let g:lsp_diagnostics_enabled = 0
   let g:lsp_document_highlight_enabled = 0
