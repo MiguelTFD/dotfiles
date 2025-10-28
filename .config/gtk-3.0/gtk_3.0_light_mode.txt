@@ -1,5 +1,5 @@
 [Settings]
-gtk-theme-name=Gruvbox-Light
+gtk-theme-name=Graphite-Light-nord
 gtk-font-name=Sans 10
 gtk-icon-theme-name=Gruvbox-Plus-Light
 gtk-cursor-theme-name=Gruvbox-Light-Cursor

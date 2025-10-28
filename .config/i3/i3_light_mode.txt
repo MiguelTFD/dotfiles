@@ -1,14 +1,13 @@
 # Colors
 # class                 border  backgr. text    indicator child_border
 
+client.focused          #81a1c1 #81a1c1 #e5e9f0 #81a1c1 #81a1c1
+client.focused_inactive #4c566a #4c566a #e5e9f0 #4c566a #4c566a
 
-client.focused          #282828 #282828 #EBDBB2 #434C5E   #434C5E
-client.focused_inactive #928374 #928374 #EBDBB2 #928374   #928374 
+client.unfocused        #4c566a #4c566a #81a1c1 #4c566a #4c566a
+client.urgent           #bf616a #CC241D #3b4252 #bf616a #bf616a
 
-client.unfocused        #928374 #928374 #EBDBB2 #FBF1C7   #928374
-client.urgent           #cc241d #CC241D #EBDBB2 #CC241D   #CC241D
-
-client.placeholder      #000000 #0c0c0c #EBDBB2 #000000   #0c0c0c
+client.placeholder      #000000 #0c0c0c #3b4252 #000000 #0c0c0c
 client.background       #ffffff
 
-exec_always --no-startup-id feh --bg-fill ~/.local/share/wallpapers/Gruvbox/light/wallpaper_light.png
+exec_always --no-startup-id feh --bg-fill ~/.local/share/wallpapers/Nord/light/wallpaper_light.png

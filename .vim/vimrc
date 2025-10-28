@@ -22,7 +22,7 @@ Plug 'yggdroot/indentline'
 Plug 'preservim/nerdtree'
 Plug 'itchyny/lightline.vim'
 Plug 'mengelbrecht/lightline-bufferline'
-Plug 'morhetz/gruvbox'
+Plug 'nordtheme/vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 Plug 'prabirshrestha/asyncomplete.vim'
@@ -54,7 +54,7 @@ let g:line_no_indicator_chars = [
   \  ]
 
 let g:lightline = {
-    \ 'colorscheme' : 'gruvbox',
+    \ 'colorscheme' : 'nord',
     \ 'active' : {
     \   'left' : [ [ 'mode', 'paste'],
     \ 		       [ 'gitbranch','readonly', 'filename']],
@@ -172,7 +172,7 @@ autocmd FileType calendar call ConfigureCalendar()
 
 
 " ── colorscheme settings ──────────────────────────────────────────────────────
-colorscheme gruvbox
+colorscheme nord
 let theme_mode = getenv('THEME_MODE')
 
 if theme_mode ==# 'light'

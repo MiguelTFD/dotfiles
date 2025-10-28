@@ -2,11 +2,11 @@
 
 * {
 	 
-    bg0:     #282828;
-    bg1:     #282828;
-    fg0:     #D3C6AA;
+    bg0:     #3b4252;
+    bg1:     #3b4252;
+    fg0:     #e5e9f0;
     accent-color:     @fg0;
-    urgent-color:     #DBBC7F;
+    urgent-color:     #bf616a;
 
     background-color:   transparent;
     text-color:         @fg0;
