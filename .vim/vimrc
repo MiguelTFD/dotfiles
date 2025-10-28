@@ -1,12 +1,12 @@
 " ── vim setup ─────────────────────────────────────────────────────────────────
 if empty(glob('~/.vim/autoload/plug.vim'))
-		    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-			     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 endif
 
 autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
-   \| PlugInstall --sync | source $MYVIMRC
-   \| endif
+  \| PlugInstall --sync | source $MYVIMRC
+  \| endif
 
 
 " ── plugin's list ─────────────────────────────────────────────────────────────
@@ -33,8 +33,8 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'mhinz/vim-startify'
 Plug 'voldikss/vim-floaterm'
 Plug 'drzel/vim-line-no-indicator'
-Plug 'hrsh7th/vim-vsnip'							
-Plug 'hrsh7th/vim-vsnip-integ'						
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/vim-vsnip-integ'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'chaoren/vim-wordmotion'
@@ -57,7 +57,7 @@ let g:lightline = {
     \ 'colorscheme' : 'nord',
     \ 'active' : {
     \   'left' : [ [ 'mode', 'paste'],
-    \ 		       [ 'gitbranch','readonly', 'filename']],
+    \              [ 'gitbranch','readonly', 'filename']],
     \   'right' :  [ ['lineinfo'],
     \              [ 'linenoindicator' ],
     \              [ 'fileformat' ],
@@ -78,11 +78,11 @@ let g:lightline = {
     \ },
     \ 'component_type': {
     \   'buffers': 'tabsel',
-	  \ },
+    \ },
     \ 'tabline': {
-	  \   'left': [ ['buffers'] ],
+    \   'left': [ ['buffers'] ],
     \   'right': [['currentfunction']]
-	  \ }
+    \ }
     \ }
 
 function! LightlineMode()
@@ -111,13 +111,13 @@ function! LightLineReadonly()
   if &filetype == "help"
     return ""
   elseif &readonly
-    return ""
+    return ""
   else
     return ""
   endif
 endfunction
 
-autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update() 	 
+autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update()
 
 
 " ── keybinds ──────────────────────────────────────────────────────────────────
@@ -144,28 +144,28 @@ let g:startify_bookmarks = [
       \ ]
 
 let g:startify_lists = [
-      \ { 'type': 'bookmarks', 'header': ["  bookmarks"]      },
-      \ { 'type': 'files',     'header': ["  mru files"]            },
-      \ { 'type': 'dir',       'header': ["  mru files in " . getcwd()] },
-      \ { 'type': 'commands',  'header': ["  commands"]       },
+      \ { 'type': 'bookmarks', 'header': ["  bookmarks"]      },
+      \ { 'type': 'files',     'header': ["  mru files"]            },
+      \ { 'type': 'dir',       'header': ["  mru files in " . getcwd()] },
+      \ { 'type': 'commands',  'header': ["  commands"]       },
       \ ]
 
-function! Startifyentryformat()
-  return 'webdeviconsgetfiletypesymbol(absolute_path) ." ". entry_path'
+function! StartifyEntryFormat()
+  return 'WebDevIconsGetFileTypeSymbol(absolute_path) ." ". entry_path'
 endfunction
 
 
 " ── calendar settings ──────────────────────────────────────────────────────
 function! ConfigureCalendar()
-    setlocal laststatus=0
-    setlocal showtabline=0
-    setlocal noshowmode
-    setlocal noruler
-    setlocal noshowcmd
-    setlocal report=999
-    setlocal shortmess+=c
-    call lightline#disable()
-    nnoremap <buffer> <silent> q :qa!<CR>
+  setlocal laststatus=0
+  setlocal showtabline=0
+  setlocal noshowmode
+  setlocal noruler
+  setlocal noshowcmd
+  setlocal report=999
+  setlocal shortmess+=c
+  call lightline#disable()
+  nnoremap <buffer> <silent> q :qa!<CR>
 endfunction
 
 autocmd FileType calendar call ConfigureCalendar()
@@ -176,39 +176,37 @@ colorscheme nord
 let theme_mode = getenv('THEME_MODE')
 
 if theme_mode ==# 'light'
-	highlight ColorColumn ctermbg=235 guibg=#ebdbb2
-	set background=light
+  highlight ColorColumn ctermbg=235 guibg=#ECEFF4
+  set background=light
 else
-	highlight ColorColumn ctermbg=235 guibg=#3c3836
-	set background=dark
+  highlight ColorColumn ctermbg=235 guibg=#3B4252
+  set background=dark
 endif
 
- if exists('+termguicolors')
-      let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-      let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-      set termguicolors
- endif
+if exists('+termguicolors')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+endif
 
-highlight ColorColumn ctermbg=244 guibg=#928374
 let &colorcolumn="81"
-
+let g:indentLine_setColors = 0
 
 " ── buffer settings ───────────────────────────────────────────────────────────
-autocmd bufenter * if &buftype == '' | silent! lcd %:p:h | endif
+autocmd BufEnter * if &buftype == '' | silent! lcd %:p:h | endif
 
 
 " ── update y autoread settings ────────────────────────────────────────────────
-
 augroup autoread
   autocmd!
-  autocmd cursorhold,cursorholdi * checktime
-  autocmd focusgained,bufenter * checktime
+  autocmd CursorHold,CursorHoldI * checktime
+  autocmd FocusGained,BufEnter * checktime
 augroup end
 
 
 " ── floaterm settings ─────────────────────────────────────────────────────────
 let g:floaterm_autoclose = 2
-let g:floaterm_title = ' -> $1..$2'
+let g:floaterm_title = ' -> $1..$2'
 
 
 " ── identline settings ────────────────────────────────────────────────────────
@@ -253,7 +251,7 @@ if vim_lsp ==# 'hard'
     nmap <buffer> ]g <plug>(lsp-next-diagnostic)
     nmap <buffer> K <plug>(lsp-hover)
   endfunction
-  	
+  
   augroup lsp_install
     au!
     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
@@ -275,20 +273,20 @@ endif
 
 
 " ── fzf settings ──────────────────────────────────────────────────────────────
- let g:fzf_colors =
- \ { 'fg':      ['fg', 'Normal'],
-   \ 'bg':      ['bg', 'Normal'],
-   \ 'hl':      ['fg', 'Comment'],
-   \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-   \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-   \ 'hl+':     ['fg', 'Statement'],
-   \ 'info':    ['fg', 'PreProc'],
-   \ 'border':  ['fg', 'Comment'],
-   \ 'prompt':  ['fg', 'Conditional'],
-   \ 'pointer': ['fg', 'Exception'],
-   \ 'marker':  ['fg', 'Keyword'],
-   \ 'spinner': ['fg', 'Label'],
-   \ 'header':  ['fg', 'Comment'] }
+let g:fzf_colors =
+  \ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Comment'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
 
 
 " ── general settings ──────────────────────────────────────────────────────────
