@@ -220,7 +220,7 @@ let g:indentLine_fileTypeExclude = [ 'startify', 'calendar' ]
 let vim_lsp = getenv('VIM_LSP')
 
 if vim_lsp ==# 'hard'
-  set updatetime=300
+  set updatetime=100
   let g:lsp_diagnostics_enabled = 1
   let g:lsp_document_highlight_enabled = 1
   let g:asyncomplete_auto_popup = 1
@@ -263,6 +263,7 @@ if vim_lsp ==# 'hard'
   inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
   inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
 elseif vim_lsp ==# 'normal'
+  set updatetime=300
   let g:lsp_diagnostics_enabled = 1
   let g:lsp_document_highlight_enabled = 1
   let g:asyncomplete_auto_popup = 1
