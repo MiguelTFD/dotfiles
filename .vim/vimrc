@@ -44,6 +44,9 @@ Plug 'itchyny/calendar.vim'
 call plug#end()
 
 
+" ── vim-rooter settings ────────────────────────────────────────────────────────
+let g:rooter_patterns = ['.git', 'pom.xml', 'package.json']
+
 " ── lightline settings ────────────────────────────────────────────────────────
 let g:lightline#bufferline#show_number=1
 let g:lightline#bufferline#enable_devicons=1
@@ -198,7 +201,6 @@ autocmd bufenter * if &buftype == '' | silent! lcd %:p:h | endif
 
 
 " ── update y autoread settings ────────────────────────────────────────────────
-
 augroup autoread
   autocmd!
   autocmd cursorhold,cursorholdi * checktime
