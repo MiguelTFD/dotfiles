@@ -9,6 +9,43 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
    \| endif
 
 
+" ── general settings ──────────────────────────────────────────────────────────
+set undodir=~/.vim/undodir
+set undofile
+set nobackup
+set autoindent
+set number
+set noswapfile
+set encoding=utf-8
+set autoread
+set laststatus=2
+set fileformat=unix
+set tabstop=2
+set shiftwidth=2
+set expandtab
+set smarttab
+set norelativenumber
+set hidden
+set showmatch
+set hlsearch
+set smartcase
+set title
+set showtabline=2
+set nocursorcolumn
+set nocursorline
+set fillchars+=vert:│
+set wildmenu
+set nocompatible
+set scrolloff=1
+set display+=lastline
+set nolangremap
+filetype plugin indent on
+syntax enable
+set textwidth=0
+set noshowmode
+set wildoptions=pum
+
+
 " ── plugin's list ─────────────────────────────────────────────────────────────
 call plug#begin()
 
@@ -126,17 +163,6 @@ endfunction
 autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update() 	 
 
 
-" ── keybinds ──────────────────────────────────────────────────────────────────
-map <silent> <F6> :NERDTreeToggle<CR>
-nnoremap <silent> <F5> :FloatermToggle<CR>
-tnoremap <silent> <F5> <C-\><C-n>:FloatermToggle<CR>
-nnoremap <silent> <C-p> :Files<CR>
-nnoremap <silent> <C-b> :Buffers<CR>
-nnoremap <silent> <C-g> :Rg<CR>
-nnoremap <leader>y :w !xclip -selection clipboard<CR><CR>
-vnoremap <leader>y :w !xclip -selection clipboard<CR><CR>
-
-
 " ── startify settings ─────────────────────────────────────────────────────────
 let g:webdevicons_enable_startify = 1
 let g:startify_padding_left = 3
@@ -156,8 +182,8 @@ let g:startify_lists = [
       \ { 'type': 'commands',  'header': ["  commands"]       },
       \ ]
 
-function! Startifyentryformat()
-  return 'webdeviconsgetfiletypesymbol(absolute_path) ." ". entry_path'
+function! StartifyEntryFormat() abort
+  return 'WebDevIconsGetFileTypeSymbol(absolute_path) ." ". entry_path'
 endfunction
 
 
@@ -194,31 +220,6 @@ endif
       let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
       set termguicolors
  endif
-
-highlight ColorColumn ctermbg=244 guibg=#928374
-let &colorcolumn="81"
-
-
-" ── buffer settings ───────────────────────────────────────────────────────────
-autocmd bufenter * if &buftype == '' | silent! lcd %:p:h | endif
-
-
-" ── update y autoread settings ────────────────────────────────────────────────
-augroup autoread
-  autocmd!
-  autocmd cursorhold,cursorholdi * checktime
-  autocmd focusgained,bufenter * checktime
-augroup end
-
-
-" ── floaterm settings ─────────────────────────────────────────────────────────
-let g:floaterm_autoclose = 2
-let g:floaterm_title = ' -> $1..$2'
-
-
-" ── identline settings ────────────────────────────────────────────────────────
-let g:indentLine_char_list = ['│']
-let g:indentLine_fileTypeExclude = [ 'startify', 'calendar' ]
 
 
 " ── lsp settings ─────────────────────────────────────────────────────────
@@ -309,6 +310,16 @@ augroup autoformat_settings
 augroup END
 
 
+" ── floaterm settings ─────────────────────────────────────────────────────────
+let g:floaterm_autoclose = 2
+let g:floaterm_title = ' -> $1..$2'
+
+
+" ── identline settings ────────────────────────────────────────────────────────
+let g:indentLine_char_list = ['│']
+let g:indentLine_fileTypeExclude = [ 'startify', 'calendar' ]
+
+
 " ── fzf settings ──────────────────────────────────────────────────────────────
  let g:fzf_colors =
  \ { 'fg':      ['fg', 'Normal'],
@@ -326,38 +337,24 @@ augroup END
    \ 'header':  ['fg', 'Comment'] }
 
 
-" ── general settings ──────────────────────────────────────────────────────────
-set undodir=~/.vim/undodir
-set undofile
-set nobackup
-set autoindent
-set number
-set noswapfile
-set encoding=utf-8
-set autoread
-set laststatus=2
-set fileformat=unix
-set tabstop=2
-set shiftwidth=2
-set expandtab
-set smarttab
-set relativenumber
-set hidden
-set showmatch
-set hlsearch
-set smartcase
-set title
-set showtabline=2
-set cursorcolumn
-set cursorline
-set fillchars+=vert:│
-set wildmenu
-set nocompatible
-set scrolloff=1
-set display+=lastline
-set nolangremap
-filetype plugin indent on
-syntax enable
-set textwidth=80
-set noshowmode
-set wildoptions=pum
+" ── keybinds ──────────────────────────────────────────────────────────────────
+map <silent> <F6> :NERDTreeToggle<CR>
+nnoremap <silent> <F5> :FloatermToggle<CR>
+tnoremap <silent> <F5> <C-\><C-n>:FloatermToggle<CR>
+nnoremap <silent> <C-p> :Files<CR>
+nnoremap <silent> <C-b> :Buffers<CR>
+nnoremap <silent> <C-g> :Rg<CR>
+nnoremap <leader>y :w !xclip -selection clipboard<CR><CR>
+vnoremap <leader>y :w !xclip -selection clipboard<CR><CR>
+
+
+" ── update y autoread settings ────────────────────────────────────────────────
+augroup autoread
+  autocmd!
+  autocmd cursorhold,cursorholdi * checktime
+  autocmd focusgained,bufenter * checktime
+augroup end
+
+
+" ── buffer settings ───────────────────────────────────────────────────────────
+autocmd bufenter * if &buftype == '' | silent! lcd %:p:h | endif
