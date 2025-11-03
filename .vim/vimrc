@@ -9,6 +9,43 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
    \| endif
 
 
+" ── general settings ──────────────────────────────────────────────────────────
+set undodir=~/.vim/undodir
+set undofile
+set nobackup
+set autoindent
+set number
+set noswapfile
+set encoding=utf-8
+set autoread
+set laststatus=2
+set fileformat=unix
+set tabstop=2
+set shiftwidth=2
+set expandtab
+set smarttab
+set norelativenumber
+set hidden
+set showmatch
+set hlsearch
+set smartcase
+set title
+set showtabline=2
+set nocursorcolumn
+set nocursorline
+set fillchars+=vert:│
+set wildmenu
+set nocompatible
+set scrolloff=1
+set display+=lastline
+set nolangremap
+filetype plugin indent on
+syntax enable
+set textwidth=0
+set noshowmode
+set wildoptions=pum
+
+
 " ── plugin's list ─────────────────────────────────────────────────────────────
 call plug#begin()
 
@@ -27,7 +64,9 @@ Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
-"Plug 'sheerun/vim-polyglot'
+Plug 'google/vim-maktaba'
+Plug 'google/vim-glaive'
+Plug 'google/vim-codefmt'
 Plug 'airblade/vim-gitgutter'
 Plug 'ryanoasis/vim-devicons'
 Plug 'mhinz/vim-startify'
@@ -43,9 +82,11 @@ Plug 'itchyny/calendar.vim'
 
 call plug#end()
 
+call glaive#Install()
 
 " ── vim-rooter settings ────────────────────────────────────────────────────────
 let g:rooter_patterns = ['.git', 'pom.xml', 'package.json']
+
 
 " ── lightline settings ────────────────────────────────────────────────────────
 let g:lightline#bufferline#show_number=1
@@ -123,17 +164,6 @@ endfunction
 autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update() 	 
 
 
-" ── keybinds ──────────────────────────────────────────────────────────────────
-map <silent> <F6> :NERDTreeToggle<CR>
-nnoremap <silent> <F5> :FloatermToggle<CR>
-tnoremap <silent> <F5> <C-\><C-n>:FloatermToggle<CR>
-nnoremap <silent> <C-p> :Files<CR>
-nnoremap <silent> <C-b> :Buffers<CR>
-nnoremap <silent> <C-g> :Rg<CR>
-nnoremap <leader>y :w !xclip -selection clipboard<CR><CR>
-vnoremap <leader>y :w !xclip -selection clipboard<CR><CR>
-
-
 " ── startify settings ─────────────────────────────────────────────────────────
 let g:webdevicons_enable_startify = 1
 let g:startify_padding_left = 3
@@ -153,8 +183,8 @@ let g:startify_lists = [
       \ { 'type': 'commands',  'header': ["  commands"]       },
       \ ]
 
-function! Startifyentryformat()
-  return 'webdeviconsgetfiletypesymbol(absolute_path) ." ". entry_path'
+function! StartifyEntryFormat() abort
+  return 'WebDevIconsGetFileTypeSymbol(absolute_path) ." ". entry_path'
 endfunction
 
 
@@ -191,31 +221,6 @@ endif
       let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
       set termguicolors
  endif
-
-highlight ColorColumn ctermbg=244 guibg=#928374
-let &colorcolumn="81"
-
-
-" ── buffer settings ───────────────────────────────────────────────────────────
-autocmd bufenter * if &buftype == '' | silent! lcd %:p:h | endif
-
-
-" ── update y autoread settings ────────────────────────────────────────────────
-augroup autoread
-  autocmd!
-  autocmd cursorhold,cursorholdi * checktime
-  autocmd focusgained,bufenter * checktime
-augroup end
-
-
-" ── floaterm settings ─────────────────────────────────────────────────────────
-let g:floaterm_autoclose = 2
-let g:floaterm_title = ' -> $1..$2'
-
-
-" ── identline settings ────────────────────────────────────────────────────────
-let g:indentLine_char_list = ['│']
-let g:indentLine_fileTypeExclude = [ 'startify', 'calendar' ]
 
 
 " ── lsp settings ─────────────────────────────────────────────────────────
@@ -277,6 +282,45 @@ else
 endif
 
 
+" ── vim-codefmt settings  ──────────────────────────────────────────────────────────────
+augroup autoformat_settings
+  autocmd FileType bzl AutoFormatBuffer buildifier
+  autocmd FileType c,cpp,proto,javascript,typescript,arduino AutoFormatBuffer clang-format
+  autocmd FileType clojure AutoFormatBuffer cljstyle
+  autocmd FileType dart AutoFormatBuffer dartfmt
+  autocmd FileType elixir,eelixir,heex AutoFormatBuffer mixformat
+  autocmd FileType fish AutoFormatBuffer fish_indent
+  autocmd FileType gn AutoFormatBuffer gn
+  autocmd FileType go AutoFormatBuffer gofmt
+  autocmd FileType haskell AutoFormatBuffer ormolu
+  " Alternative for web languages: prettier
+  autocmd FileType html,css,sass,scss,less,json AutoFormatBuffer js-beautify
+  autocmd FileType java AutoFormatBuffer google-java-format
+  autocmd FileType jsonnet AutoFormatBuffer jsonnetfmt
+  autocmd FileType julia AutoFormatBuffer JuliaFormatter
+  autocmd FileType kotlin AutoFormatBuffer ktfmt
+  autocmd FileType lua AutoFormatBuffer luaformatterfiveone
+  autocmd FileType markdown AutoFormatBuffer prettier
+  autocmd FileType ocaml AutoFormatBuffer ocamlformat
+  autocmd FileType python AutoFormatBuffer yapf
+  " Alternative: autocmd FileType python AutoFormatBuffer autopep8
+  autocmd FileType ruby AutoFormatBuffer rubocop
+  autocmd FileType rust AutoFormatBuffer rustfmt
+  autocmd FileType swift AutoFormatBuffer swift-format
+  autocmd FileType vue AutoFormatBuffer prettier
+augroup END
+
+
+" ── floaterm settings ─────────────────────────────────────────────────────────
+let g:floaterm_autoclose = 2
+let g:floaterm_title = ' -> $1..$2'
+
+
+" ── identline settings ────────────────────────────────────────────────────────
+let g:indentLine_char_list = ['│']
+let g:indentLine_fileTypeExclude = [ 'startify', 'calendar' ]
+
+
 " ── fzf settings ──────────────────────────────────────────────────────────────
  let g:fzf_colors =
  \ { 'fg':      ['fg', 'Normal'],
@@ -294,38 +338,24 @@ endif
    \ 'header':  ['fg', 'Comment'] }
 
 
-" ── general settings ──────────────────────────────────────────────────────────
-set undodir=~/.vim/undodir
-set undofile
-set nobackup
-set autoindent
-set number
-set noswapfile
-set encoding=utf-8
-set autoread
-set laststatus=2
-set fileformat=unix
-set tabstop=2
-set shiftwidth=2
-set expandtab
-set smarttab
-set relativenumber
-set hidden
-set showmatch
-set hlsearch
-set smartcase
-set title
-set showtabline=2
-set cursorcolumn
-set cursorline
-set fillchars+=vert:│
-set wildmenu
-set nocompatible
-set scrolloff=1
-set display+=lastline
-set nolangremap
-filetype plugin indent on
-syntax enable
-set textwidth=80
-set noshowmode
-set wildoptions=pum
+" ── keybinds ──────────────────────────────────────────────────────────────────
+map <silent> <F6> :NERDTreeToggle<CR>
+nnoremap <silent> <F5> :FloatermToggle<CR>
+tnoremap <silent> <F5> <C-\><C-n>:FloatermToggle<CR>
+nnoremap <silent> <C-p> :Files<CR>
+nnoremap <silent> <C-b> :Buffers<CR>
+nnoremap <silent> <C-g> :Rg<CR>
+nnoremap <leader>y :w !xclip -selection clipboard<CR><CR>
+vnoremap <leader>y :w !xclip -selection clipboard<CR><CR>
+
+
+" ── update y autoread settings ────────────────────────────────────────────────
+augroup autoread
+  autocmd!
+  autocmd cursorhold,cursorholdi * checktime
+  autocmd focusgained,bufenter * checktime
+augroup end
+
+
+" ── buffer settings ───────────────────────────────────────────────────────────
+autocmd bufenter * if &buftype == '' | silent! lcd %:p:h | endif
