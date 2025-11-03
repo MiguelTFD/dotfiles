@@ -87,6 +87,7 @@ call glaive#Install()
 " ── vim-rooter settings ────────────────────────────────────────────────────────
 let g:rooter_patterns = ['.git', 'pom.xml', 'package.json']
 
+
 " ── lightline settings ────────────────────────────────────────────────────────
 let g:lightline#bufferline#show_number=1
 let g:lightline#bufferline#enable_devicons=1
