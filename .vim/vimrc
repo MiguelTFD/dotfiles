@@ -260,7 +260,7 @@ if vim_lsp ==# 'hard'
   inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
   inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
 elseif vim_lsp ==# 'normal'
-  set updatetime=300
+  set updatetime=100
   let g:lsp_diagnostics_enabled = 1
   let g:lsp_document_highlight_enabled = 1
   let g:asyncomplete_auto_popup = 1
@@ -301,12 +301,17 @@ augroup autoformat_settings
 augroup END
 
 
+" ── vsnip settings ─────────────────────────────────────────────────────────
 let g:vsnip_snippet_dirs = glob(expand('~/.vim/snippets') . '/*', 0, 1)
 
 
 " ── floaterm settings ─────────────────────────────────────────────────────────
 let g:floaterm_autoclose = 2
 let g:floaterm_title = ' -> $1..$2'
+let g:floaterm_keymap_toggle = '<F5>'
+let g:floaterm_keymap_prev   = '<F6>'
+let g:floaterm_keymap_next   = '<F7>'
+let g:floaterm_keymap_new    = '<F8>'
 
 
 " ── identline settings ────────────────────────────────────────────────────────
@@ -332,9 +337,7 @@ let g:indentLine_fileTypeExclude = [ 'startify', 'calendar' ]
 
 
 " ── keybinds ──────────────────────────────────────────────────────────────────
-map <silent> <F6> :NERDTreeToggle<CR>
-nnoremap <silent> <F5> :FloatermToggle<CR>
-tnoremap <silent> <F5> <C-\><C-n>:FloatermToggle<CR>
+map <silent> <F9> :NERDTreeToggle<CR>
 nnoremap <silent> <C-p> :Files<CR>
 nnoremap <silent> <C-b> :Buffers<CR>
 nnoremap <silent> <C-g> :Rg<CR>
