@@ -47,4 +47,6 @@
 !/.vim/undodir
 /.vim/undodir/*
 !/.vim/undodir/.gitkeep
+!/.vim/snippets
+!/.vim/scripts
 !/.vim/vimrc
