@@ -302,7 +302,7 @@ augroup END
 
 
 " ── vsnip settings ─────────────────────────────────────────────────────────
-let g:vsnip_snippet_dirs = glob(expand('~/.vim/snippets') . '/*', 0, 1)
+let g:vsnip_snippet_dir = expand('~/.vim/snippets')
 
 
 " ── floaterm settings ─────────────────────────────────────────────────────────
@@ -339,7 +339,7 @@ let g:markdown_syntax_conceal=0
 
 " ── keybinds ──────────────────────────────────────────────────────────────────
 map <silent> <F9> :NERDTreeToggle<CR>
-nnoremap <silent> <C-p> :Files<CR>
+nnoremap <silent> <C-f> :Files<CR>
 nnoremap <silent> <C-b> :Buffers<CR>
 nnoremap <silent> <C-g> :Rg<CR>
 nnoremap <leader>y :w !xclip -selection clipboard<CR><CR>
