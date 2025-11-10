@@ -1,12 +1,12 @@
 " ── vim setup ─────────────────────────────────────────────────────────────────
 if empty(glob('~/.vim/autoload/plug.vim'))
-		    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-			     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 endif
 
 autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
-   \| PlugInstall --sync | source $MYVIMRC
-   \| endif
+  \| PlugInstall --sync | source $MYVIMRC
+  \| endif
 
 
 " ── general settings ──────────────────────────────────────────────────────────
@@ -34,6 +34,10 @@ set fillchars+=vert:│
 set textwidth=0
 set noshowmode
 set wildoptions=pum
+" Limit syntax highlight length for better performance
+set synmaxcol=200
+" Balanced update time for LSP, gitgutter, etc.
+set updatetime=300
 
 
 " ── plugin's list ─────────────────────────────────────────────────────────────
@@ -74,49 +78,63 @@ call plug#end()
 
 call glaive#Install()
 
-" ── vim-rooter settings ────────────────────────────────────────────────────────
+
+" ── vim-rooter settings ───────────────────────────────────────────────────────
 let g:rooter_patterns = ['.git', 'pom.xml', 'package.json']
+" Suppress directory change messages
+let g:rooter_silent_chdir = 1
+
+
+" ── gitgutter settings ────────────────────────────────────────────────────────
+" Performance tweaks for large repos
+let g:gitgutter_max_signs = 500
+" Uncomment below if you get lag:
+" let g:gitgutter_realtime = 0
+" let g:gitgutter_eager = 0
 
 
 " ── lightline settings ────────────────────────────────────────────────────────
-let g:lightline#bufferline#show_number=1
-let g:lightline#bufferline#enable_devicons=1
-let g:lightline#bufferline#show_single_buffer=1
-
+let g:lightline#bufferline#show_number = 1
+let g:lightline#bufferline#enable_devicons = 1
+let g:lightline#bufferline#show_single_buffer = 1
 let g:line_no_indicator_chars = [
   \  ' ', '▁', '▂', '▃', '▄', '▅', '▆', '▇', '█'
   \  ]
 
 let g:lightline = {
-    \ 'colorscheme' : 'gruvbox',
-    \ 'active' : {
-    \   'left' : [ [ 'mode', 'paste'],
-    \ 		       [ 'gitbranch','readonly', 'filename']],
-    \   'right' :  [ ['lineinfo'],
-    \              [ 'linenoindicator' ],
-    \              [ 'fileformat' ],
-    \              [ 'fileencoding' ],
-    \              [ 'filetype' ]]
+    \ 'colorscheme': 'gruvbox',
+    \ 'active': {
+    \   'left': [ 
+    \     ['mode', 'paste'],
+    \     ['gitbranch', 'readonly', 'filename', 'modified']
+    \   ],
+    \   'right': [
+    \     ['lineinfo'],
+    \     ['linenoindicator'],
+    \     ['fileformat'],
+    \     ['fileencoding'],
+    \     ['filetype']
+    \   ]
     \ },
-    \ 'component_function' : {
+    \ 'component_function': {
     \   'filetype': 'MyFiletype',
     \   'fileformat': 'MyFileformat',
     \   'filename': 'LightlineFilename',
     \   'readonly': 'LightLineReadonly',
-    \   'linenoindicator'  : 'LineNoIndicator',
+    \   'linenoindicator': 'LineNoIndicator',
     \   'gitbranch': 'FugitiveHead',
-    \   'mode'  : 'LightlineMode',
+    \   'mode': 'LightlineMode',
     \ },
     \ 'component_expand': {
     \   'buffers': 'lightline#bufferline#buffers',
     \ },
     \ 'component_type': {
     \   'buffers': 'tabsel',
-	  \ },
+    \ },
     \ 'tabline': {
-	  \   'left': [ ['buffers'] ],
+    \   'left': [['buffers']],
     \   'right': [['currentfunction']]
-	  \ }
+    \ }
     \ }
 
 function! LightlineMode()
@@ -124,34 +142,54 @@ function! LightlineMode()
 endfunction
 
 function! MyFiletype()
-  return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' . WebDevIconsGetFileTypeSymbol() : 'no ft') : ''
+  if winwidth(0) <= 70
+    return ''
+  endif
+
+  if empty(&filetype)
+    return 'no ft'
+  endif
+
+  if exists('*WebDevIconsGetFileTypeSymbol')
+    return &filetype . ' ' . WebDevIconsGetFileTypeSymbol()
+  endif
+
+  return &filetype
 endfunction
 
 function! MyFileformat()
-  return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
+  if winwidth(0) <= 70
+    return ''
+  endif
+
+  if exists('*WebDevIconsGetFileFormatSymbol')
+    return &fileformat . ' ' . WebDevIconsGetFileFormatSymbol()
+  endif
+
+  return &fileformat
 endfunction
 
 function! LightlineFilename()
   let modified = &modified ? '+' : ''
-  let root = fnamemodify(get(b:, 'git_dir'), ':h')
-  let path = expand('%:p')
-  if path[:len(root)-1] ==# root
-    return path[len(root)+1:] . modified
+
+  if empty(expand('%'))
+    return '[No Name]' . modified
   endif
+
+  if exists('b:git_dir') && !empty(b:git_dir)
+    let root = fnamemodify(b:git_dir, ':h')
+    let path = expand('%:p')
+    if strpart(path, 0, len(root)) ==# root
+      return strpart(path, len(root) + 1) . modified
+    endif
+  endif
+
   return expand('%') . modified
 endfunction
 
 function! LightLineReadonly()
-  if &filetype == "help"
-    return ""
-  elseif &readonly
-    return ""
-  else
-    return ""
-  endif
+  return &filetype ==# 'help' ? '' : &readonly ? '' : ''
 endfunction
-
-autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update() 	 
 
 
 " ── startify settings ─────────────────────────────────────────────────────────
@@ -167,10 +205,10 @@ let g:startify_bookmarks = [
       \ ]
 
 let g:startify_lists = [
-      \ { 'type': 'bookmarks', 'header': ["  bookmarks"]      },
-      \ { 'type': 'files',     'header': ["  mru files"]            },
-      \ { 'type': 'dir',       'header': ["  mru files in " . getcwd()] },
-      \ { 'type': 'commands',  'header': ["  commands"]       },
+      \ { 'type': 'bookmarks', 'header': ["  bookmarks"]      },
+      \ { 'type': 'files',     'header': ["  mru files"]            },
+      \ { 'type': 'dir',       'header': ["  mru files in " . getcwd()] },
+      \ { 'type': 'commands',  'header': ["  commands"]       },
       \ ]
 
 function! StartifyEntryFormat() abort
@@ -178,17 +216,22 @@ function! StartifyEntryFormat() abort
 endfunction
 
 
-" ── calendar settings ──────────────────────────────────────────────────────
+" ── calendar settings ─────────────────────────────────────────────────────────
 function! ConfigureCalendar()
-    setlocal laststatus=0
-    setlocal showtabline=0
-    setlocal noshowmode
-    setlocal noruler
-    setlocal noshowcmd
-    setlocal report=999
-    setlocal shortmess+=c
+  setlocal laststatus=0
+  setlocal showtabline=0
+  setlocal noshowmode
+  setlocal noruler
+  setlocal noshowcmd
+  setlocal report=999
+  setlocal shortmess+=c
+  
+  " Disable lightline if loaded
+  if exists('g:loaded_lightline')
     call lightline#disable()
-    nnoremap <buffer> <silent> q :qa!<CR>
+  endif
+  
+  nnoremap <buffer> <silent> q :qa!<CR>
 endfunction
 
 autocmd FileType calendar call ConfigureCalendar()
@@ -199,37 +242,38 @@ colorscheme gruvbox
 let theme_mode = getenv('THEME_MODE')
 
 if theme_mode ==# 'light'
-	highlight ColorColumn ctermbg=235 guibg=#ebdbb2
-	set background=light
+  highlight ColorColumn ctermbg=235 guibg=#ebdbb2
+  set background=light
 else
-	highlight ColorColumn ctermbg=235 guibg=#3c3836
-	set background=dark
+  highlight ColorColumn ctermbg=235 guibg=#3c3836
+  set background=dark
 endif
 
- if exists('+termguicolors')
-      let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-      let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-      set termguicolors
- endif
+if exists('+termguicolors')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+endif
 
 
-" ── lsp settings ─────────────────────────────────────────────────────────
+" ── lsp settings ──────────────────────────────────────────────────────────────
 let vim_lsp = getenv('VIM_LSP')
 
+" Popup keybindings
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
 
 if vim_lsp ==# 'enable'
-  set updatetime=100
+  
   let g:lsp_diagnostics_enabled = 1
   let g:lsp_document_highlight_enabled = 1
   let g:asyncomplete_auto_popup = 1
   let g:lsp_semantic_enabled = 1
   let g:lsp_diagnostics_echo_cursor = 1
   let g:lsp_diagnostics_float_cursor = 1
-  let g:lsp_diagnostics_virtual_text_enabled=0
-  let g:lsp_diagnostics_signs_insert_mode_enabled=0
+  let g:lsp_diagnostics_virtual_text_enabled = 0
+  let g:lsp_diagnostics_signs_insert_mode_enabled = 0
   let g:lsp_completion_documentation_enabled = 1
   let g:lsp_document_code_action_signs_enabled = 1
   let g:lsp_document_code_action_signs_hint = {'text': '→'}
@@ -237,6 +281,36 @@ if vim_lsp ==# 'enable'
   let g:lsp_diagnostics_signs_warning = {'text': '‼'}
   let g:lsp_diagnostics_signs_info = {'text': 'ℹ'}
   let g:lsp_diagnostics_signs_hint = {'text': '?'}
+ 
+  " Core LSP keymaps
+  function! s:on_lsp_buffer_enabled() abort
+    setlocal omnifunc=lsp#complete
+    setlocal signcolumn=yes
+
+    " Navigation
+    nmap <buffer> gd <plug>(lsp-definition)
+    nmap <buffer> gD <plug>(lsp-declaration)
+    nmap <buffer> gr <plug>(lsp-references)
+    nmap <buffer> gi <plug>(lsp-implementation)
+    nmap <buffer> gt <plug>(lsp-type-definition)
+
+    " Actions
+    nmap <buffer> <leader>rn <plug>(lsp-rename)
+    nmap <buffer> <leader>ca <plug>(lsp-code-action)
+
+    " Diagnostic
+    nmap <buffer> [g <plug>(lsp-previous-diagnostic)
+    nmap <buffer> ]g <plug>(lsp-next-diagnostic)
+
+    " Documentation
+    nmap <buffer> K <plug>(lsp-hover)
+    nmap <buffer> <leader>k <plug>(lsp-signature-help)
+  endfunction
+  
+  augroup lsp_install
+    au!
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+  augroup END
 else
   let g:lsp_diagnostics_enabled = 0
   let g:lsp_document_highlight_enabled = 0
@@ -244,36 +318,35 @@ else
 endif
 
 
-" ── vim-codefmt settings  ──────────────────────────────────────────────────────────────
+" ── vim-codefmt settings ──────────────────────────────────────────────────────
 augroup autoformat_settings
-  autocmd FileType bzl AutoFormatBuffer buildifier
-  autocmd FileType c,cpp,proto,javascript,typescript,arduino AutoFormatBuffer clang-format
-  autocmd FileType clojure AutoFormatBuffer cljstyle
-  autocmd FileType dart AutoFormatBuffer dartfmt
-  autocmd FileType elixir,eelixir,heex AutoFormatBuffer mixformat
-  autocmd FileType fish AutoFormatBuffer fish_indent
-  autocmd FileType gn AutoFormatBuffer gn
-  autocmd FileType go AutoFormatBuffer gofmt
-  autocmd FileType haskell AutoFormatBuffer ormolu
-  " Alternative for web languages: prettier
-  autocmd FileType html,css,sass,scss,less,json AutoFormatBuffer prettier
-  autocmd FileType java AutoFormatBuffer google-java-format
-  autocmd FileType jsonnet AutoFormatBuffer jsonnetfmt
-  autocmd FileType julia AutoFormatBuffer JuliaFormatter
-  autocmd FileType kotlin AutoFormatBuffer ktfmt
-  autocmd FileType lua AutoFormatBuffer luaformatterfiveone
-  autocmd FileType markdown AutoFormatBuffer prettier
-  autocmd FileType ocaml AutoFormatBuffer ocamlformat
-  autocmd FileType python AutoFormatBuffer yapf
-  " Alternative: autocmd FileType python AutoFormatBuffer autopep8
-  autocmd FileType ruby AutoFormatBuffer rubocop
-  autocmd FileType rust AutoFormatBuffer rustfmt
-  autocmd FileType swift AutoFormatBuffer swift-format
-  autocmd FileType vue AutoFormatBuffer prettier
+  autocmd!
+  autocmd FileType bzl silent! AutoFormatBuffer buildifier
+  autocmd FileType c,cpp,proto,javascript,typescript,arduino silent! AutoFormatBuffer clang-format
+  autocmd FileType clojure silent! AutoFormatBuffer cljstyle
+  autocmd FileType dart silent! AutoFormatBuffer dartfmt
+  autocmd FileType elixir,eelixir,heex silent! AutoFormatBuffer mixformat
+  autocmd FileType fish silent! AutoFormatBuffer fish_indent
+  autocmd FileType gn silent! AutoFormatBuffer gn
+  autocmd FileType go silent! AutoFormatBuffer gofmt
+  autocmd FileType haskell silent! AutoFormatBuffer ormolu
+  autocmd FileType html,css,sass,scss,less,json silent! AutoFormatBuffer prettier
+  autocmd FileType java silent! AutoFormatBuffer google-java-format
+  autocmd FileType jsonnet silent! AutoFormatBuffer jsonnetfmt
+  autocmd FileType julia silent! AutoFormatBuffer JuliaFormatter
+  autocmd FileType kotlin silent! AutoFormatBuffer ktfmt
+  autocmd FileType lua silent! AutoFormatBuffer luaformatterfiveone
+  autocmd FileType markdown silent! AutoFormatBuffer prettier
+  autocmd FileType ocaml silent! AutoFormatBuffer ocamlformat
+  autocmd FileType python silent! AutoFormatBuffer yapf
+  autocmd FileType ruby silent! AutoFormatBuffer rubocop
+  autocmd FileType rust silent! AutoFormatBuffer rustfmt
+  autocmd FileType swift silent! AutoFormatBuffer swift-format
+  autocmd FileType vue silent! AutoFormatBuffer prettier
 augroup END
 
 
-" ── vsnip settings ─────────────────────────────────────────────────────────
+" ── vsnip settings ────────────────────────────────────────────────────────────
 let g:vsnip_snippet_dir = expand('~/.vim/snippets')
 
 imap <expr> <F12> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<F12>'
@@ -284,34 +357,36 @@ smap <expr> <F11> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<F11>'
 
 " ── floaterm settings ─────────────────────────────────────────────────────────
 let g:floaterm_autoclose = 2
-let g:floaterm_title = ' -> $1..$2'
+let g:floaterm_title = ' -> $1..$2'
 let g:floaterm_keymap_toggle = '<F5>'
 let g:floaterm_keymap_prev   = '<F6>'
 let g:floaterm_keymap_next   = '<F7>'
 let g:floaterm_keymap_new    = '<F8>'
 
 
-" ── identline settings ────────────────────────────────────────────────────────
+" ── indentline settings ───────────────────────────────────────────────────────
 let g:indentLine_char_list = ['│']
-let g:indentLine_fileTypeExclude = [ 'startify', 'calendar' ]
-let g:vim_json_conceal=0
-let g:markdown_syntax_conceal=0
+let g:indentLine_fileTypeExclude = ['startify', 'calendar']
+let g:vim_json_conceal = 0
+let g:markdown_syntax_conceal = 0
+
 
 " ── fzf settings ──────────────────────────────────────────────────────────────
- let g:fzf_colors =
- \ { 'fg':      ['fg', 'Normal'],
-   \ 'bg':      ['bg', 'Normal'],
-   \ 'hl':      ['fg', 'Comment'],
-   \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-   \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-   \ 'hl+':     ['fg', 'Statement'],
-   \ 'info':    ['fg', 'PreProc'],
-   \ 'border':  ['fg', 'Comment'],
-   \ 'prompt':  ['fg', 'Conditional'],
-   \ 'pointer': ['fg', 'Exception'],
-   \ 'marker':  ['fg', 'Keyword'],
-   \ 'spinner': ['fg', 'Label'],
-   \ 'header':  ['fg', 'Comment'] }
+let g:fzf_colors = {
+  \ 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Comment'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment']
+  \ }
 
 
 " ── keybinds ──────────────────────────────────────────────────────────────────
@@ -323,13 +398,13 @@ nnoremap <leader>y :w !xclip -selection clipboard<CR><CR>
 vnoremap <leader>y :w !xclip -selection clipboard<CR><CR>
 tnoremap <Esc> <C-\><C-n>
 
-" ── update y autoread settings ────────────────────────────────────────────────
+
+" ── autoread settings ─────────────────────────────────────────────
 augroup autoread
   autocmd!
-  autocmd cursorhold,cursorholdi * checktime
-  autocmd focusgained,bufenter * checktime
-augroup end
-
-
-" ── buffer settings ───────────────────────────────────────────────────────────
-autocmd bufenter * if &buftype == '' | silent! lcd %:p:h | endif
+  " Safe autoread avoiding E523 in cmd mode
+  autocmd FocusGained,BufEnter,CursorHold,CursorHoldI *
+    \ if mode() !~# '\v(c|r.?|!|t)' && getcmdwintype() == '' | 
+    \   checktime | 
+    \ endif
+augroup END
