@@ -49,7 +49,7 @@ Plug 'tpope/vim-commentary'
 Plug 'yggdroot/indentline'
 Plug 'airblade/vim-rooter'
 " --- Git ---
-Plug 'tpope/vim-fugitive'
+Plug 'itchyny/vim-gitbranch'
 " --- UI / Appearance ---
 Plug 'itchyny/lightline.vim'
 Plug 'mengelbrecht/lightline-bufferline'
@@ -85,90 +85,63 @@ let g:line_no_indicator_chars = [
   \  ' ', '▁', '▂', '▃', '▄', '▅', '▆', '▇', '█'
   \  ]
 
-let g:lightline = {
-    \ 'colorscheme': 'gruvbox',
-    \ 'active': {
-    \   'left': [ 
-    \     ['mode', 'paste'],
-    \     ['gitbranch', 'readonly', 'filename', 'modified']
-    \   ],
-    \   'right': [
-    \     ['lineinfo'],
-    \     ['linenoindicator'],
-    \     ['fileformat'],
-    \     ['fileencoding'],
-    \     ['filetype']
-    \   ]
-    \ },
-    \ 'component_function': {
-    \   'filetype': 'MyFiletype',
-    \   'fileformat': 'MyFileformat',
-    \   'filename': 'LightlineFilename',
-    \   'readonly': 'LightLineReadonly',
-    \   'linenoindicator': 'LineNoIndicator',
-    \   'gitbranch': 'FugitiveHead',
-    \   'mode': 'LightlineMode',
-    \ },
-    \ 'component_expand': {
-    \   'buffers': 'lightline#bufferline#buffers',
-    \ },
-    \ 'component_type': {
-    \   'buffers': 'tabsel',
-    \ },
-    \ 'tabline': {
-    \   'left': [['buffers']],
-    \   'right': [['currentfunction']]
-    \ }
-    \ }
+let g:lightline = {}
 
-function! LightlineMode()
-  return lightline#mode()
-endfunction
+let g:lightline.colorscheme = 'gruvbox'
 
-function! MyFiletype()
-  if winwidth(0) <= 70
-    return ''
-  endif
+let g:lightline.active = {
+  \ 'left': [
+  \   [ 'mode', 'paste' ],
+  \   [ 'gitbranch', 'readonly', 'filename', 'modified' ]
+  \ ],
+  \ 'right': [
+  \   [ 'lineinfo' ],
+  \   [ 'linenoindicator' ]
+  \ ]
+\ }
 
+let g:lightline.inactive = {
+  \ 'left': [
+  \   [ 'filename' ]
+  \ ],
+  \ 'right': [
+  \   [ 'lineinfo' ],
+  \   [ 'percent' ]
+  \ ]
+\ }
+
+let g:lightline.tabline = {
+  \ 'left': [
+  \   [ 'buffers' ]
+  \ ],
+  \ 'right': [
+  \   [ 'iconfiletype' ]
+  \ ]
+\ }
+
+let g:lightline.component_function = {
+  \ 'iconfiletype': 'IconFileType',
+  \ 'readonly': 'LightLineReadonly',
+  \ 'linenoindicator': 'LineNoIndicator',
+  \ 'gitbranch': 'gitbranch#name',
+\ }
+
+let g:lightline.component_expand = {
+  \ 'buffers': 'lightline#bufferline#buffers',
+\ }
+
+let g:lightline.component_type = {
+  \ 'buffers': 'tabsel',
+\ }
+
+function! IconFileType()
   if empty(&filetype)
-    return 'no ft'
-  endif
-
-  if exists('*WebDevIconsGetFileTypeSymbol')
-    return &filetype . ' ' . WebDevIconsGetFileTypeSymbol()
-  endif
-
-  return &filetype
-endfunction
-
-function! MyFileformat()
-  if winwidth(0) <= 70
     return ''
   endif
-
-  if exists('*WebDevIconsGetFileFormatSymbol')
-    return &fileformat . ' ' . WebDevIconsGetFileFormatSymbol()
+ 
+  if exists('*WebDevIconsGetFileTypeSymbol')
+    return WebDevIconsGetFileTypeSymbol() . ' ' . &filetype
   endif
-
-  return &fileformat
-endfunction
-
-function! LightlineFilename()
-  let modified = &modified ? '+' : ''
-
-  if empty(expand('%'))
-    return '[No Name]' . modified
-  endif
-
-  if exists('b:git_dir') && !empty(b:git_dir)
-    let root = fnamemodify(b:git_dir, ':h')
-    let path = expand('%:p')
-    if strpart(path, 0, len(root)) ==# root
-      return strpart(path, len(root) + 1) . modified
-    endif
-  endif
-
-  return expand('%') . modified
 endfunction
 
 function! LightLineReadonly()
@@ -184,16 +157,16 @@ let g:startify_relative_path = 1
 let g:startify_files_number = 6
 
 let g:startify_bookmarks = [
-      \ {'b': '~/.bashrc'},
-      \ {'v': '~/.vim/vimrc'},
-      \ ]
+  \ {'b': '~/.bashrc'},
+  \ {'v': '~/.vim/vimrc'},
+  \ ]
 
 let g:startify_lists = [
-      \ { 'type': 'bookmarks', 'header': ["  bookmarks"]      },
-      \ { 'type': 'files',     'header': ["  mru files"]            },
-      \ { 'type': 'dir',       'header': ["  mru files in " . getcwd()] },
-      \ { 'type': 'commands',  'header': ["  commands"]       },
-      \ ]
+  \ { 'type': 'bookmarks', 'header': ["  bookmarks"]      },
+  \ { 'type': 'files',     'header': ["  mru files"]            },
+  \ { 'type': 'dir',       'header': ["  mru files in " . getcwd()] },
+  \ { 'type': 'commands',  'header': ["  commands"]       },
+  \ ]
 
 function! StartifyEntryFormat() abort
   return 'WebDevIconsGetFileTypeSymbol(absolute_path) ." ". entry_path'
@@ -304,10 +277,10 @@ tnoremap <Esc> <C-\><C-n>
 
 
 " ── autoread settings ─────────────────────────────────────────────
-"augroup autoread
-"  autocmd!
-"  autocmd FocusGained,BufEnter,CursorHold,CursorHoldI *
-"    \ if mode() !~# '\v(c|r.?|!|t)' && getcmdwintype() == '' | 
-"    \   checktime | 
-"    \ endif
-"augroup END
+augroup autoread
+  autocmd!
+  autocmd FocusGained,BufEnter,CursorHold,CursorHoldI *
+    \ if mode() !~# '\v(c|r.?|!|t)' && getcmdwintype() == '' | 
+    \   checktime | 
+    \ endif
+augroup END
