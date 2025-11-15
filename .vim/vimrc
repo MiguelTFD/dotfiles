@@ -4,10 +4,10 @@ if empty(glob('~/.vim/autoload/plug.vim'))
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 endif
 
-autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
-  \| PlugInstall --sync | source $MYVIMRC
+autocmd VimEnter *
+  \ if !empty(filter(copy(g:plugs), '!isdirectory(v:val.dir)'))
+  \|   PlugInstall --sync | quit
   \| endif
-
 
 " ── general settings ──────────────────────────────────────────────────────────
 set undodir=~/.vim/undodir
@@ -65,6 +65,7 @@ Plug 'voldikss/vim-floaterm'
 Plug 'chaoren/vim-wordmotion'
 " --- CoC and Snippets
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'josa42/vim-lightline-coc'
 Plug 'honza/vim-snippets'
 " --- Miscellaneous ---
 Plug 'itchyny/calendar.vim'
@@ -96,7 +97,9 @@ let g:lightline.active = {
   \ ],
   \ 'right': [
   \   [ 'lineinfo' ],
-  \   [ 'linenoindicator' ]
+  \   [ 'linenoindicator' ],
+  \   [ 'coc_info', 'coc_hints', 'coc_errors', 'coc_warnings', 'coc_ok' ],
+  \   [ 'coc_status' ]
   \ ]
 \ }
 
@@ -145,8 +148,16 @@ function! IconFileType()
 endfunction
 
 function! LightLineReadonly()
-  return &filetype ==# 'help' ? '' : &readonly ? '' : ''
+  if &filetype == "help"
+    return ""
+  elseif &readonly
+    return ""
+  else
+    return ""
+  endif
 endfunction
+
+call lightline#coc#register()
 
 
 " ── startify settings ─────────────────────────────────────────────────────────
@@ -228,8 +239,27 @@ let g:coc_global_extensions = [
   \ 'coc-eslint',
   \ ]
 
-let g:coc_status_error_sign = ' '
-let g:coc_status_warning_sign = ' '
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+inoremap <silent><expr> <TAB>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+function! CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
 
 
 " ── floaterm settings ─────────────────────────────────────────────────────────
@@ -243,7 +273,7 @@ let g:floaterm_keymap_new    = '<F8>'
 
 " ── indentline settings ───────────────────────────────────────────────────────
 let g:indentLine_char_list = ['│']
-let g:indentLine_fileTypeExclude = ['startify', 'calendar','coc-explorer']
+let g:indentLine_fileTypeExclude = ['startify', 'calendar', 'coc-explorer']
 let g:vim_json_conceal = 0
 let g:markdown_syntax_conceal = 0
 

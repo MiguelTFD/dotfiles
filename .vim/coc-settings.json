@@ -1,0 +1,9 @@
+{
+  "snippets.ultisnips.enable": false,
+  "snippets.ultisnips.pythonPrompt": false,
+  "explorer.icon.enableNerdfont": true,
+  "diagnostic.errorSign": "",
+  "diagnostic.warningSign": "󱇎",
+  "diagnostic.infoSign": "",
+  "diagnostic.hintSign": " "
+}
