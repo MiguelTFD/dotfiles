@@ -22,6 +22,9 @@
 !/.config/i3
 !/.config/miscellaneous
 !/.config/fastfetch
+!/.config/ranger
+/.config/ranger/*
+!/.config/ranger/rc.conf
 !/.config/picom
 !/.config/polybar
 !/.config/rofi
