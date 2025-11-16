@@ -49,4 +49,5 @@
 !/.vim/undodir/.gitkeep
 !/.vim/snippets
 !/.vim/scripts
+!/.vim/coc-settings.json
 !/.vim/vimrc
