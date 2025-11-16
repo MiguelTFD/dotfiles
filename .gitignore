@@ -14,7 +14,6 @@
 #Folders
 !/.config
 /.config/*
-!/.config/alacritty
 !/.config/dunst
 !/.config/dunst_toggle_state
 !/.config/feh
