@@ -16,7 +16,7 @@ fi
 echo "$NEW" > "$theme_file"
 
 if [ "$NEW" == "dark" ]; then
-    sudo cp -f "$home_dir/.config/alacritty/alacritty_dark_mode.txt" "$home_dir/.config/alacritty/colors.yml"
+    sudo cp -f "$home_dir/.config/kitty/kitty_dark_mode.txt" "$home_dir/.config/kitty/colors.conf"
     sudo cp -f "$home_dir/.config/gtk-3.0/gtk_3.0_dark_mode.txt" "$home_dir/.config/gtk-3.0/settings.ini"
     sudo cp -f "$home_dir/.config/i3/i3_dark_mode.txt" "$home_dir/.config/i3/colors.conf"
 	  sudo cp -f "$home_dir/.config/gtk-3.0/settings.ini" /etc/gtk-3.0/
@@ -25,7 +25,7 @@ if [ "$NEW" == "dark" ]; then
     sudo install -D "$home_dir/.icons/default/index.theme" /usr/share/icons/default/index.theme 
 
 else
-    sudo cp -f "$home_dir/.config/alacritty/alacritty_light_mode.txt" "$home_dir/.config/alacritty/colors.yml"
+    sudo cp -f "$home_dir/.config/kitty/kitty_light_mode.txt" "$home_dir/.config/kitty/colors.conf"
 	  sudo cp -f "$home_dir/.config/gtk-3.0/gtk_3.0_light_mode.txt" "$home_dir/.config/gtk-3.0/settings.ini"
     sudo cp -f "$home_dir/.config/i3/i3_light_mode.txt" "$home_dir/.config/i3/colors.conf"
 	  sudo cp -f "$home_dir/.config/gtk-3.0/settings.ini" /etc/gtk-3.0/

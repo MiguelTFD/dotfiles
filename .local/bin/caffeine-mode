@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if pgrep -x light-locker > /dev/null; then
+    xset -dpms
+    xset s off
+    killall light-locker 2>/dev/null
+    dunstify 'Caffeine Mode ON' 'Screen will NOT lock or suspend'
+else
+    xset +dpms
+    xset s on
+    light-locker &
+    dunstify 'Caffeine Mode OFF' 'Screen will lock and suspend normally'
+fi
