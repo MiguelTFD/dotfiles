@@ -5,7 +5,8 @@
   "diagnostic.errorSign": "",
   "diagnostic.warningSign": "󱇎",
   "diagnostic.infoSign": "",
-  "diagnostic.hintSign": " ",
+  "diagnostic.hintSign": "",
   "semanticTokens.enable": true,
-  "semanticTokens.filetypes": ["*"]
+  "semanticTokens.filetypes": ["*"],
+  "coc.preferences.formatOnSaveFiletypes": ["*"]
 }
