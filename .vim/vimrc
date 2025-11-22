@@ -233,6 +233,8 @@ function! LightLineReadonly()
   endif
 endfunction
 
+autocmd FileType nerdtree setlocal statusline=%#Normal#
+
 
 " ── startify settings ─────────────────────────────────────────────────────────
 let g:webdevicons_enable_startify = 1
