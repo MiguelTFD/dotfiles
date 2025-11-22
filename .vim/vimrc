@@ -98,14 +98,15 @@ let theme_mode = getenv('THEME_MODE')
 
 if theme_mode ==# 'light'
   set background=light
-  highlight ColorColumn ctermbg=235 guibg=#ebdbb2
 else
   set background=dark
-  highlight ColorColumn ctermbg=235 guibg=#3c3836
 endif
 
-colorscheme gruvbox
 let g:gruvbox_italic = 1
+let g:gruvbox_sign_column = 'bg0'
+let g:gruvbox_invert_tabline = 0
+
+colorscheme gruvbox
 
 
 " ── glaive settings ─────────────────────────────────────────────────────── 
