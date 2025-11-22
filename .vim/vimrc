@@ -32,6 +32,7 @@ set showtabline=2
 set nocursorcolumn
 set nocursorline
 set fillchars+=vert:│
+set fillchars+=eob:\ 
 set textwidth=0
 set noshowmode
 set wildoptions=pum
@@ -104,7 +105,7 @@ else
 endif
 
 colorscheme gruvbox
-
+let g:gruvbox_italic = 1
 
 
 " ── glaive settings ─────────────────────────────────────────────────────── 
@@ -151,6 +152,13 @@ let g:NERDTreeGitStatusHighlightingCustom = {
 \ 'Unknown'   : 'ctermfg=white',
 \ }
 
+augroup nerdtreehidecwd
+  autocmd!
+  autocmd FileType nerdtree setlocal conceallevel=3
+          \ | syntax match NERDTreeHideCWD #^[</].*$# conceal
+          \ | setlocal concealcursor=n
+augroup end
+
 
 " ── gitgutter settings ────────────────────────────────────────────────────────
 let g:gitgutter_max_signs = 500
@@ -171,7 +179,7 @@ let g:lightline.colorscheme = 'gruvbox'
 let g:lightline.active = {
   \ 'left': [
   \   [ 'mode', 'paste' ],
-  \   [ 'gitbranch', 'readonly', 'filename', 'modified' ]
+  \   [ 'bettergitbranch', 'readonly', 'filename', 'modified' ]
   \ ],
   \ 'right': [
   \   [ 'lineinfo' ],
@@ -184,8 +192,7 @@ let g:lightline.inactive = {
   \   [ 'filename' ]
   \ ],
   \ 'right': [
-  \   [ 'lineinfo' ],
-  \   [ 'percent' ]
+  \   [ ' ' ]
   \ ]
 \ }
 
@@ -202,7 +209,7 @@ let g:lightline.component_function = {
   \ 'iconfiletype': 'IconFileType',
   \ 'readonly': 'LightLineReadonly',
   \ 'linenoindicator': 'LineNoIndicator',
-  \ 'gitbranch': 'FugitiveHead',
+  \ 'bettergitbranch': 'BetterGitBranch',
 \ }
 
 let g:lightline.component_expand = {
@@ -212,6 +219,14 @@ let g:lightline.component_expand = {
 let g:lightline.component_type = {
   \ 'buffers': 'tabsel',
 \ }
+
+function! BetterGitBranch()
+  if exists('*FugitiveHead')
+    return ''. ' ' . FugitiveHead()
+  else
+    return 'No gitbranch info'
+  endif
+endfunction
 
 function! IconFileType()
   if empty(&filetype)
@@ -233,13 +248,6 @@ function! LightLineReadonly()
   endif
 endfunction
 
-augroup nerdtreehidecwd
-  autocmd!
-  autocmd FileType nerdtree setlocal conceallevel=3
-          \ | syntax match NERDTreeHideCWD #^[</].*$# conceal
-          \ | setlocal concealcursor=n
-augroup end
-
 
 " ── startify settings ─────────────────────────────────────────────────────────
 let g:webdevicons_enable_startify = 1
@@ -247,6 +255,7 @@ let g:startify_padding_left = 3
 let g:startify_session_delete_buffers = 1
 let g:startify_relative_path = 1
 let g:startify_files_number = 6
+let g:startify_change_to_dir = 0
 
 let g:startify_bookmarks = [
   \ {'b': '~/.bashrc'},
@@ -285,7 +294,6 @@ endfunction
 autocmd FileType calendar call ConfigureCalendar()
 
 
-
 " ── Lsp settings ──────────────────────────────────────────────────────────────
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
@@ -294,8 +302,6 @@ imap <c-space> <Plug>(asyncomplete_force_refresh)
 
 let g:asyncomplete_popup_delay = 400
 let g:asyncomplete_min_chars = 1
-
-
 
 let g:lsp_completion_documentation_delay = 400
 let g:lsp_diagnostics_float_cursor = 1
@@ -321,7 +327,6 @@ let g:lsp_signature_help_delay = 400
 let g:lsp_log_file = expand('~/.vim/logs/vim-lsp.log')
 let g:lsp_semantic_enabled = 1
 let g:lsp_semantic_delay = 400
-
 
 function! s:on_lsp_buffer_enabled() abort
   setlocal omnifunc=lsp#complete
@@ -371,6 +376,7 @@ augroup autoformat_settings
   autocmd FileType vue silent! AutoFormatBuffer prettier
 augroup END
 
+
 " ── vsnip settings ────────────────────────────────────────────────────────────
 let g:vsnip_snippet_dir = expand('~/.vim/snippets')
 
@@ -391,7 +397,7 @@ let g:floaterm_keymap_new    = '<F8>'
 
 
 " ── indentline settings ───────────────────────────────────────────────────────
-let g:indentLine_char_list = ['│']
+let g:indentLine_char = '│'
 let g:indentLine_fileTypeExclude = ['startify', 'calendar']
 let g:vim_json_conceal = 0
 let g:markdown_syntax_conceal = 0
