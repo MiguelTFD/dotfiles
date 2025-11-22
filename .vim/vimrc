@@ -47,35 +47,114 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'yggdroot/indentline'
+Plug 'jiangmiao/auto-pairs'
 Plug 'airblade/vim-rooter'
 " --- Git ---
-Plug 'itchyny/vim-gitbranch'
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 " --- UI / Appearance ---
 Plug 'itchyny/lightline.vim'
 Plug 'mengelbrecht/lightline-bufferline'
+Plug 'drzel/vim-line-no-indicator'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'xuyuanp/nerdtree-git-plugin'
 Plug 'ryanoasis/vim-devicons'
 Plug 'morhetz/gruvbox'
 Plug 'mhinz/vim-startify'
-Plug 'drzel/vim-line-no-indicator'
 " --- Navigation / Terminal ---
+Plug 'preservim/nerdtree'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'voldikss/vim-floaterm'
 " --- Movements and text ---
 Plug 'chaoren/vim-wordmotion'
-" --- CoC and Snippets
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'josa42/vim-lightline-coc'
-Plug 'honza/vim-snippets'
+" --- Lsp ---
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+" --- Snippets ---
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/vim-vsnip-integ'
+" --- Formatting ---
+Plug 'google/vim-maktaba'
+Plug 'google/vim-glaive'
+Plug 'google/vim-codefmt'
 " --- Miscellaneous ---
 Plug 'itchyny/calendar.vim'
 " --- Coming Soon ---
 call plug#end()
 
 
+" ── colorscheme settings  ─────────────────────────────────────
+if exists('+termguicolors')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+endif
+
+let theme_mode = getenv('THEME_MODE')
+
+if theme_mode ==# 'light'
+  set background=light
+  highlight ColorColumn ctermbg=235 guibg=#ebdbb2
+else
+  set background=dark
+  highlight ColorColumn ctermbg=235 guibg=#3c3836
+endif
+
+colorscheme gruvbox
+
+
+
+" ── glaive settings ─────────────────────────────────────────────────────── 
+call glaive#Install()
+
+
 " ── vim-rooter settings ───────────────────────────────────────────────────────
 let g:rooter_patterns = ['.git', 'pom.xml', 'package.json']
 let g:rooter_silent_chdir = 1
+
+
+" ── nerdtree settings ───────────────────────────────────────────────────────
+let g:NERDTreeIgnore = ['target', 'node_modules', '.git', '.mvn', '.settings']
+let g:NERDTreeQuitOnOpen = 1
+let g:NERDTreeShowHidden = 1
+let g:NERDTreeMinimalUI = 1
+
+highlight! link NERDTreeOpenable GruvboxGray
+highlight! link NERDTreeClosable GruvboxGray
+
+
+let g:NERDTreeGitStatusIndicatorMapCustom = {
+\ 'Modified'  :'󰀨',
+\ 'Staged'    :'',
+\ 'Untracked' :'',
+\ 'Renamed'   :'➜',
+\ 'Unmerged'  :'═',
+\ 'Deleted'   :'✖',
+\ 'Dirty'     :'󱍸',
+\ 'Ignored'   :'☒',
+\ 'Clean'     :'✔︎',
+\ 'Unknown'   :'?',
+\ }
+
+let g:NERDTreeGitStatusHighlightingCustom = {
+\ 'Modified'  : 'ctermfg=yellow',
+\ 'Staged'    : 'ctermfg=green',
+\ 'Untracked' : 'ctermfg=gray',
+\ 'Renamed'   : 'ctermfg=purple',
+\ 'Unmerged'  : 'ctermfg=red',
+\ 'Deleted'   : 'ctermfg=red',
+\ 'Dirty'     : 'ctermfg=red',
+\ 'Ignored'   : 'ctermfg=grey' ,
+\ 'Clean'     : 'ctermfg=blue' ,
+\ 'Unknown'   : 'ctermfg=white',
+\ }
+
+
+" ── gitgutter settings ────────────────────────────────────────────────────────
+let g:gitgutter_max_signs = 500
 
 
 " ── lightline settings ────────────────────────────────────────────────────────
@@ -97,9 +176,7 @@ let g:lightline.active = {
   \ ],
   \ 'right': [
   \   [ 'lineinfo' ],
-  \   [ 'linenoindicator' ],
-  \   [ 'coc_info', 'coc_hints', 'coc_errors', 'coc_warnings', 'coc_ok' ],
-  \   [ 'coc_status' ]
+  \   [ 'linenoindicator' ]
   \ ]
 \ }
 
@@ -126,7 +203,7 @@ let g:lightline.component_function = {
   \ 'iconfiletype': 'IconFileType',
   \ 'readonly': 'LightLineReadonly',
   \ 'linenoindicator': 'LineNoIndicator',
-  \ 'gitbranch': 'gitbranch#name',
+  \ 'gitbranch': 'FugitiveHead',
 \ }
 
 let g:lightline.component_expand = {
@@ -156,8 +233,6 @@ function! LightLineReadonly()
     return ""
   endif
 endfunction
-
-call lightline#coc#register()
 
 
 " ── startify settings ─────────────────────────────────────────────────────────
@@ -204,67 +279,105 @@ endfunction
 autocmd FileType calendar call ConfigureCalendar()
 
 
-" ── colorscheme settings ──────────────────────────────────────────────────────
-colorscheme gruvbox
-let g:gruvbox_italic=1
-let theme_mode = getenv('THEME_MODE')
 
-if theme_mode ==# 'light'
-  highlight ColorColumn ctermbg=235 guibg=#ebdbb2
-  set background=light
-else
-  highlight ColorColumn ctermbg=235 guibg=#3c3836
-  set background=dark
-endif
+" ── Lsp settings ──────────────────────────────────────────────────────────────
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+imap <c-space> <Plug>(asyncomplete_force_refresh)
 
-if exists('+termguicolors')
-  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-  set termguicolors
-endif
+let g:asyncomplete_popup_delay = 400
+let g:asyncomplete_min_chars = 1
 
 
-" ── CoC settings ────────────────────────────────────────────────────────
-let g:coc_global_extensions = [
-  \ 'coc-highlight',
-  \ 'coc-snippets',
-  \ 'coc-pairs',
-  \ 'coc-explorer',
-  \ 'coc-yank',
-  \ 'coc-prettier',
-  \ 'coc-db',
-  \ 'coc-git',
-  \ 'coc-java',
-  \ 'coc-tsserver',
-  \ 'coc-eslint',
-  \ ]
 
-autocmd CursorHold * silent call CocActionAsync('highlight')
+let g:lsp_completion_documentation_delay = 400
+let g:lsp_diagnostics_float_cursor = 1
+let g:lsp_diagnostics_float_delay = 400
+let g:lsp_diagnostics_float_insert_mode_enabled = 0
+"let g:lsp_diagnostics_echo_cursor = 1
+"let g:lsp_diagnostics_echo_delay = 300
+let g:lsp_diagnostics_highlights_insert_mode_enabled = 0
+let g:lsp_diagnostics_highlights_delay = 400
+let g:lsp_document_code_action_signs_hint = {'text': '→'}
+let g:lsp_diagnostics_signs_error = {'text': '✘'}
+let g:lsp_diagnostics_signs_warning = {'text': '‼'}
+let g:lsp_diagnostics_signs_info = {'text': 'ℹ'}
+let g:lsp_diagnostics_signs_hint = {'text': '?'}
+let g:lsp_diagnostics_signs_insert_mode_enabled = 0
+let g:lsp_diagnostics_signs_delay = 400
+let g:lsp_diagnostics_virtual_text_enabled = 0
+let g:lsp_document_code_action_signs_delay = 400
+"let g:lsp_inlay_hints_enabled = 1
+"let g:lsp_inlay_hints_delay = 400
+let g:lsp_document_highlight_delay = 400
+let g:lsp_signature_help_delay = 400
+let g:lsp_log_file = expand('~/.vim/logs/vim-lsp.log')
+let g:lsp_semantic_enabled = 1
+let g:lsp_semantic_delay = 400
 
-inoremap <silent><expr> <TAB>
-      \ coc#pum#visible() ? coc#pum#next(1) :
-      \ CheckBackspace() ? "\<Tab>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
-inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-
-function! CheckBackspace() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
+function! s:on_lsp_buffer_enabled() abort
+  setlocal omnifunc=lsp#complete
+  setlocal signcolumn=yes
+  nmap <buffer> gd <plug>(lsp-definition)
+  nmap <buffer> gD <plug>(lsp-declaration)
+  nmap <buffer> gr <plug>(lsp-references)
+  nmap <buffer> gi <plug>(lsp-implementation)
+  nmap <buffer> gt <plug>(lsp-type-definition)
+  nmap <buffer> <leader>rn <plug>(lsp-rename)
+  nmap <buffer> <leader>ca <plug>(lsp-code-action)
+  nmap <buffer> [g <plug>(lsp-previous-diagnostic)
+  nmap <buffer> ]g <plug>(lsp-next-diagnostic)
+  nmap <buffer> K <plug>(lsp-hover)
+  nmap <buffer> <leader>k <plug>(lsp-signature-help)
 endfunction
+augroup lsp_install
+  au!
+  autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
 
-if has('nvim')
-  inoremap <silent><expr> <c-space> coc#refresh()
-else
-  inoremap <silent><expr> <c-@> coc#refresh()
-endif
+
+" ── vim-codefmt settings ──────────────────────────────────────────────────────
+augroup autoformat_settings
+  autocmd!
+  autocmd FileType bzl silent! AutoFormatBuffer buildifier
+  autocmd FileType c,cpp,proto,javascript,typescript,arduino silent! AutoFormatBuffer clang-format
+  autocmd FileType clojure silent! AutoFormatBuffer cljstyle
+  autocmd FileType dart silent! AutoFormatBuffer dartfmt
+  autocmd FileType elixir,eelixir,heex silent! AutoFormatBuffer mixformat
+  autocmd FileType fish silent! AutoFormatBuffer fish_indent
+  autocmd FileType gn silent! AutoFormatBuffer gn
+  autocmd FileType go silent! AutoFormatBuffer gofmt
+  autocmd FileType haskell silent! AutoFormatBuffer ormolu
+  autocmd FileType html,css,sass,scss,less,json silent! AutoFormatBuffer prettier
+  autocmd FileType java silent! AutoFormatBuffer google-java-format
+  autocmd FileType jsonnet silent! AutoFormatBuffer jsonnetfmt
+  autocmd FileType julia silent! AutoFormatBuffer JuliaFormatter
+  autocmd FileType kotlin silent! AutoFormatBuffer ktfmt
+  autocmd FileType lua silent! AutoFormatBuffer luaformatterfiveone
+  autocmd FileType markdown silent! AutoFormatBuffer prettier
+  autocmd FileType ocaml silent! AutoFormatBuffer ocamlformat
+  autocmd FileType python silent! AutoFormatBuffer yapf
+  autocmd FileType ruby silent! AutoFormatBuffer rubocop
+  autocmd FileType rust silent! AutoFormatBuffer rustfmt
+  autocmd FileType swift silent! AutoFormatBuffer swift-format
+  autocmd FileType vue silent! AutoFormatBuffer prettier
+augroup END
+
+" ── vsnip settings ────────────────────────────────────────────────────────────
+let g:vsnip_snippet_dir = expand('~/.vim/snippets')
+
+imap <expr> <F12> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<F12>'
+smap <expr> <F12> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<F12>'
+
+imap <expr> <F11> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<F11>'
+smap <expr> <F11> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<F11>'
 
 
 " ── floaterm settings ─────────────────────────────────────────────────────────
 let g:floaterm_autoclose = 2
-let g:floaterm_title = ' -> $1..$2'
+let g:floaterm_title = '  -> $1..$2'
 let g:floaterm_keymap_toggle = '<F5>'
 let g:floaterm_keymap_prev   = '<F6>'
 let g:floaterm_keymap_next   = '<F7>'
@@ -273,7 +386,7 @@ let g:floaterm_keymap_new    = '<F8>'
 
 " ── indentline settings ───────────────────────────────────────────────────────
 let g:indentLine_char_list = ['│']
-let g:indentLine_fileTypeExclude = ['startify', 'calendar', 'coc-explorer']
+let g:indentLine_fileTypeExclude = ['startify', 'calendar']
 let g:vim_json_conceal = 0
 let g:markdown_syntax_conceal = 0
 
@@ -297,7 +410,7 @@ let g:fzf_colors = {
 
 
 " ── keybinds ──────────────────────────────────────────────────────────────────
-nmap <silent> <F1> :CocCommand explorer --toggle --width 30<CR>
+nmap <silent> <F1> :NERDTreeToggle<CR>
 nnoremap <silent> <F2> :Rg<CR>
 nnoremap <silent> <F3> :Files<CR>
 nnoremap <silent> <F4> :Buffers<CR>

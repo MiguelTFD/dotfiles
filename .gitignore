@@ -50,6 +50,9 @@
 !/.vim/undodir
 /.vim/undodir/*
 !/.vim/undodir/.gitkeep
+!/.vim/logs
+/.vim/logs/*
+!/.vim/logs/.gitkeep
 !/.vim/snippets
 !/.vim/scripts
 !/.vim/coc-settings.json
