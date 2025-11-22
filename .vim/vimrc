@@ -235,7 +235,7 @@ endfunction
 
 augroup nerdtreehidecwd
   autocmd!
-  autocmd FileType nerdtree setlocal conceallevel = 3
+  autocmd FileType nerdtree setlocal conceallevel=3
           \ | syntax match NERDTreeHideCWD #^[</].*$# conceal
           \ | setlocal concealcursor=n
 augroup end
