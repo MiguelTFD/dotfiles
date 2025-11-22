@@ -125,17 +125,16 @@ let g:NERDTreeMinimalUI = 1
 highlight! link NERDTreeOpenable GruvboxGray
 highlight! link NERDTreeClosable GruvboxGray
 
-
 let g:NERDTreeGitStatusIndicatorMapCustom = {
-\ 'Modified'  :'󰀨',
-\ 'Staged'    :'',
-\ 'Untracked' :'',
+\ 'Modified'  :'*',
+\ 'Staged'    :'+',
+\ 'Untracked' :'%',
 \ 'Renamed'   :'➜',
 \ 'Unmerged'  :'═',
-\ 'Deleted'   :'✖',
-\ 'Dirty'     :'󱍸',
+\ 'Deleted'   :'✘',
+\ 'Dirty'     :'*',
 \ 'Ignored'   :'☒',
-\ 'Clean'     :'✔︎',
+\ 'Clean'     :'✔',
 \ 'Unknown'   :'?',
 \ }
 
@@ -146,7 +145,7 @@ let g:NERDTreeGitStatusHighlightingCustom = {
 \ 'Renamed'   : 'ctermfg=purple',
 \ 'Unmerged'  : 'ctermfg=red',
 \ 'Deleted'   : 'ctermfg=red',
-\ 'Dirty'     : 'ctermfg=red',
+\ 'Dirty'     : 'ctermfg=yellow',
 \ 'Ignored'   : 'ctermfg=grey' ,
 \ 'Clean'     : 'ctermfg=blue' ,
 \ 'Unknown'   : 'ctermfg=white',
