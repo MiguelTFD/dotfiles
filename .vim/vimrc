@@ -233,7 +233,12 @@ function! LightLineReadonly()
   endif
 endfunction
 
-autocmd FileType nerdtree setlocal statusline=%#Normal#
+augroup nerdtreehidecwd
+  autocmd!
+  autocmd FileType nerdtree setlocal conceallevel = 3
+          \ | syntax match NERDTreeHideCWD #^[</].*$# conceal
+          \ | setlocal concealcursor=n
+augroup end
 
 
 " ── startify settings ─────────────────────────────────────────────────────────
