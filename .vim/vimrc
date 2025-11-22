@@ -24,6 +24,7 @@ set expandtab
 set norelativenumber
 set hidden
 set showmatch
+set incsearch
 set hlsearch
 set ignorecase
 set smartcase
