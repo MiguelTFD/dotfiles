@@ -1,2 +1,2 @@
 #! /bin/sh
-kitty --class custom_size -e vim -c "Calendar -first_day=monday"
+alacritty --class custom_size -e vim -c "Calendar -first_day=monday"
