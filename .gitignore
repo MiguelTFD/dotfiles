@@ -20,12 +20,9 @@
 !/.config/gtk-3.0
 /.config/gtk-3.0/bookmarks
 !/.config/i3
-!/.config/kitty
+!/.config/alacritty
 !/.config/miscellaneous
 !/.config/fastfetch
-!/.config/ranger
-/.config/ranger/*
-!/.config/ranger/rc.conf
 !/.config/picom
 !/.config/polybar
 !/.config/rofi
@@ -50,6 +47,9 @@
 !/.vim/undodir
 /.vim/undodir/*
 !/.vim/undodir/.gitkeep
+!/.vim/logs
+/.vim/logs/*
+!/.vim/logs/.gitkeep
 !/.vim/snippets
 !/.vim/scripts
 !/.vim/coc-settings.json

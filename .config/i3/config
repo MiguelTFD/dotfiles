@@ -49,7 +49,7 @@ tiling_drag modifier titlebar
 #========================= Custom keybinds======
 
 # start a terminal
-bindsym $mod+Return exec --no-startup-id kitty
+bindsym $mod+Return exec --no-startup-id alacritty 
 bindsym $mod+space exec --no-startup-id rofi -show drun
 
 
@@ -198,11 +198,11 @@ for_window [class="^.*"] border pixel 3
 for_window [class="feh"] floating enable, resize set 1280 720, move position center
 
 # Tamanio custom
-# Define una regla para Kitty con una instancia específica
+# Define una regla para Alacritty con una instancia específica
 for_window [instance="custom_size"] floating enable, resize set 300 300,move position center
 
-# Asigna un atajo de teclado para abrir Kitty con esta configuración
-bindsym $mod+Shift+' exec kitty --class "custom_size"
+# Asigna un atajo de teclado para abrir Alacritty con esta configuración
+bindsym $mod+Shift+' exec alacritty --class "custom_size"
 
 #alt+tab 
 bindsym Mod1+Tab workspace next

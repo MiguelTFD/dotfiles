@@ -1,0 +1,11 @@
+import:
+  - ~/.config/alacritty/colors.yml
+
+font:
+  normal:
+    family: JetBrainsMono Nerd Font
+    style: Medium
+  size: 12.0
+
+scrolling:
+  multiplier: 1
