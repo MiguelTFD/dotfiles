@@ -25,6 +25,7 @@
 !/.config/fastfetch
 !/.config/picom
 !/.config/polybar
+!/.config/bat
 !/.config/rofi
 !/.config/starship.toml
 !/.config/theme_mode

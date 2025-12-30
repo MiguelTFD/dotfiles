@@ -1,0 +1,6 @@
+# ─── APARIENCIA ───
+
+--theme="gruvbox-dark"
+--style="changes"
+--italic-text=always
+--paging=never

@@ -9,3 +9,12 @@ font:
 
 scrolling:
   multiplier: 1
+
+bell:
+  animation: EaseOutExpo
+  duration: 0
+  color: '0xffffff'
+
+  command:
+    program: "sh"
+    args: ["-c", "paplay ~/.config/alacritty/pop.wav"]
