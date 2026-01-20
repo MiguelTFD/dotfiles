@@ -1,16 +1,19 @@
 [global]
-    font = "Hack 12"
+    font = "JetBrainsMono Nerd Font 12"
     markup = full
-    format = "<b>%s</b>\n%b"
+    format = "<u><i>%a</i></u>\n<b>%s</b>\n%b"
     sort = yes
     indicate_hidden = yes
-    alignment = center
+    alignment = left
     stack_duplicates = true
     bounce_freq = 0
     show_age_threshold = 60
     word_wrap = yes
     ignore_newline = no
-    geometry = "200x5-6+30"
+    width = 300
+    height = 300
+    origin = top-center
+    offset = 10x10
     browser = /usr/bin/firefox -new-tab
     transparency = 0
     idle_threshold = 120
@@ -18,28 +21,24 @@
     follow = mouse
     sticky_history = yes
     line_height = 0
-    separator_height = 2
     padding = 8
+    gap_size = 3
     horizontal_padding = 8
-    separator_color = "#585858"
     startup_notification = false
-    # https://github.com/knopwob/dunst/issues/26#issuecomment-36159395
-    #icon_position = left
-    frame_width = 1
-    frame_color = "#282828"
+    background = "#3c3836"
+    frame_width = 3
+    frame_color = "#ebdbb2"
     history_length = 20    
+    timeout = 6
 
 [urgency_low]
-    background = "#ebdbb2"
-    foreground = "#282828"
-    timeout = 5
+    foreground = "#928374"
+    frame_color = "#928374"
 
 [urgency_normal]
-    background = "#ebdbb2"
-    foreground = "#282828"
-    timeout = 10
+    foreground = "#b8bb26"
+    frame_color = "#b8bb26"
 
 [urgency_critical]
-    background = "#ebdbb2"
-    foreground = "#282828"
-    timeout = 20
+    foreground = "#fb4934"
+    frame_color = "#fb4934"

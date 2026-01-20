@@ -1,13 +1,55 @@
 #!/bin/bash
 
-if pgrep -x light-locker > /dev/null; then
+STATE_FILE="/tmp/polybar_caffeine_state"
+PID_FILE="/tmp/polybar_caffeine_pid"
+
+if [ ! -f "$STATE_FILE" ]; then
+  echo "0" > "$STATE_FILE"
+fi
+
+get_state() {
+  state=$(cat "$STATE_FILE")
+  if [ "$state" -eq "1" ]; then
+    echo "%{B#665c54}%{F#bdae93}  "
+  else
+    echo "%{B#665c54}%{F#bdae93} "
+  fi
+}
+
+change_state() {
+  state=$(cat "$STATE_FILE")
+  
+  if [ "$state" -eq "0" ]; then
+    echo "1" > "$STATE_FILE"
+    
     xset -dpms
     xset s off
-    killall light-locker 2>/dev/null
-    dunstify 'Caffeine Mode ON' 'Screen will NOT lock or suspend'
-else
+    
+    light-locker-command --inhibit > /dev/null 2>&1 &
+    
+    echo $! > "$PID_FILE"
+    
+    dunstify -u low -t 2000 'Caffeine: ON' 'Suspensión e inhibición activas'
+  else
+    echo "0" > "$STATE_FILE"
+    
     xset +dpms
     xset s on
-    light-locker &
-    dunstify 'Caffeine Mode OFF' 'Screen will lock and suspend normally'
-fi
+    
+    if [ -f "$PID_FILE" ]; then
+        kill "$(cat "$PID_FILE")"
+        rm "$PID_FILE"
+    fi
+    
+    dunstify -u low -t 2000 'Caffeine: OFF' 'Sistema normalizado'
+  fi
+}
+
+case "$1" in
+  --toggle)
+    change_state
+    ;;
+  *)
+    get_state
+    ;;
+esac
