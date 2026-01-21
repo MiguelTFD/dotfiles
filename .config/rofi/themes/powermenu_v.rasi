@@ -1,0 +1,66 @@
+configuration {
+  show-icons: false;
+}
+
+* {
+  padding:             0px;
+  margin:              0px;
+  bg0:     #282828;
+  bg1:     #3c3836;
+  fg0:     #ebdbb2;
+  gray:    #a89984;
+  green:   #b8bb26;
+
+}
+
+window {
+  location: east;
+  anchor: east;
+  x-offset:   -9px;
+  font: "JetBrains Mono Nerd Font 18";
+  fullscreen: false;
+  width: 100px;
+  height: 370px;
+  enabled: true;
+  border: 2px solid;
+  border-color: @gray;
+  background-color: @bg1;
+}
+
+mainbox {
+  background-color: @bg1;
+  children: [ "listview" ];
+}
+
+listview {
+  lines: 4;
+  columns: 1;
+  spacing: 20px;
+  margin: 5px;
+  layout: vertical;
+  background-color: transparent;
+  scrollbar: false;
+}
+
+element {
+  margin: 9px 0px 1px 0px;
+  padding: 1px 4px 0px 0px;
+  border: 0px solid;
+  border-radius: 0px;
+  background-color: transparent;
+  text-color: @fg0;
+  cursor: pointer;
+  vertical-align: 0.5;
+  horizontal-align: 0.5;
+}
+
+element-text {
+  text-color: @fg0;
+  background-color: transparent;
+  cursor: inherit;
+  font: "JetBrains Mono Nerd Font 33";
+}
+
+element-text selected{
+  text-color: @green;
+}

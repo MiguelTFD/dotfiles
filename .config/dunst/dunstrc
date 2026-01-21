@@ -12,7 +12,7 @@
     ignore_newline = no
     width = 300
     height = 300
-    origin = top-center
+    origin = bottom-right
     offset = 10x10
     browser = /usr/bin/firefox -new-tab
     transparency = 0
