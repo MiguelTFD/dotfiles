@@ -10,9 +10,9 @@ fi
 get_state() {
   state=$(cat "$STATE_FILE")
   if [ "$state" -eq "1" ]; then
-    echo "%{B#665c54}%{F#bdae93}  "
+    echo "󰅶"
   else
-    echo "%{B#665c54}%{F#bdae93} "
+    echo "" 
   fi
 }
 

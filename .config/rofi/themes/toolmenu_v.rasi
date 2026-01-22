@@ -18,9 +18,9 @@ configuration {
 }
 
 window {
-  location: northeast;
-  anchor:   northeast;
-  x-offset:   -9px;
+  location: northwest;
+  anchor:   northwest;
+  x-offset:   9px;
   y-offset:   50px;
   width:  300px;
   border:         3px;
@@ -34,8 +34,8 @@ mainbox {
 }
 
 listview {
-  columns: 2;
-  lines:   2;
+  columns: 3;
+  lines:   3;
   spacing: 15px;   
   cycle:   false;
   layout:  vertical;
