@@ -13,7 +13,7 @@
     width = 300
     height = 300
     origin = bottom-right
-    offset = 10x10
+    offset = 9x9
     browser = /usr/bin/firefox -new-tab
     transparency = 0
     idle_threshold = 120
