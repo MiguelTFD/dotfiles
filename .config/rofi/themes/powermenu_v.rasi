@@ -9,7 +9,7 @@ configuration {
   bg0:    #282828;
   bg1:    #3c3836;
   fg0:    #ebdbb2;
-  green:  #b8bb26;
+  purple:  #b16286;
   gray:   #a89984;
   background-color: transparent;
   text-color:       @fg0;
@@ -57,7 +57,7 @@ element-text {
 }
 
 element selected {
-  background-color: @green;
+  background-color: @purple;
   text-color: @bg0;
   border: 0px;
 }
