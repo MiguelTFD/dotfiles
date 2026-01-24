@@ -50,7 +50,7 @@ element {
 }
 
 element-text {
-  font: "JetBrains Mono Nerd Font 30";
+  font: "Symbols Nerd Font Mono 30";
   cursor: pointer;
   horizontal-align: 0.5;
   vertical-align:   0.5;

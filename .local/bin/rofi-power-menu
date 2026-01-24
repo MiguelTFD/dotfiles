@@ -1,9 +1,9 @@
 #!/bin/bash
-shutdown=' 󰐥 '
-reboot='  '
-lock='  '
-suspend='  '
-logout=' 󰍃 '
+shutdown='󰐥'
+reboot=''
+lock=''
+suspend=''
+logout='󰍃'
 
 chosen=$(echo -e "$suspend\n$logout\n$reboot\n$shutdown" | rofi -dmenu -theme ~/.config/rofi/themes/powermenu_v.rasi )
 

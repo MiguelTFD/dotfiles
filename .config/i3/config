@@ -20,7 +20,7 @@ tiling_drag modifier titlebar
 #========================= Custom keybinds======
 bindsym $mod+Return exec --no-startup-id alacritty 
 bindsym $mod+p exec --no-startup-id rofi-power-menu
-bindsym $mod+m exec --no-startup-id rofi-tool-menu
+bindsym $mod+t exec --no-startup-id rofi-tool-menu
 bindsym $mod+space exec --no-startup-id rofi -show drun
 bindsym $mod+q kill
 bindsym $mod+F5 exec --no-startup-id pulsemixer --toggle-mute && dunstify -r 2593 -u low -a "Speaker" "$(pulsemixer --get-mute | grep -q 1 && echo 'Speaker Muted' || echo 'Speaker Unmuted')"

@@ -3,14 +3,14 @@
 caffeine=$(caffeine-mode)
 scrot='󰄄'
 calendar=''
-notification='󰂚'
+notification=$(dunst-notifications-toggle)
 
 chosen=$(echo -e "$caffeine\n$scrot\n$calendar\n$notification" | rofi -dmenu -theme ~/.config/rofi/themes/toolmenu_v.rasi )
 
 case "$chosen" in
   "$caffeine") caffeine-mode --toggle ;;
-  "$scrot")  dunstify -u normal scrot executed;;
+  "$scrot")  rofi-screenshot-menu;;
   "$calendar") show-calendar-days ;;
-  "$notification") dunstify -u notification executed;;
+  "$notification") dunst-notifications-toggle --toggle;;
 esac
 

@@ -1,0 +1,69 @@
+#!/bin/bash
+
+STATE_FILE="/tmp/dunst_state"
+ENABLED_STATE="1"
+DISABLED_STATE="0"
+ICON_ENABLED="󰂚"
+ICON_DISABLED="󰂛"
+
+initialize_state_file() {
+  if [ ! -f "$STATE_FILE" ]; then
+    echo "$ENABLED_STATE" > "$STATE_FILE"
+  fi
+}
+
+read_state() {
+  cat "$STATE_FILE"
+}
+
+write_state() {
+  echo "$1" > "$STATE_FILE"
+}
+
+is_enabled() {
+  [ "$(read_state)" -eq "$ENABLED_STATE" ]
+}
+
+get_icon() {
+  if is_enabled; then
+    echo "$ICON_ENABLED"
+  else
+    echo "$ICON_DISABLED"
+  fi
+}
+
+enable_notifications() {
+  write_state "$ENABLED_STATE"
+  dunstctl set-paused false
+  notify-send -u low -t 2000 'Notifications: ON' 'Notifications are active'
+}
+
+disable_notifications() {
+  write_state "$DISABLED_STATE"
+  notify-send -u low -t 2000 'Notifications: OFF' 'Notifications are paused'
+  sleep 2.5
+  dunstctl set-paused true
+}
+
+toggle_state() {
+  if is_enabled; then
+    disable_notifications
+  else
+    enable_notifications
+  fi
+}
+
+main() {
+  initialize_state_file
+  
+  case "$1" in
+    --toggle)
+      toggle_state
+      ;;
+    *)
+      get_icon
+      ;;
+  esac
+}
+
+main "$@"
