@@ -1,37 +1,108 @@
 #!/bin/bash
 
-if [ -n "$SUDO_USER" ]; then
-  home_dir=$(eval echo ~${SUDO_USER})
-else
-  home_dir="$HOME"
+STATE_DIR="${$HOME/.local/state}/theme-manager"
+STATE_FILE="$STATE_DIR/theme-mode.txt"
+
+LOCK_FILE="/tmp/theme-manager.lock"
+
+mkdir -p "$STATE_DIR"
+
+if [ ! -f "$STATE_FILE" ]; then
+  echo "Dark" > "$STATE_FILE"
 fi
 
-theme_file="$home_dir/.config/theme_mode"
-MODE=$(cat "$theme_file")
-if [ "$MODE" = "dark" ]; then
-  NEW="light"
-else
-  NEW="dark"
-fi
-echo "$NEW" > "$theme_file"
+get_current_theme() {
+  cat "$STATE_FILE"  
+}
 
-if [ "$NEW" == "dark" ]; then
-    sudo cp -f "$home_dir/.config/alacritty/alacritty_dark_mode.txt" "$home_dir/.config/alacritty/colors.yml"
-    sudo cp -f "$home_dir/.config/gtk-3.0/gtk_3.0_dark_mode.txt" "$home_dir/.config/gtk-3.0/settings.ini"
-    sudo cp -f "$home_dir/.config/i3/i3_dark_mode.txt" "$home_dir/.config/i3/colors.conf"
-	  sudo cp -f "$home_dir/.config/gtk-3.0/settings.ini" /etc/gtk-3.0/
-    sudo cp -f "$home_dir/.config/miscellaneous/lightdm/lightdm_dark_mode.txt"  /etc/lightdm/lightdm-gtk-greeter.conf
-    sudo cp -f "$home_dir/.icons/default/default_cursor_dark_mode.txt" "$home_dir/.icons/default/index.theme"  
-    sudo install -D "$home_dir/.icons/default/index.theme" /usr/share/icons/default/index.theme 
 
-else
-    sudo cp -f "$home_dir/.config/alacritty/alacritty_light_mode.txt" "$home_dir/.config/alacritty/colors.yml"
-	  sudo cp -f "$home_dir/.config/gtk-3.0/gtk_3.0_light_mode.txt" "$home_dir/.config/gtk-3.0/settings.ini"
-    sudo cp -f "$home_dir/.config/i3/i3_light_mode.txt" "$home_dir/.config/i3/colors.conf"
-	  sudo cp -f "$home_dir/.config/gtk-3.0/settings.ini" /etc/gtk-3.0/
-    sudo cp -f "$home_dir/.config/miscellaneous/lightdm/lightdm_light_mode.txt"  /etc/lightdm/lightdm-gtk-greeter.conf
-    sudo cp -f "$home_dir/.icons/default/default_cursor_light_mode.txt" "$home_dir/.icons/default/index.theme"  
-    sudo install -D "$home_dir/.icons/default/index.theme" /usr/share/icons/default/index.theme 
-fi
+load_theme() {
+  local theme_mode
+  theme_mode=$(get_current_theme)
 
-i3-msg restart
+  if [ "$theme_mode" = "Dark" ]; then
+    export bg0_h="#1d2021"
+    export bg0="#282828"
+    export bg0_s="#32302f"
+    export bg1="#3c3836"
+    export bg2="#504945"
+    export bg3="#665c54"
+    export bg4="#7c6f64"
+    export fg0="#fbf1c7"
+    export fg1="#ebdbb2"
+    export fg2="#d5c4a1"
+    export fg3="#bdae93"
+    export fg4="#a89984"
+    export red="#cc241d"
+    export green="#98971a"
+    export yellow="#d79921"
+    export blue="#458588"
+    export purple="#b16286"
+    export aqua="#689d6a"
+    export orange="#d65d0e"
+    export gray="#928374"
+    export bright_red="#fb4934"
+    export bright_green="#b8bb26"
+    export bright_yellow="#fabd2f"
+    export bright_blue="#83a598"
+    export bright_purple="#d3869b"
+    export bright_aqua="#8ec07c"
+    export bright_orange="#fe8019"
+    export bright_gray="#a89984"
+  else
+    export bg0_h="#f9f5d7"
+    export bg0="#fbf1c7"
+    export bg0_s="#f2e5bc"
+    export bg1="#ebdbb2"
+    export bg2="#d5c4a1"
+    export bg3="#bdae93"
+    export bg4="#a89984"
+    export fg0="#282828"
+    export fg1="#3c3836"
+    export fg2="#504945"
+    export fg3="#665c54"
+    export fg4="#7c6f64"
+    export red="#cc241d"
+    export green="#98971a"
+    export yellow="#d79921"
+    export blue="#458588"
+    export purple="#b16286"
+    export aqua="#689d6a"
+    export orange="#d65d0e"
+    export gray="#7c6f64"
+    export bright_red="#9d0006"
+    export bright_green="#79740e"
+    export bright_yellow="#b57614"
+    export bright_blue="#076678"
+    export bright_purple="#8f3f71"
+    export bright_aqua="#427b58"
+    export bright_orange="#af3a03"
+    export bright_gray="#928374"
+  fi
+}
+
+toggle_theme() {
+  local current_theme new_theme
+
+  exec 200>"LOCK_FILE"
+  flock -n 200 || {
+    echo "Toggle in progress, please wait..."
+    return 1
+  }
+
+  current_theme=$(get_current_theme)
+
+  if [ "$current_theme" = "Dark" ]; then
+    new_theme="Light"
+  else
+    new_theme="Dark"
+  fi
+
+  echo "$new_theme" > "$STATE_FILE"
+
+  load_theme
+
+  if command -v dunstify &> /dev/null; then
+    dunstify -u low -t 2000 "Theme: $new_theme" "Updated Colors"
+  fi
+}

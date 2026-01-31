@@ -4,37 +4,27 @@ TARGET_DIR="$HOME/Pictures/screenshots"
 mkdir -p "$TARGET_DIR"
 TIMESTAMP=$(date '+%Y-%m-%d-%H-%M-%S')
 FILENAME="$TARGET_DIR/$TIMESTAMP-screenshot.png"
+ROFI_THEME="$HOME/.config/rofi/themes/scrotmenu_c.rasi"
+OPT_SCREEN_SAVE='󰍹'
+OPT_AREA_SAVE='󰆞'
 
-OPT_SCREEN_SAVE="󰍹  Full Screen (Save)"
-OPT_AREA_SAVE="󰆞  Select Area (Save)"
-OPT_SCREEN_CLIP="󰍹  Full Screen (Copy)"
-OPT_AREA_CLIP="󰆞  Select Area (Copy)"
-
-CHOSEN=$(printf "$OPT_SCREEN_SAVE\n$OPT_AREA_SAVE\n$OPT_SCREEN_CLIP\n$OPT_AREA_CLIP" | rofi -dmenu -i -p "Screenshot")
+CHOSEN=$(printf "$OPT_SCREEN_SAVE\n$OPT_AREA_SAVE" | rofi -dmenu -theme $ROFI_THEME)
 
 case "$CHOSEN" in
   "$OPT_SCREEN_SAVE")
     maim "$FILENAME"
-    notify-send -u low -i camera "  Screenshot Saved" "Path: $FILENAME"
+    xclip -selection clipboard -t image/png < "$FILENAME"
+    notify-send -u low -i camera "󰍹 Screenshot Saved & Copied" "Path: $FILENAME"
     ;;
-    
+
   "$OPT_AREA_SAVE")
     maim -s "$FILENAME"
     if [ -f "$FILENAME" ]; then
-        notify-send -u low -i camera "  Area Saved" "Path: $FILENAME"
+        xclip -selection clipboard -t image/png < "$FILENAME"
+        notify-send -u low -i camera "󰆞 Area Saved & Copied" "Path: $FILENAME"
     fi
     ;;
-    
-  "$OPT_SCREEN_CLIP")
-    maim | xclip -selection clipboard -t image/png
-    notify-send -u low -i edit-copy "  Copied to Clipboard" "Full screen ready to paste"
-    ;;
-    
-  "$OPT_AREA_CLIP")
-    maim -s | xclip -selection clipboard -t image/png
-    notify-send -u low -i edit-copy "  Copied to Clipboard" "Area ready to paste"
-    ;;
-    
+
   *)
     exit 1
     ;;

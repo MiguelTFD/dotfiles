@@ -1,0 +1,66 @@
+configuration {
+  show-icons: false;
+  hover-select: true;
+  me-select-entry: "";
+  me-accept-entry: "MousePrimary";
+}
+
+* {
+  bg0:    #282828;
+  bg1:    #3c3836;
+  fg0:    #ebdbb2;
+  purple:  #b16286;
+  gray:   #a89984;
+  background-color: transparent;
+  text-color:       @fg0;
+  padding: 0px;
+  margin:  0px;
+}
+
+window {
+  location: east;
+  anchor:   east;
+  x-offset:   -9px;
+  width:  90px;
+  border:         3px;
+  border-color:   @purple;
+  background-color: @bg0;
+}
+
+mainbox {
+  padding: 15px;
+  children: [ "listview" ];
+}
+
+listview {
+  columns: 1;
+  lines:   4;
+  spacing: 15px;   
+  cycle:   false;
+  layout:  vertical;
+  scrollbar: false;
+}
+
+element {
+  background-color: @bg1; 
+  padding: 10px 10px;
+  orientation: vertical;
+  cursor: pointer;
+}
+
+element-text {
+  font: "Symbols Nerd Font Mono 18";
+  cursor: pointer;
+  horizontal-align: 0.5;
+  vertical-align:   0.5;
+}
+
+element selected {
+  background-color: @purple;
+  text-color: @bg0;
+  border: 0px;
+}
+
+element-text selected {
+  text-color: inherit;
+}

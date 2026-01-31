@@ -1,0 +1,16 @@
+#!/bin/bash
+
+caffeine=$(caffeine-mode)
+scrot='󰄄'
+calendar=''
+notification=$(dunst-notifications-toggle)
+
+chosen=$(echo -e "$caffeine\n$scrot\n$calendar\n$notification" | rofi -dmenu -theme ~/.config/rofi/themes/toolmenu_v.rasi )
+
+case "$chosen" in
+  "$caffeine") caffeine-mode --toggle ;;
+  "$scrot")  rofi-screenshot-menu;;
+  "$calendar") show-calendar-days ;;
+  "$notification") dunst-notifications-toggle --toggle;;
+esac
+
