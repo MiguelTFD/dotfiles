@@ -4,7 +4,7 @@
     format = "<u><i>%a</i></u>\n<b>%s</b>\n%b"
     sort = yes
     indicate_hidden = yes
-    alignment = left
+    alignment = center
     stack_duplicates = true
     bounce_freq = 0
     show_age_threshold = 60
@@ -12,8 +12,8 @@
     ignore_newline = no
     width = 300
     height = 300
-    origin = bottom-right
-    offset = 9x9
+    origin = top-center
+    offset = 48px
     browser = /usr/bin/firefox -new-tab
     transparency = 0
     idle_threshold = 120
