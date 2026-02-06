@@ -41,6 +41,7 @@ enable_notifications() {
 disable_notifications() {
   write_state "$DISABLED_STATE"
   notify-send -u low -t 2000 'Notifications: OFF' 'Notifications are paused'
+  #TODO: remove this sleep and using persistence notifications
   sleep 2.5
   dunstctl set-paused true
 }
