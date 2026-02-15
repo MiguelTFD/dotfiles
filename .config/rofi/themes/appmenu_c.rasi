@@ -1,0 +1,195 @@
+@import "colors.rasi"
+
+configuration {
+  modi: "drun,run,filebrowser,window";
+  show-icons: true;
+  display-drun: "  Apps";
+  display-run: "  Run";
+  display-filebrowser: "  Files";
+  display-window: "  Windows";
+  drun-display-format: "{name}";
+  window-format: "{w} · {c} · {t}";
+}
+
+* {
+  font: "JetBrains Mono Nerd Font 9";
+  bg: @bg0;
+  bg-alt: @bg0s;
+  fg: @fg1;
+  selected: @blue1;
+  active: @green1;
+  urgent: @red1;
+  border: @selected;
+  handle: @selected;
+}
+
+window {
+  transparency: "real";
+  location: center;
+  anchor: center;
+  width: 800px;
+  border: 3px solid;
+  border-color: @border;
+  background-color: @bg;
+  cursor: "default";
+}
+
+mainbox {
+  spacing: 10px;
+  padding: 20px;
+  background-color: transparent;
+  children: [ "inputbar", "mode-switcher", "message", "listview" ];
+}
+
+inputbar {
+  spacing: 10px;
+  background-color: transparent;
+  text-color: @fg;
+  children: [ "prompt-icon", "entry" ];
+}
+
+prompt-icon {
+  padding: 5px 0px;
+  expand: false;
+  str: "";
+  background-color: inherit;
+  text-color: inherit;
+}
+
+entry {
+  padding: 5px 0px;
+  background-color: inherit;
+  text-color: inherit;
+  cursor: text;
+  placeholder: "Search...";
+  placeholder-color: inherit;
+}
+
+listview {
+  columns: 1;
+  lines: 8;
+  cycle: true;
+  dynamic: true;
+  scrollbar: false;
+  spacing: 5px;
+  background-color: transparent;
+  text-color: @fg;
+  cursor: "default";
+}
+
+scrollbar {
+  handle-width: 5px;
+  handle-color: @handle;
+  background-color: @bg-alt;
+}
+
+element {
+  spacing: 10px;
+  padding: 10px;
+  background-color: transparent;
+  text-color: @fg;
+  cursor: pointer;
+}
+
+element normal.normal {
+  background-color: @bg;
+  text-color: @fg;
+}
+
+element normal.urgent {
+  background-color: @urgent;
+  text-color: @bg;
+}
+
+element normal.active {
+  background-color: @active;
+  text-color: @bg;
+}
+
+element selected.normal {
+  background-color: @selected;
+  text-color: @bg;
+}
+
+element selected.urgent {
+  background-color: @active;
+  text-color: @bg;
+}
+
+element selected.active {
+  background-color: @urgent;
+  text-color: @bg;
+}
+
+element alternate.normal {
+  background-color: @bg;
+  text-color: @fg;
+}
+
+element alternate.urgent {
+  background-color: @urgent;
+  text-color: @bg;
+}
+
+element alternate.active {
+  background-color: @active;
+  text-color: @bg;
+}
+
+element-icon {
+  icon-theme: "Gruvbox-Plus-Dark";
+  background-color: transparent;
+  text-color: inherit;
+  size: 30px;
+  cursor: inherit;
+}
+
+element-text {
+  background-color: transparent;
+  text-color: inherit;
+  highlight: inherit;
+  cursor: inherit;
+  vertical-align: 0.5;
+  horizontal-align: 0.0;
+}
+
+mode-switcher {
+  spacing: 10px;
+  background-color: transparent;
+  text-color: @fg;
+}
+
+button {
+  padding: 12px;
+  background-color: @bg-alt;
+  text-color: inherit;
+  cursor: pointer;
+}
+
+button selected {
+  background-color: @selected;
+  text-color: @bg;
+}
+
+message {
+  background-color: transparent;
+  text-color: @fg;
+}
+
+textbox {
+  padding: 12px;
+  background-color: @bg-alt;
+  text-color: @fg;
+  vertical-align: 0.5;
+  horizontal-align: 0.0;
+  placeholder-color: @fg;
+  blink: true;
+  markup: true;
+}
+
+error-message {
+  border: 2px solid;
+  border-color: @border;
+  background-color: @bg;
+  text-color: @fg;
+}

@@ -13,7 +13,7 @@
     width = 300
     height = 300
     origin = top-center
-    offset = 48px
+    offset = 0x48
     browser = /usr/bin/firefox -new-tab
     transparency = 0
     idle_threshold = 120
@@ -25,21 +25,6 @@
     gap_size = 3
     horizontal_padding = 8
     startup_notification = false
-    background = "#3c3836"
     frame_width = 3
-    frame_color = "#ebdbb2"
-    history_length = 20    
+    history_length = 20
     timeout = 6
-
-[urgency_low]
-    timeout = 3
-    foreground = "#928374"
-    frame_color = "#928374"
-
-[urgency_normal]
-    foreground = "#b8bb26"
-    frame_color = "#b8bb26"
-
-[urgency_critical]
-    foreground = "#fb4934"
-    frame_color = "#fb4934"
