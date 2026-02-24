@@ -6,13 +6,11 @@
     bg2:        #504945;
     bg3:        #665c54;
     bg4:        #7c6f64;
-
     fg0:        #fbf1c7;
     fg1:        #ebdbb2;
     fg2:        #d5c4a1;
     fg3:        #bdae93;
     fg4:        #a89984;
-
     red0:       #cc241d;
     green0:     #98971a;
     yellow0:    #d79921;
@@ -21,7 +19,6 @@
     aqua0:      #689d6a;
     orange0:    #d65d0e;
     gray0:      #a89984;
-
     red1:       #fb4934;
     green1:     #b8bb26;
     yellow1:    #fabd2f;
