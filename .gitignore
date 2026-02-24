@@ -17,6 +17,7 @@
 #Folders
 !/.config
 /.config/*
+!/.config/palette
 !/.config/dunst
 !/.config/dunst_toggle_state
 !/.config/feh
