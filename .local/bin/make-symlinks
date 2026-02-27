@@ -11,6 +11,7 @@ declare -A USER_SYMLINKS=(
   ["gtk3.palette.ini"]="$HOME/.config/gtk-3.0/settings.ini"
   ["bat.palette"]="$HOME/.config/bat/config"
   ["dunst.palette.conf"]="$HOME/.config/dunst/dunstrc"
+  ["cursor.palette.theme"]="$HOME/.icons/default/index.theme"
 )
 
 log_ok()   { echo "✓ $*"; }
