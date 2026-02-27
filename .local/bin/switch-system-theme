@@ -7,7 +7,7 @@ CURRENT_DIR="$HOME/.local/share/palette/current"
 STATE_DIR="$HOME/.local/state/theme-manager"
 STATE_FILE="$STATE_DIR/theme-mode.txt"
 LOCK_FILE="/tmp/theme-manager.lock"
-DEFAULT_THEME="Dark"
+DEFAULT_THEME="dark"
 
 # ─── System configs (require sudo) ───────────────────────────────────────────
 declare -A SYSTEM_CONFIGS=(
@@ -28,18 +28,14 @@ log_error() { echo "✗ $*" >&2; }
 
 # ─── Theme state ─────────────────────────────────────────────────────────────
 get_theme() { cat "$STATE_FILE"; }
-set_theme() { echo "$1" > "$STATE_FILE"; }
+set_theme() { echo "${1,,}" > "$STATE_FILE"; }
 
-# Returns the active theme directory path (lowercase)
-# e.g. Dark → ~/.local/share/palette/dark
 theme_dir() {
   local theme="${1:-$(get_theme)}"
-  echo "$PALETTE_DIR/${theme,,}"
+  echo "$PALETTE_DIR/$theme"
 }
 
 # ─── Functions ───────────────────────────────────────────────────────────────
-# Copies all files from the active theme into current/
-# Apps read current/ via symlink, so they pick up the change immediately
 sync_theme_files() {
   local src_dir
   src_dir=$(theme_dir)
@@ -53,7 +49,6 @@ sync_theme_files() {
   done
 }
 
-# Installs a single system-level config file (requires sudo)
 install_system_config() {
   local src="$1"
   local dst="$2"
@@ -67,7 +62,6 @@ install_system_config() {
   log_ok "System: $dst"
 }
 
-# Applies all configs that require system-level permissions
 sync_system_configs() {
   local src_dir
   src_dir=$(theme_dir)
@@ -78,25 +72,23 @@ sync_system_configs() {
   done
 }
 
-# Restarts apps that read the config files
 reload_apps() {
   log_info "Reloading apps..."
   systemctl --user restart dunst.service &>/dev/null && log_ok "dunst restarted"
   i3-msg restart &>/dev/null && log_ok "i3 restarted"
 }
 
-# Sends a desktop notification about the theme change (if dunstify is available)
 notify_theme_change() {
   local theme="$1"
   command -v dunstify &>/dev/null || return
-  dunstify -u low -t 2000 "Theme: $theme" "Colors updated"
+  dunstify -u low -t 2000 "Theme: ${theme^}" "Colors updated"
 }
 
 # ─── Main actions ─────────────────────────────────────────────────────────────
 load_theme() {
   local theme
   theme=$(get_theme)
-  log_info "Loading $theme theme..."
+  log_info "Loading ${theme^} theme..."
 
   [[ -d "$(theme_dir)" ]] || {
     log_error "Theme directory not found: $(theme_dir)"
@@ -109,16 +101,15 @@ load_theme() {
 }
 
 toggle_theme() {
-  # Prevent two toggles from running at the same time
   exec 200>"$LOCK_FILE"
   flock -n 200 || { log_error "A theme change is already in progress."; exit 1; }
   trap 'exec 200>&-' EXIT
 
   local current new
   current=$(get_theme)
-  new=$([[ "$current" == "Dark" ]] && echo "Light" || echo "Dark")
+  new=$([[ "$current" == "dark" ]] && echo "light" || echo "dark")
 
-  log_info "Switching theme: $current → $new"
+  log_info "Switching theme: ${current^} → ${new^}"
   set_theme "$new"
   load_theme
 
@@ -132,7 +123,7 @@ case "${1:-}" in
   --load)   load_theme   ;;
   *)
     echo "Usage: $(basename "$0") {--toggle|--load}"
-    echo "  --toggle   Switch between Dark and Light themes"
+    echo "  --toggle   Switch between dark and light themes"
     echo "  --load     Reload the current theme"
     exit 1
     ;;
