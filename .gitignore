@@ -10,9 +10,6 @@
 !/.gitignore
 !/.gitconfig
 !/.profile
-!/.xinitrc
-!/.xsessionrc
-!/.xprofile
 
 #Folders
 !/.config

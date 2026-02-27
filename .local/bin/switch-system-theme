@@ -1,99 +1,151 @@
 #!/bin/bash
+set -euo pipefail
 
+PALETTE_DIR="$HOME/.config/palette"
 STATE_DIR="$HOME/.local/state/theme-manager"
 STATE_FILE="$STATE_DIR/theme-mode.txt"
 LOCK_FILE="/tmp/theme-manager.lock"
-PALETTE_DIR="$HOME/.config/palette"
+POLYBAR_LAUNCH="$HOME/.config/polybar/launch.sh"
+
+declare -A USER_SYMLINKS=(
+  ["alacritty.palette.yml"]="$HOME/.config/alacritty/colors.yml"
+  ["gtk3.palette.ini"]="$HOME/.config/gtk-3.0/settings.ini"
+  ["i3.palette.conf"]="$HOME/.config/i3/colors.conf"
+  ["polybar.palette.ini"]="$HOME/.config/polybar/colors.ini"
+  ["rofi.palette.rasi"]="$HOME/.config/rofi/themes/colors.rasi"
+  ["bat.palette"]="$HOME/.config/bat/config"
+  ["dunst.palette.conf"]="$HOME/.config/dunst/dunstrc"
+)
+
+declare -A SYSTEM_CONFIGS=(
+  ["gtk3.palette.ini"]="/etc/gtk-3.0/settings.ini"
+  ["lightdm.palette.conf"]="/etc/lightdm/lightdm-gtk-greeter.conf"
+  ["cursor.palette.theme"]="/usr/share/icons/default/index.theme"
+)
 
 mkdir -p "$STATE_DIR"
+[[ ! -f "$STATE_FILE" ]] && echo "Dark" > "$STATE_FILE"
 
-if [ ! -f "$STATE_FILE" ]; then
-  echo "Dark" > "$STATE_FILE"
-fi
+log_ok()   { echo "✓ $*"; }
+log_warn() { echo "⚠ $*"; }
+log_info() { echo "→ $*"; }
 
-get_current_theme() {
-  cat "$STATE_FILE"  
+get_theme() { cat "$STATE_FILE"; }
+
+set_theme() { echo "$1" > "$STATE_FILE"; }
+
+palette_dir() {
+  local theme="${1:-$(get_theme)}"
+  echo "$PALETTE_DIR/${theme,,}"
 }
 
-update_symlinks() {
-  local theme_mode="$1"
-  local theme_dir="$PALETTE_DIR/${theme_mode,,}"
-  
-  declare -A symlink_map=(
-    ["alacritty.palette.yml"]="$HOME/.config/alacritty/colors.yml"
-    ["gtk3.palette.ini"]="$HOME/.config/gtk-3.0/settings.ini"
-    ["i3.palette.conf"]="$HOME/.config/i3/colors.conf"
-    ["polybar.palette.ini"]="$HOME/.config/polybar/colors.ini"
-    ["rofi.palette.rasi"]="$HOME/.config/rofi/themes/colors.rasi"
-    ["bat.palette"]="$HOME/.config/bat/config"
-    ["dunst.palette.conf"]="$HOME/.config/dunst/dunstrc.d/colors.conf"
-  )
-  
-  for source_file in "${!symlink_map[@]}"; do
-    local source_path="$theme_dir/$source_file"
-    local target_path="${symlink_map[$source_file]}"
-    
-    mkdir -p "$(dirname "$target_path")"
-    
-    [ -L "$target_path" ] && rm "$target_path"
-    
-    if [ -f "$source_path" ]; then
-      ln -sf "$source_path" "$target_path"
-      echo "✓ Linked: $target_path -> $source_path"
-    else
-      echo "⚠ Warning: $source_path not found"
-    fi
+make_symlink() {
+  local source="$1" target="$2"
+
+  mkdir -p "$(dirname "$target")"
+  [[ -L "$target" ]] && rm "$target"
+
+  if [[ -f "$source" ]]; then
+    ln -sf "$source" "$target"
+    log_ok "Linked: $target → $source"
+  else
+    log_warn "Source not found, skipping: $source"
+  fi
+}
+
+install_system() {
+  local source="$1" target="$2"
+
+  if [[ -f "$source" ]]; then
+    sudo install -D "$source" "$target"
+    log_ok "System: $target"
+  else
+    log_warn "Source not found, skipping: $source"
+  fi
+}
+
+restart_proc() {
+  local name="$1"; shift
+  pkill "$name" 2>/dev/null || true
+  sleep 0.3
+  "$@" &
+}
+
+apply_user_configs() {
+  local dir
+  dir=$(palette_dir)
+  log_info "Applying user configs from: $dir"
+
+  for file in "${!USER_SYMLINKS[@]}"; do
+    make_symlink "$dir/$file" "${USER_SYMLINKS[$file]}"
+  done
+
+  local cursor_src="$dir/cursor.palette.theme"
+  if [[ -f "$cursor_src" ]]; then
+    mkdir -p "$HOME/.icons/default"
+    cp -f "$cursor_src" "$HOME/.icons/default/index.theme"
+    log_ok "Cursor: $HOME/.icons/default/index.theme"
+  fi
+}
+
+apply_system_configs() {
+  local dir
+  dir=$(palette_dir)
+  log_info "Applying system configs from: $dir"
+
+  for file in "${!SYSTEM_CONFIGS[@]}"; do
+    install_system "$dir/$file" "${SYSTEM_CONFIGS[$file]}"
   done
 }
 
+reload_processes() {
+  log_info "Reloading processes..."
+
+  systemctl --user restart dunst.service &>/dev/null && log_ok "dunst restarted"
+
+  if [[ -x "$POLYBAR_LAUNCH" ]]; then
+    restart_proc polybar "$POLYBAR_LAUNCH"
+    log_ok "polybar restarted"
+  fi
+
+  i3-msg restart &>/dev/null && log_ok "i3 restarted"
+}
+
 load_theme() {
-  local theme_mode
-  theme_mode=$(get_current_theme)
-  
-  echo "Loading $theme_mode theme..."
-  update_symlinks "$theme_mode"
-  systemctl --user restart dunst.service &> /dev/null 
-  i3-msg restart &> /dev/null
+  local theme
+  theme=$(get_theme)
+  log_info "Loading $theme theme..."
+
+  [[ -d "$(palette_dir)" ]] || { echo "Error: palette dir not found: $(palette_dir)"; exit 1; }
+
+  apply_user_configs
+  apply_system_configs
+  reload_processes
 }
 
 toggle_theme() {
-  local current_theme new_theme
-  
   exec 200>"$LOCK_FILE"
-  flock -n 200 || {
-    echo "Toggle in progress, please wait..."
-    return 1
-  }
-  
-  current_theme=$(get_current_theme)
-  
-  if [ "$current_theme" = "Dark" ]; then
-    new_theme="Light"
-  else
-    new_theme="Dark"
-  fi
-  
-  echo "$new_theme" > "$STATE_FILE"
+  flock -n 200 || { echo "Toggle already in progress."; exit 1; }
+  trap 'exec 200>&-' EXIT
+
+  local current new
+  current=$(get_theme)
+  new=$([[ "$current" == "Dark" ]] && echo "Light" || echo "Dark")
+
+  set_theme "$new"
   load_theme
-  
-  if command -v dunstify &> /dev/null; then
-    dunstify -u low -t 2000 "Theme: $new_theme" "Updated Colors"
-  fi
-  
-  exec 200>&-
+
+  sleep 0.5
+  command -v dunstify &>/dev/null && dunstify -u low -t 2000 "Theme: $new" "Colors updated"
 }
 
 case "${1:-}" in
-  --toggle)
-    toggle_theme
-    ;;
-  --load)
-    load_theme
-    ;;
+  --toggle) toggle_theme ;;
+  --load)   load_theme   ;;
   *)
-    echo "Usage: $0 {--toggle|--load}"
-    echo "  --toggle - Switch between Dark and Light themes"
-    echo "  --load   - Reload current theme"
+    echo "Usage: $(basename "$0") {--toggle|--load}"
+    echo "  --toggle   Switch between Dark and Light themes"
+    echo "  --load     Reload the current theme"
     exit 1
     ;;
 esac

@@ -5,5 +5,4 @@
 [core]
 	editor = vim
 [pull]
-	# ff = only
 	rebase = true
