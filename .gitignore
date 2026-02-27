@@ -14,12 +14,9 @@
 #Folders
 !/.config
 /.config/*
-!/.config/palette
 !/.config/dunst
-!/.config/dunst_toggle_state
 !/.config/feh
 !/.config/gtk-3.0
-/.config/gtk-3.0/bookmarks
 !/.config/i3
 !/.config/alacritty
 !/.config/miscellaneous
@@ -29,7 +26,6 @@
 !/.config/bat
 !/.config/rofi
 !/.config/starship.toml
-!/.config/theme_mode
 
 !/.themes
 !/.fonts
@@ -43,6 +39,7 @@
 !/.local/share
 /.local/share/*
 !/.local/share/wallpapers
+!/.local/share/palette
 
 !/.vim
 /.vim/*
