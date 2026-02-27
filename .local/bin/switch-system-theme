@@ -1,144 +1,132 @@
 #!/bin/bash
 set -euo pipefail
 
-PALETTE_DIR="$HOME/.config/palette"
+# ─── Paths ───────────────────────────────────────────────────────────────────
+PALETTE_DIR="$HOME/.local/share/palette"
+CURRENT_DIR="$HOME/.local/share/palette/current"
 STATE_DIR="$HOME/.local/state/theme-manager"
 STATE_FILE="$STATE_DIR/theme-mode.txt"
 LOCK_FILE="/tmp/theme-manager.lock"
-POLYBAR_LAUNCH="$HOME/.config/polybar/launch.sh"
+DEFAULT_THEME="Dark"
 
-declare -A USER_SYMLINKS=(
-  ["alacritty.palette.yml"]="$HOME/.config/alacritty/colors.yml"
-  ["gtk3.palette.ini"]="$HOME/.config/gtk-3.0/settings.ini"
-  ["i3.palette.conf"]="$HOME/.config/i3/colors.conf"
-  ["polybar.palette.ini"]="$HOME/.config/polybar/colors.ini"
-  ["rofi.palette.rasi"]="$HOME/.config/rofi/themes/colors.rasi"
-  ["bat.palette"]="$HOME/.config/bat/config"
-  ["dunst.palette.conf"]="$HOME/.config/dunst/dunstrc"
-)
-
+# ─── System configs (require sudo) ───────────────────────────────────────────
 declare -A SYSTEM_CONFIGS=(
   ["gtk3.palette.ini"]="/etc/gtk-3.0/settings.ini"
   ["lightdm.palette.conf"]="/etc/lightdm/lightdm-gtk-greeter.conf"
   ["cursor.palette.theme"]="/usr/share/icons/default/index.theme"
 )
 
-mkdir -p "$STATE_DIR"
-[[ ! -f "$STATE_FILE" ]] && echo "Dark" > "$STATE_FILE"
+# ─── Initialization ───────────────────────────────────────────────────────────
+mkdir -p "$STATE_DIR" "$CURRENT_DIR"
+[[ ! -f "$STATE_FILE" ]] && echo "$DEFAULT_THEME" > "$STATE_FILE"
 
-log_ok()   { echo "✓ $*"; }
-log_warn() { echo "⚠ $*"; }
-log_info() { echo "→ $*"; }
+# ─── Logging ─────────────────────────────────────────────────────────────────
+log_ok()    { echo "✓ $*"; }
+log_warn()  { echo "⚠ $*"; }
+log_info()  { echo "→ $*"; }
+log_error() { echo "✗ $*" >&2; }
 
+# ─── Theme state ─────────────────────────────────────────────────────────────
 get_theme() { cat "$STATE_FILE"; }
-
 set_theme() { echo "$1" > "$STATE_FILE"; }
 
-palette_dir() {
+# Returns the active theme directory path (lowercase)
+# e.g. Dark → ~/.local/share/palette/dark
+theme_dir() {
   local theme="${1:-$(get_theme)}"
   echo "$PALETTE_DIR/${theme,,}"
 }
 
-make_symlink() {
-  local source="$1" target="$2"
+# ─── Functions ───────────────────────────────────────────────────────────────
+# Copies all files from the active theme into current/
+# Apps read current/ via symlink, so they pick up the change immediately
+sync_theme_files() {
+  local src_dir
+  src_dir=$(theme_dir)
+  log_info "Syncing files from: $src_dir"
 
-  mkdir -p "$(dirname "$target")"
-  [[ -L "$target" ]] && rm "$target"
-
-  if [[ -f "$source" ]]; then
-    ln -sf "$source" "$target"
-    log_ok "Linked: $target → $source"
-  else
-    log_warn "Source not found, skipping: $source"
-  fi
-}
-
-install_system() {
-  local source="$1" target="$2"
-
-  if [[ -f "$source" ]]; then
-    sudo install -D "$source" "$target"
-    log_ok "System: $target"
-  else
-    log_warn "Source not found, skipping: $source"
-  fi
-}
-
-restart_proc() {
-  local name="$1"; shift
-  pkill "$name" 2>/dev/null || true
-  sleep 0.3
-  "$@" &
-}
-
-apply_user_configs() {
-  local dir
-  dir=$(palette_dir)
-  log_info "Applying user configs from: $dir"
-
-  for file in "${!USER_SYMLINKS[@]}"; do
-    make_symlink "$dir/$file" "${USER_SYMLINKS[$file]}"
-  done
-
-  local cursor_src="$dir/cursor.palette.theme"
-  if [[ -f "$cursor_src" ]]; then
-    mkdir -p "$HOME/.icons/default"
-    cp -f "$cursor_src" "$HOME/.icons/default/index.theme"
-    log_ok "Cursor: $HOME/.icons/default/index.theme"
-  fi
-}
-
-apply_system_configs() {
-  local dir
-  dir=$(palette_dir)
-  log_info "Applying system configs from: $dir"
-
-  for file in "${!SYSTEM_CONFIGS[@]}"; do
-    install_system "$dir/$file" "${SYSTEM_CONFIGS[$file]}"
+  for src_file in "$src_dir"/*; do
+    local filename
+    filename=$(basename "$src_file")
+    cp -f "$src_file" "$CURRENT_DIR/$filename"
+    log_ok "Updated: $filename"
   done
 }
 
-reload_processes() {
-  log_info "Reloading processes..."
+# Installs a single system-level config file (requires sudo)
+install_system_config() {
+  local src="$1"
+  local dst="$2"
 
+  if [[ ! -f "$src" ]]; then
+    log_warn "File not found, skipping: $src"
+    return
+  fi
+
+  sudo install -D "$src" "$dst"
+  log_ok "System: $dst"
+}
+
+# Applies all configs that require system-level permissions
+sync_system_configs() {
+  local src_dir
+  src_dir=$(theme_dir)
+  log_info "Applying system configs from: $src_dir"
+
+  for filename in "${!SYSTEM_CONFIGS[@]}"; do
+    install_system_config "$src_dir/$filename" "${SYSTEM_CONFIGS[$filename]}"
+  done
+}
+
+# Restarts apps that read the config files
+reload_apps() {
+  log_info "Reloading apps..."
   systemctl --user restart dunst.service &>/dev/null && log_ok "dunst restarted"
-
-  if [[ -x "$POLYBAR_LAUNCH" ]]; then
-    restart_proc polybar "$POLYBAR_LAUNCH"
-    log_ok "polybar restarted"
-  fi
-
   i3-msg restart &>/dev/null && log_ok "i3 restarted"
 }
 
+# Sends a desktop notification about the theme change (if dunstify is available)
+notify_theme_change() {
+  local theme="$1"
+  command -v dunstify &>/dev/null || return
+  dunstify -u low -t 2000 "Theme: $theme" "Colors updated"
+}
+
+# ─── Main actions ─────────────────────────────────────────────────────────────
 load_theme() {
   local theme
   theme=$(get_theme)
   log_info "Loading $theme theme..."
 
-  [[ -d "$(palette_dir)" ]] || { echo "Error: palette dir not found: $(palette_dir)"; exit 1; }
+  [[ -d "$(theme_dir)" ]] || {
+    log_error "Theme directory not found: $(theme_dir)"
+    exit 1
+  }
 
-  apply_user_configs
-  apply_system_configs
-  reload_processes
+  sync_theme_files
+  sync_system_configs
+  reload_apps
 }
 
 toggle_theme() {
+  # Prevent two toggles from running at the same time
   exec 200>"$LOCK_FILE"
-  flock -n 200 || { echo "Toggle already in progress."; exit 1; }
+  flock -n 200 || { log_error "A theme change is already in progress."; exit 1; }
   trap 'exec 200>&-' EXIT
 
   local current new
   current=$(get_theme)
   new=$([[ "$current" == "Dark" ]] && echo "Light" || echo "Dark")
 
+  log_info "Switching theme: $current → $new"
   set_theme "$new"
   load_theme
 
   sleep 0.5
-  command -v dunstify &>/dev/null && dunstify -u low -t 2000 "Theme: $new" "Colors updated"
+  notify_theme_change "$new"
 }
 
+# ─── Entry point ─────────────────────────────────────────────────────────────
 case "${1:-}" in
   --toggle) toggle_theme ;;
   --load)   load_theme   ;;

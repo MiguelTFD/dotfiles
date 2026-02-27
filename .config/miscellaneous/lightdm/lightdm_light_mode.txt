@@ -1,3 +1,0 @@
-[greeter]
-background= /usr/share/wallpapers/Gruvbox/light/lockpaper_light.png
-theme-name= Gruvbox-Light

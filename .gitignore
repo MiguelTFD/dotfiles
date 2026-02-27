@@ -3,7 +3,6 @@
 
 #Except this files:
 
-#Basic files
 !/.bashrc
 !/.bash_aliases
 !/.openv
@@ -11,27 +10,23 @@
 !/.gitconfig
 !/.profile
 
-#Folders
 !/.config
 /.config/*
+!/.config/alacritty
+!/.config/bat
 !/.config/dunst
+!/.config/fastfetch
 !/.config/feh
 !/.config/gtk-3.0
 !/.config/i3
-!/.config/alacritty
-!/.config/miscellaneous
-!/.config/fastfetch
 !/.config/picom
 !/.config/polybar
-!/.config/bat
 !/.config/rofi
 !/.config/starship.toml
 
 !/.themes
 !/.fonts
-/.fonts/.uuid
 !/.icons
-
 
 !/.local
 /.local/*
@@ -40,6 +35,10 @@
 /.local/share/*
 !/.local/share/wallpapers
 !/.local/share/palette
+/.local/share/palette/*
+!/.local/share/palette/dark
+!/.local/share/palette/light
+
 
 !/.vim
 /.vim/*
@@ -51,5 +50,4 @@
 !/.vim/logs/.gitkeep
 !/.vim/snippets
 !/.vim/scripts
-!/.vim/coc-settings.json
 !/.vim/vimrc

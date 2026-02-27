@@ -1,0 +1,31 @@
+#!/bin/bash
+set -euo pipefail
+
+CURRENT_PALETTE_DIR="$HOME/.local/share/palette/current"
+
+declare -A USER_SYMLINKS=(
+  ["alacritty.palette.yml"]="$HOME/.config/alacritty/colors.yml"
+  ["i3.palette.conf"]="$HOME/.config/i3/colors.conf"
+  ["polybar.palette.ini"]="$HOME/.config/polybar/colors.ini"
+  ["rofi.palette.rasi"]="$HOME/.config/rofi/themes/colors.rasi"
+  ["gtk3.palette.ini"]="$HOME/.config/gtk-3.0/settings.ini"
+  ["bat.palette"]="$HOME/.config/bat/config"
+  ["dunst.palette.conf"]="$HOME/.config/dunst/dunstrc"
+)
+
+log_ok()   { echo "✓ $*"; }
+
+mkdir -p "$CURRENT_PALETTE_DIR"
+
+for file in "${!USER_SYMLINKS[@]}"; do
+  origin_dir="$CURRENT_PALETTE_DIR/$file"
+  target_dir="${USER_SYMLINKS[$file]}"
+
+  mkdir -p "$(dirname "$target_dir")"
+
+  [[ -e "$target_dir" || -L "$target_dir" ]] && rm "$target_dir"
+
+  ln -sf "$origin_dir" "$target_dir"
+
+  log_ok "Linked: $target_dir → $origin_dir"
+done
