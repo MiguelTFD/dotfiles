@@ -3,7 +3,7 @@ set -euo pipefail
 
 # ─── Paths ───────────────────────────────────────────────────────────────────
 PALETTE_DIR="$HOME/.local/share/palette"
-CURRENT_DIR="$HOME/.local/share/palette/current"
+CURRENT_PALETTE_DIR="$HOME/.local/share/palette/current"
 STATE_DIR="$HOME/.local/state/theme-manager"
 STATE_FILE="$STATE_DIR/theme-mode.txt"
 LOCK_FILE="/tmp/theme-manager.lock"
@@ -17,7 +17,7 @@ declare -A SYSTEM_CONFIGS=(
 )
 
 # ─── Initialization ───────────────────────────────────────────────────────────
-mkdir -p "$STATE_DIR" "$CURRENT_DIR"
+mkdir -p "$STATE_DIR" "$CURRENT_PALETTE_DIR"
 [[ ! -f "$STATE_FILE" ]] && echo "$DEFAULT_THEME" > "$STATE_FILE"
 
 # ─── Logging ─────────────────────────────────────────────────────────────────
@@ -28,7 +28,7 @@ log_error() { echo "✗ $*" >&2; }
 
 # ─── Theme state ─────────────────────────────────────────────────────────────
 get_theme() { cat "$STATE_FILE"; }
-set_theme() { echo "${1,,}" > "$STATE_FILE"; }
+set_theme() { echo "${1}" > "$STATE_FILE"; }
 
 theme_dir() {
   local theme="${1:-$(get_theme)}"
@@ -44,7 +44,7 @@ sync_theme_files() {
   for src_file in "$src_dir"/*; do
     local filename
     filename=$(basename "$src_file")
-    cp -f "$src_file" "$CURRENT_DIR/$filename"
+    cp -f "$src_file" "$CURRENT_PALETTE_DIR/$filename"
     log_ok "Updated: $filename"
   done
 }
