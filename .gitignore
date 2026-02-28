@@ -1,15 +1,16 @@
-#Exclude everything
+# Exclude everything by default
 /*
 
-#Except this files:
-
+# ── Root dotfiles ─────────────────────────────────────────────
 !/.bashrc
 !/.bash_aliases
-!/.openv
-!/.gitignore
-!/.gitconfig
+!/.bash_profile
 !/.profile
+!/.gitconfig
+!/.gitignore
+!/.openv
 
+# ── .config ───────────────────────────────────────────────────
 !/.config
 /.config/*
 !/.config/alacritty
@@ -24,13 +25,17 @@
 !/.config/rofi
 !/.config/starship.toml
 
+# ── Themes, fonts & icons ─────────────────────────────────────
 !/.themes
 !/.fonts
 !/.icons
 
+# ── .local/bin ────────────────────────────────────────────────
 !/.local
 /.local/*
 !/.local/bin
+
+# ── .local/share ──────────────────────────────────────────────
 !/.local/share
 /.local/share/*
 !/.local/share/wallpapers
@@ -39,21 +44,22 @@
 !/.local/share/palette/dark
 !/.local/share/palette/light
 
+# ── .local/state ──────────────────────────────────────────────
 !/.local/state
 /.local/state/*
 !/.local/state/theme-manager
 /.local/state/theme-manager/*
 !/.local/state/theme-manager/.gitkeep
 
-
+# ── Vim ───────────────────────────────────────────────────────
 !/.vim
 /.vim/*
+!/.vim/vimrc
+!/.vim/snippets
+!/.vim/scripts
 !/.vim/undodir
 /.vim/undodir/*
 !/.vim/undodir/.gitkeep
 !/.vim/logs
 /.vim/logs/*
 !/.vim/logs/.gitkeep
-!/.vim/snippets
-!/.vim/scripts
-!/.vim/vimrc
