@@ -39,6 +39,12 @@
 !/.local/share/palette/dark
 !/.local/share/palette/light
 
+!/.local/state
+/.local/state/*
+!/.local/state/theme-manager
+/.local/state/theme-manager/*
+!/.local/state/theme-manager/.gitkeep
+
 
 !/.vim
 /.vim/*
