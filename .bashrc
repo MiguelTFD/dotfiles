@@ -68,8 +68,11 @@ fi
 
 
 # ── starship init ─────────────────────────────────────────────────────────────
-eval "$(starship init bash)"
-
+if command -v starship &>/dev/null; then
+  eval "$(starship init bash)"
+fi
 
 # Load Angular CLI autocompletion.
-source <(ng completion script)
+if command -v ng &>/dev/null; then
+  source <(ng completion script)
+fi
