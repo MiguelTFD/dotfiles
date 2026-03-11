@@ -1,130 +1,150 @@
 #!/bin/bash
 set -euo pipefail
 
-# ─── Paths ───────────────────────────────────────────────────────────────────
-PALETTE_DIR="$HOME/.local/share/palette"
-CURRENT_PALETTE_DIR="$HOME/.local/share/palette/current"
-STATE_DIR="$HOME/.local/state/theme-manager"
-STATE_FILE="$STATE_DIR/theme-mode.txt"
-LOCK_FILE="/tmp/theme-manager.lock"
-DEFAULT_THEME="dark"
+# ─── Constants ────────────────────────────────────────────────────────────────
+readonly PALETTE_DIR="$HOME/.local/share/palette"
+readonly CURRENT_DIR="$PALETTE_DIR/current"
+readonly STATE_FILE="$HOME/.local/state/theme-manager/theme-mode.txt"
+readonly LOCK_FILE="/tmp/theme-manager.lock"
+readonly DEFAULT_THEME="dark"
+readonly DUNST_SETTLE_DELAY=0.3
 
-# ─── System configs (require sudo) ───────────────────────────────────────────
-declare -A SYSTEM_CONFIGS=(
+declare -rA SYSTEM_CONFIGS=(
   ["gtk3.palette.ini"]="/etc/gtk-3.0/settings.ini"
   ["lightdm.palette.conf"]="/etc/lightdm/lightdm-gtk-greeter.conf"
   ["cursor.palette.theme"]="/usr/share/icons/default/index.theme"
 )
 
-# ─── Initialization ───────────────────────────────────────────────────────────
-mkdir -p "$STATE_DIR" "$CURRENT_PALETTE_DIR"
-[[ ! -f "$STATE_FILE" ]] && echo "$DEFAULT_THEME" > "$STATE_FILE"
-
-# ─── Logging ─────────────────────────────────────────────────────────────────
+# ─── Logging ──────────────────────────────────────────────────────────────────
 log_ok()    { echo "✓ $*"; }
-log_warn()  { echo "⚠ $*"; }
+log_warn()  { echo "⚠ $*" >&2; }
 log_info()  { echo "→ $*"; }
 log_error() { echo "✗ $*" >&2; }
 
-# ─── Theme state ─────────────────────────────────────────────────────────────
+# ─── State ────────────────────────────────────────────────────────────────────
 get_theme() { cat "$STATE_FILE"; }
-set_theme() { echo "${1}" > "$STATE_FILE"; }
 
-theme_dir() {
-  local theme="${1:-$(get_theme)}"
-  echo "$PALETTE_DIR/$theme"
+set_theme() {
+  local tmp
+  tmp=$(mktemp "${STATE_FILE}.XXXXXX")
+  echo "$1" > "$tmp" && mv -f "$tmp" "$STATE_FILE" || { rm -f "$tmp"; return 1; }
 }
 
-# ─── Functions ───────────────────────────────────────────────────────────────
-sync_theme_files() {
-  local src_dir
-  src_dir=$(theme_dir)
-  log_info "Syncing files from: $src_dir"
-
-  for src_file in "$src_dir"/*; do
-    local filename
-    filename=$(basename "$src_file")
-    cp -f "$src_file" "$CURRENT_PALETTE_DIR/$filename"
-    log_ok "Updated: $filename"
-  done
+# ─── Init ─────────────────────────────────────────────────────────────────────
+init() {
+  mkdir -p "$(dirname "$STATE_FILE")" "$CURRENT_DIR" \
+    || { log_error "Failed to create required directories"; exit 1; }
+  [[ -f "$STATE_FILE" ]] || set_theme "$DEFAULT_THEME"
 }
 
-install_system_config() {
-  local src="$1"
-  local dst="$2"
+# ─── Core ─────────────────────────────────────────────────────────────────────
+sync_user_files() {
+  local theme_dir="$1"
+  log_info "Syncing user files from: $theme_dir"
 
-  if [[ ! -f "$src" ]]; then
-    log_warn "File not found, skipping: $src"
+  shopt -s nullglob
+  local files=("$theme_dir"/*)
+  shopt -u nullglob
+
+  if (( ${#files[@]} == 0 )); then
+    log_warn "No user files found in: $theme_dir"
     return
   fi
 
-  sudo install -D "$src" "$dst"
-  log_ok "System: $dst"
-}
-
-sync_system_configs() {
-  local src_dir
-  src_dir=$(theme_dir)
-  log_info "Applying system configs from: $src_dir"
-
-  for filename in "${!SYSTEM_CONFIGS[@]}"; do
-    install_system_config "$src_dir/$filename" "${SYSTEM_CONFIGS[$filename]}"
+  local file name
+  for file in "${files[@]}"; do
+    name="${file##*/}"
+    cp -f "$file" "$CURRENT_DIR/$name" && log_ok "Updated: $name"
   done
 }
 
-reload_apps() {
-  log_info "Reloading apps..."
-  systemctl --user restart dunst.service &>/dev/null && log_ok "dunst restarted"
-  i3-msg restart &>/dev/null && log_ok "i3 restarted"
+sync_system_files() {
+  local theme_dir="$1"
+  log_info "Syncing system files from: $theme_dir"
+
+  local filename src dst
+  for filename in "${!SYSTEM_CONFIGS[@]}"; do
+    src="$theme_dir/$filename"
+    dst="${SYSTEM_CONFIGS[$filename]}"
+
+    if [[ ! -f "$src" ]]; then
+      log_warn "Skipping missing file: $src"
+      continue
+    fi
+
+    sudo install -D "$src" "$dst" && log_ok "System: $dst"
+  done
 }
 
-notify_theme_change() {
+notify_change() {
   local theme="$1"
-  command -v dunstify &>/dev/null || return
+  command -v dunstify &>/dev/null || return 0
   dunstify -u low -t 2000 "Theme: ${theme^}" "Colors updated"
 }
 
-# ─── Main actions ─────────────────────────────────────────────────────────────
+reload_apps() {
+  local theme="$1"
+  log_info "Reloading apps..."
+
+  systemctl --user restart dunst.service &>/dev/null && log_ok "dunst restarted"
+
+  notify_change "$theme"
+  sleep "$DUNST_SETTLE_DELAY"
+
+  i3-msg restart &>/dev/null || true
+}
+
+# ─── Actions ──────────────────────────────────────────────────────────────────
+cleanup_lock() {
+  exec 9>&-
+  rm -f "$LOCK_FILE"
+}
+
+apply_theme() {
+  local theme="$1"
+  local theme_dir="$PALETTE_DIR/$theme"
+
+  log_info "Applying theme: ${theme^}"
+  [[ -d "$theme_dir" ]] || { log_error "Theme directory not found: $theme_dir"; exit 1; }
+
+  sync_user_files   "$theme_dir"
+  sync_system_files "$theme_dir"
+}
+
 load_theme() {
-  local theme
-  theme=$(get_theme)
-  log_info "Loading ${theme^} theme..."
-
-  [[ -d "$(theme_dir)" ]] || {
-    log_error "Theme directory not found: $(theme_dir)"
-    exit 1
-  }
-
-  sync_theme_files
-  sync_system_configs
-  reload_apps
+  local theme="$1"
+  apply_theme "$theme"
+  reload_apps "$theme"
 }
 
 toggle_theme() {
-  exec 200>"$LOCK_FILE"
-  flock -n 200 || { log_error "A theme change is already in progress."; exit 1; }
-  trap 'exec 200>&-' EXIT
+  exec 9>"$LOCK_FILE"
+  flock -n 9 || { log_error "Theme change already in progress."; exit 1; }
+  trap cleanup_lock EXIT
 
   local current new
   current=$(get_theme)
-  new=$([[ "$current" == "dark" ]] && echo "light" || echo "dark")
+  if [[ "$current" == "dark" ]]; then new="light"; else new="dark"; fi
 
-  log_info "Switching theme: ${current^} → ${new^}"
-  set_theme "$new"
-  load_theme
+  log_info "Switching: ${current^} → ${new^}"
 
-  sleep 0.5
-  notify_theme_change "$new"
+  apply_theme "$new"
+  set_theme   "$new"
+  reload_apps "$new"
 }
 
-# ─── Entry point ─────────────────────────────────────────────────────────────
+# ─── Entry point ──────────────────────────────────────────────────────────────
+usage() {
+  echo "Usage: $(basename "$0") {--toggle|--load}" >&2
+  echo "  --toggle   Switch between dark and light themes" >&2
+  echo "  --load     Reload the current theme" >&2
+  exit 1
+}
+
+init
+
 case "${1:-}" in
   --toggle) toggle_theme ;;
-  --load)   load_theme   ;;
-  *)
-    echo "Usage: $(basename "$0") {--toggle|--load}"
-    echo "  --toggle   Switch between dark and light themes"
-    echo "  --load     Reload the current theme"
-    exit 1
-    ;;
+  --load)   load_theme "$(get_theme)" ;;
+  *)        usage ;;
 esac
