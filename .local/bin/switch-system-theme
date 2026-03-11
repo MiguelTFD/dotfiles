@@ -7,7 +7,7 @@ readonly CURRENT_DIR="$PALETTE_DIR/current"
 readonly STATE_FILE="$HOME/.local/state/theme-manager/theme-mode.txt"
 readonly LOCK_FILE="/tmp/theme-manager.lock"
 readonly DEFAULT_THEME="dark"
-readonly DUNST_SETTLE_DELAY=0.3
+readonly DUNST_SETTLE_DELAY=0.5
 
 declare -rA SYSTEM_CONFIGS=(
   ["gtk3.palette.ini"]="/etc/gtk-3.0/settings.ini"
@@ -86,12 +86,13 @@ reload_apps() {
   local theme="$1"
   log_info "Reloading apps..."
 
-  systemctl --user restart dunst.service &>/dev/null && log_ok "dunst restarted"
-
-  notify_change "$theme"
-  sleep "$DUNST_SETTLE_DELAY"
+  killall -q dunst 2>/dev/null || true
 
   i3-msg restart &>/dev/null || true
+  
+  sleep "$DUNST_SETTLE_DELAY"
+  
+  notify_change "$theme"
 }
 
 # ─── Actions ──────────────────────────────────────────────────────────────────
