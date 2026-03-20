@@ -13,12 +13,12 @@ configuration {
 
 * {
   font: "JetBrains Mono Nerd Font 9";
-  bg: @bg0;
-  bg-alt: @bg0s;
-  fg: @fg1;
-  selected: @blue1;
-  active: @green1;
-  urgent: @red1;
+  bg: @nord0;
+  bg-alt: @nord1;
+  fg: @nord6;
+  selected: @nord9;
+  active: @nord14;
+  urgent: @nord11;
   border: @selected;
   handle: @selected;
 }

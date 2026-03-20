@@ -9,7 +9,7 @@ configuration {
 
 * {
   background-color: transparent;
-  text-color: @fg0;
+  text-color: @nord6;
   padding: 0px;
   margin: 0px;
 }
@@ -20,8 +20,8 @@ window {
   x-offset: 9px;
   width: 90px;
   border: 3px;
-  border-color: @purple1;
-  background-color: @bg0;
+  border-color: @nord15;
+  background-color: @nord0;
 }
 
 mainbox {
@@ -39,7 +39,7 @@ listview {
 }
 
 element {
-  background-color: @bg1; 
+  background-color: @nord1; 
   padding: 10px 10px;
   orientation: vertical;
   cursor: pointer;
@@ -53,8 +53,8 @@ element-text {
 }
 
 element selected {
-  background-color: @purple1;
-  text-color: @bg1;
+  background-color: @nord15;
+  text-color: @nord1;
   border: 0px;
 }
 
