@@ -35,12 +35,12 @@ get_icon() {
 enable_notifications() {
   write_state "$ENABLED_STATE"
   dunstctl set-paused false
-  notify-send -u low -t 2000 'Notifications: ON' 'Notifications are active'
+  dunstify -u low -t 2000 'Notifications: ON' 'Notifications are active'
 }
 
 disable_notifications() {
   write_state "$DISABLED_STATE"
-  notify-send -u low -t 2000 'Notifications: OFF' 'Notifications are paused'
+  dunstify -u low -t 2000 'Notifications: OFF' 'Notifications are paused'
   #TODO: remove this sleep and using persistence notifications
   sleep 2.5
   dunstctl set-paused true

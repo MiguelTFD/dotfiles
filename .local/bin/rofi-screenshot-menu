@@ -14,14 +14,14 @@ case "$CHOSEN" in
   "$OPT_SCREEN_SAVE")
     maim "$FILENAME"
     xclip -selection clipboard -t image/png < "$FILENAME"
-    notify-send -u low -i camera "󰍹 Screenshot Saved & Copied" "Path: $FILENAME"
+    dunstify -u low -i camera "󰍹 Screenshot Saved & Copied" "Path: $FILENAME"
     ;;
 
   "$OPT_AREA_SAVE")
     maim -s "$FILENAME"
     if [ -f "$FILENAME" ]; then
         xclip -selection clipboard -t image/png < "$FILENAME"
-        notify-send -u low -i camera "󰆞 Area Saved & Copied" "Path: $FILENAME"
+        dunstify -u low -i camera "󰆞 Area Saved & Copied" "Path: $FILENAME"
     fi
     ;;
 
