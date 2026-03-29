@@ -137,7 +137,7 @@ element alternate.active {
 }
 
 element-icon {
-  icon-theme: "Gruvbox-Plus-Dark";
+  icon-theme: "Tela-circle-nord-dark";
   background-color: transparent;
   text-color: inherit;
   size: 30px;

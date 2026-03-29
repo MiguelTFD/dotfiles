@@ -61,7 +61,7 @@ Plug 'drzel/vim-line-no-indicator'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'xuyuanp/nerdtree-git-plugin'
 Plug 'ryanoasis/vim-devicons'
-Plug 'morhetz/gruvbox'
+Plug 'nordtheme/vim'
 Plug 'mhinz/vim-startify'
 " --- Navigation / Terminal ---
 Plug 'preservim/nerdtree'
@@ -103,10 +103,7 @@ else
   set background=dark
 endif
 
-let g:gruvbox_italic = 1
-let g:gruvbox_sign_column = 'bg0'
-
-colorscheme gruvbox
+colorscheme nord
 
 
 " ── glaive settings ─────────────────────────────────────────────────────── 
@@ -124,8 +121,6 @@ let g:NERDTreeQuitOnOpen = 1
 let g:NERDTreeShowHidden = 1
 let g:NERDTreeMinimalUI = 1
 
-highlight! link NERDTreeOpenable GruvboxGray
-highlight! link NERDTreeClosable GruvboxGray
 
 let g:NERDTreeGitStatusIndicatorMapCustom = {
 \ 'Modified'  :'*',
@@ -175,7 +170,7 @@ let g:line_no_indicator_chars = [
 
 let g:lightline = {}
 
-let g:lightline.colorscheme = 'gruvbox'
+let g:lightline.colorscheme = 'nord'
 
 let g:lightline.active = {
   \ 'left': [
