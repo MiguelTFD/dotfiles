@@ -4,7 +4,7 @@ set -euo pipefail
 CURRENT_PALETTE_DIR="$HOME/.local/share/palette/current"
 
 declare -A USER_SYMLINKS=(
-  ["alacritty.palette.toml"]="$HOME/.config/alacritty/colors.toml"
+  ["alacritty.palette.yml"]="$HOME/.config/alacritty/colors.yml"
   ["i3.palette.conf"]="$HOME/.config/i3/colors.conf"
   ["polybar.palette.ini"]="$HOME/.config/polybar/colors.ini"
   ["rofi.palette.rasi"]="$HOME/.config/rofi/themes/colors.rasi"
