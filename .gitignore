@@ -16,9 +16,9 @@
 !/.config/alacritty
 !/.config/bat
 !/.config/dunst
-!/.config/fastfetch
+!/.config/neofetch
 !/.config/feh
-!/.config/gtk-3.0
+!/.config/gtk-3.0/settings.ini
 !/.config/i3
 !/.config/picom
 !/.config/polybar
