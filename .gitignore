@@ -15,9 +15,13 @@
 /.config/*
 !/.config/alacritty
 !/.config/bat
+!/.config/btop/
+/.config/btop/*
 !/.config/btop/btop.conf
 !/.config/dunst
 !/.config/feh
+!/.config/gtk-3.0/
+/.config/gtk-3.0/*
 !/.config/gtk-3.0/settings.ini
 !/.config/i3
 !/.config/lf
