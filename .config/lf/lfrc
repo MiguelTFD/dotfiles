@@ -1,0 +1,14 @@
+set icons
+set ratios 1:2:3
+set info size
+set hidden false
+set ignorecase true
+set smartcase true
+set drawbox true
+map yy copy
+map dd cut
+map pp paste
+map cw rename
+map zh set hidden!
+map D delete
+map <enter> open

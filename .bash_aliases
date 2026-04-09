@@ -1,5 +1,4 @@
 alias ct='clear'
-alias ff='fastfetch'
 alias x='exit'
 alias mntusb='sudo mount -t vfat /dev/sdb1 /mnt/usb0'
 alias untargz='tar -xvzf'
