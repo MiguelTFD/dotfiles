@@ -12,12 +12,14 @@ CHOSEN=$(printf "$OPT_SCREEN_SAVE\n$OPT_AREA_SAVE" | rofi -dmenu -theme $ROFI_TH
 
 case "$CHOSEN" in
   "$OPT_SCREEN_SAVE")
+    sleep 0.6
     maim "$FILENAME"
     xclip -selection clipboard -t image/png < "$FILENAME"
     dunstify -u low -i camera "󰍹 Screenshot Saved & Copied" "Path: $FILENAME"
     ;;
 
   "$OPT_AREA_SAVE")
+    sleep 0.6
     maim -s "$FILENAME"
     if [ -f "$FILENAME" ]; then
         xclip -selection clipboard -t image/png < "$FILENAME"

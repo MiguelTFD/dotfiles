@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+readonly COLOR_OFF="#928374"
+readonly ICON_MIC="󰍬"
+readonly ICON_MIC_OFF="󰍭"
+
+colorize() { echo "%{F$1}$2%{F-}"; }
+show_icon() { echo "$1"; }
+
+fallback() { show_icon "$ICON_MIC "; exit 0; }
+
+is_invalid_source() {
+    [[ -z "$1" || "$1" =~ null|dummy|monitor ]]
+}
+
+main() {
+    local source muted vol
+
+    source=$(pactl get-default-source 2>/dev/null)
+    is_invalid_source "$source" && fallback
+
+    muted=$(pactl get-source-mute "$source" 2>/dev/null | awk '{print $2}')
+    vol=$(pactl get-source-volume "$source" 2>/dev/null | awk 'NR==1{print $5}')
+
+    [[ -z "$vol" ]]        && fallback
+    [[ "$muted" == "yes" ]] && { colorize "$COLOR_OFF" "$ICON_MIC_OFF off"; exit 0; }
+
+    show_icon "$ICON_MIC $vol"
+}
+
+main

@@ -1,13 +1,20 @@
-#! /bin/sh
+#!/bin/bash
+set -e
+
+if ! egrep -c '(vmx|svm)' /proc/cpuinfo > /dev/null; then
+    echo "ERROR: CPU does not support hardware virtualization"
+    exit 1
+fi
 
 sudo apt update
-sudo apt install -y qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils virtinst
+sudo apt install -y qemu-kvm libvirt-daemon-system libvirt-clients \
+    bridge-utils virtinst
 
-sudo usermod -aG libvirt $(whoami)
+sudo usermod -aG libvirt "$(whoami)"
 sudo systemctl enable --now libvirtd
-sudo systemctl status libvirtd
-
+sudo systemctl status libvirtd --no-pager
 ls -l /dev/kvm
 virsh list --all
 
-echo "kvm & qemu has been installed"
+echo "KVM & QEMU installed successfully."
+echo "IMPORTANT: log out and back in to apply libvirt group permissions."
