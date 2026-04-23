@@ -384,6 +384,7 @@ augroup autoformat_settings
   autocmd FileType vue silent! AutoFormatBuffer prettier
 augroup END
 
+autocmd FileType xml silent! AutoFormatBuffer xmllint
 
 " ── vsnip settings ────────────────────────────────────────────────────────────
 let g:vsnip_snippet_dir = expand('~/.vim/snippets')
